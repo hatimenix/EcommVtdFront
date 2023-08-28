@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "title": "Stylish",
+    "subtitle": "Female Clothes",
+    "text": "30% off Summer Vacation",
+    "image": "/assets/img/slider/female_banner_v3.jpg",
+    "url": "/shop-grid-standard"
+  },
+  {
+    "id": 2,
+    "title": "Stylish",
+    "subtitle": "Male Clothes",
+    "text": "30% off Summer Vacation",
+    "image": "/assets/img/slider/male_banner_v4.jpg",
+    "url": "/shop-grid-standard"
+  }
+]
