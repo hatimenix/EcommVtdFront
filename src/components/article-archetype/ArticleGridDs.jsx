@@ -52,13 +52,30 @@ const ArticleGridDs = ({ limit }) => {
 
 
 
-                <FeatureIconTwo spaceTopClass="pt-100" spaceBottomClass="pb-60" />
+                {/* <FeatureIconTwo spaceTopClass="pt-70" spaceBottomClass="pb-60" /> */}
+
 
                 <SectionTitle
-                    titleText="Updates Hub"
-                    subTitleText="Latest arrivals & offers "
-                    positionClass="text-center"
-                    spaceClass="mb-60"
+                    titleText="Recommandé pour toi"
+                    // subTitleText="Latest arrivals & offers "
+                    // positionClass="text-center"
+                    spaceClass="mb-20 mt-80"
+                />
+
+
+                <SectionTitle
+                    titleText="Fil d'actu"
+                    // subTitleText="Latest arrivals & offers "
+                    // positionClass="text-center"
+                    spaceClass="mb-20"
+                />
+
+
+                <SectionTitle
+                    titleText="Articles populaires"
+                    // subTitleText="Latest arrivals & offers "
+                    // positionClass="text-center"
+                    spaceClass="mb-20"
                 />
                 <div className="row five-column">
                     <ArticleGridDsTwo
