@@ -6,6 +6,11 @@ import NavMenu from "../../components/template/header/NavMenu";
 import IconGroup from "../../components/template/header/IconGroup";
 import MobileMenu from "../../components/template/header/MobileMenu";
 import HeaderTop from "../../components/template/header/HeaderTop";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import { AiOutlineSearch } from "react-icons/ai";
 
 const HeaderOne = ({
   layout,
@@ -53,21 +58,32 @@ const HeaderOne = ({
           scroll > headerTop && "stick"
         )}
       >
-        <div className={layout === "container-fluid" ? layout : "container"}>
+        <div >
           <div className="row">
-            <div className="col-xl-2 col-lg-2 col-md-6 col-4">
+            <div className="col-xl-2 col-lg-2 col-md-3 col-4 p-3">
               {/* header logo */}
-              <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"}
-
-
-
-                logoClass="logo" />
+              <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"} logoClass="logo" />
             </div>
-            <div className="col-xl-8 col-lg-8 d-none d-lg-block">
+            <div className="col-xl-6 col-lg-6 d-none d-lg-block"  >
               {/* Nav menu */}
-              <NavMenu />
+              <InputGroup style={{ width: '100%', minHeight: '20px', outline: "none", boxShadow: "none", }} size="sm" className="mt-3 myInputGroup">
+                <DropdownButton
+                  variant="outline-secondary"
+                  title="Dropdown"
+                  id="input-group-dropdown-1"
+                  size="sm"
+                >
+                  <Dropdown.Item href="#">Action</Dropdown.Item>
+                  <Dropdown.Item href="#">Another action</Dropdown.Item>
+                  <Dropdown.Item href="#">Something else here</Dropdown.Item>
+                  <Dropdown.Divider />
+                  <Dropdown.Item href="#">Separated link</Dropdown.Item>
+                </DropdownButton>
+                <InputGroup.Text style={{ backgroundColor: "transparent", borderRight: "none" }}><AiOutlineSearch /></InputGroup.Text>
+                <Form.Control className="myInput" style={{ backgroundColor: "transparent", borderLeft: "none" , height: 'fit-content' }} placeholder="Chercher des articles" aria-label="Text input with dropdown button" />
+              </InputGroup>
             </div>
-            <div className="col-xl-2 col-lg-2 col-md-6 col-8">
+            <div className="col-xl-4 col-lg-4 col-md-6 col-8 mt-3">
               {/* Icon group */}
               <IconGroup />
             </div>

@@ -444,12 +444,12 @@
   }
 }
 
-.modal-dialog {
-  border: none;
-  .modal-content {
-    // background-color: transparent;
-    border: none;
-  }
+// .modal-dialog {
+//   border: none;
+//   .modal-content {
+//     // background-color: transparent;
+//     border: none;
+//   }
   // // width: 960px;
   // // max-width: 960px;
   // margin: 8% auto;
@@ -463,8 +463,8 @@
   //   max-width: 100%;
   //   padding: 35px 0;
   // }
-  .modal-header {
-    border: none;
+  // .modal-header {
+  //   border: none;
   //   .close {
   //     cursor: pointer;
 
@@ -474,7 +474,7 @@
   //       color: $theme-color;
   //     }
   //   }
-  }
+  // }
   // .modal-body {
   //   padding: 35px 15px;
   // }
@@ -483,7 +483,7 @@
   //     width: 100%;
   //   }
   // }
-}
+// }
 
 .product-details-content {
   @media #{$lg-layout} {

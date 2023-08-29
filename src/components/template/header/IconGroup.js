@@ -10,6 +10,8 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Login from "../../../pages/Authentication/Login";
 // import MenuCart from "./sub-components/MenuCart";
+import { FiHelpCircle } from "react-icons/fi";
+import { color } from "framer-motion";
 
 const IconGroup = ({ iconWhiteClass }) => {
   const handleClick = e => {
@@ -53,7 +55,7 @@ const IconGroup = ({ iconWhiteClass }) => {
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
-      <div className="same-style header-search d-none d-lg-block">
+      {/* <div className="same-style header-search d-none d-lg-block">
         <button className="search-active" onClick={e => handleClick(e)}>
           <i className="pe-7s-search" />
         </button>
@@ -65,14 +67,20 @@ const IconGroup = ({ iconWhiteClass }) => {
             </button>
           </form>
         </div>
+      </div> */}
+      <div className="row " style={{width:"100%%"}}>
+      <Button onClick={handleShow} className="col-6" style={{fontSize:"12px" ,width:"fit-content", color:"teal", borderColor:"teal", backgroundColor:"transparent"}} size="sm" >SignUp | Login</Button>
+      <Button className="col-6 " style={{fontSize:"12px" ,width:"fit-content",marginLeft:5 ,backgroundColor:"teal" , border:"none"}} size="sm" >sell now</Button> 
       </div>
-      <div className="same-style account-setting d-none d-lg-block">
+      <div className="same-style header-compare " style={{marginLeft:"5%"}}><FiHelpCircle style={{fontSize:"20px", color:"gray"}}/></div>
+      {/* <div className="same-style account-setting d-none d-lg-block">
         <button
           className="account-setting-active"
           onClick={e => handleClick(e)}
         >
           <i className="pe-7s-user-female" />
         </button>
+        
         <div className="account-dropdown">
           <ul>
           {!localStorage.getItem('ACCESS_TOKEN') ?
@@ -92,45 +100,43 @@ const IconGroup = ({ iconWhiteClass }) => {
                 Logout
               </Link>
             </li>}
-            
-            
           </ul>
         </div>
-      </div>
-      <div className="same-style header-compare">
+      </div> */}
+      {/* <div className="same-style header-compare">
         <Link to={process.env.PUBLIC_URL + "/compare"}>
           <i className="pe-7s-shuffle" />
           <span className="count-style">
-            {/* {compareItems && compareItems.length ? compareItems.length : 0} */}
+            {compareItems && compareItems.length ? compareItems.length : 0}
           </span>
         </Link>
-      </div>
-      <div className="same-style header-wishlist">
+      </div> */}
+      {/* <div className="same-style header-wishlist">
         <Link to={process.env.PUBLIC_URL + "/wishlist"}>
           <i className="pe-7s-like" />
           <span className="count-style">
-            {/* {wishlistItems && wishlistItems.length ? wishlistItems.length : 0} */}
+            {wishlistItems && wishlistItems.length ? wishlistItems.length : 0}
           </span>
         </Link>
-      </div>
-      <div className="same-style cart-wrap d-none d-lg-block">
+      </div> */}
+      {/* <div className="same-style cart-wrap d-none d-lg-block">
         <button className="icon-cart" onClick={e => handleClick(e)}>
           <i className="pe-7s-shopbag" />
           <span className="count-style">
-            {/* {cartItems && cartItems.length ? cartItems.length : 0} */}
+            {cartItems && cartItems.length ? cartItems.length : 0}
           </span>
         </button>
-        {/* menu cart */}
-        {/* <MenuCart /> */}
-      </div>
-      <div className="same-style cart-wrap d-block d-lg-none">
+        menu cart
+        <MenuCart />
+      </div> */}
+      {/* <div className="same-style cart-wrap d-block d-lg-none">
         <Link className="icon-cart" to={process.env.PUBLIC_URL + "/cart"}>
           <i className="pe-7s-shopbag" />
           <span className="count-style">
-            {/* {cartItems && cartItems.length ? cartItems.length : 0} */}
+            {cartItems && cartItems.length ? cartItems.length : 0}
           </span>
         </Link>
-      </div>
+      </div> */}
       <div className="same-style mobile-off-canvas d-block d-lg-none">
         <button
           className="mobile-aside-button"
@@ -140,7 +146,8 @@ const IconGroup = ({ iconWhiteClass }) => {
         >
           <i className="pe-7s-menu" />
         </button>
-      </div><OffcanvasMenu
+      </div>
+      <OffcanvasMenu
         activeState={offcanvasActive}
         getActiveState={getActiveState}
       />
@@ -149,7 +156,7 @@ const IconGroup = ({ iconWhiteClass }) => {
       <Modal  size="md" show={show} onHide={handleClose}>
         
         <Modal.Body  >
-        <Modal.Header  closeButton/>
+        <Modal.Header  style={{border:'none'}} closeButton/>
             <Login/>
         </Modal.Body>
       </Modal>
