@@ -23,7 +23,7 @@
         }
       }
       a.active h4 {
-        color: #e6ccff !important;
+        color: $theme-color;
       }
 
       &:before {
@@ -47,14 +47,14 @@
   }
   .login-form-container {
     background: transparent none repeat scroll 0 0;
-    // box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+    padding: 80px;
     text-align: left;
     @media #{$lg-layout} {
-      padding: 50px 50px;
+      padding: 80px 50px;
     }
     @media #{$xs-layout} {
-      padding: 50px 30px;
+      padding: 40px 15px;
     }
     .login-register-form {
       form {
@@ -63,8 +63,8 @@
           border: 1px solid #ebebeb;
           color: #333;
           font-size: 14px;
-          height: 40px;
-          margin-bottom: 20px;
+          height: 45px;
+          margin-bottom: 30px;
           padding: 0 15px;
         }
         input[type="checkbox"] {
@@ -99,7 +99,7 @@
             }
           }
           button {
-            background-color: #a749ff47;
+            background-color: #f2f2f2;
             border: medium none;
             color: #333;
             cursor: pointer;
@@ -108,10 +108,10 @@
             line-height: 1;
             padding: 11px 30px;
             text-transform: uppercase;
-            transition: all .1s ease 0s;
+            transition: all 0.3s ease 0s;
             &:hover {
               background-color: $theme-color;
-              color: white;
+              color: #fff;
             }
           }
         }

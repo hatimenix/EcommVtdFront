@@ -9,6 +9,7 @@ import axiosClient from '../../axios-client';
 import { FcGoogle } from "react-icons/fc";
 import { BsApple } from "react-icons/bs";
 import axios from "axios";
+import GoogleLogin from "react-google-login";
 
 const Login = () => {
 
@@ -61,6 +62,8 @@ const Login = () => {
       })
   }
 
+  
+
   //Register
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -74,7 +77,7 @@ const Login = () => {
 
   const [listCustomers, setListCustomers] = useState([])
 
-  const isRegisterFormFilled = !emailRegister || !passwordRegister || !firstName || !lastName || !confirmPwd  || !gender;
+  const isRegisterFormFilled = !emailRegister || !passwordRegister || !firstName || !lastName || !confirmPwd || !gender;
 
   // useEffect(() => {
   //   axiosClient.get('/customers/').then(res => {
@@ -256,24 +259,24 @@ const Login = () => {
                               <div className="text-center mb-2">
                                 <span>Or log in with</span>
                               </div>
-
+                             
                               <div className="row justify-content-center">
-                                <div className="col-5 py-1 mx-2" style={{border: '1px solid lightgray' ,borderRadius:'5px'}}>
+                                <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
                                   <div className="d-flex align-items-center justify-content-center">
                                     <div className="form-group">
                                       <FcGoogle style={{ fontSize: 25 }} />
                                     </div>
-                                    <div className="form-group" style={{marginLeft:5}}>
+                                    <div className="form-group" style={{ marginLeft: 5 }}>
                                       <span>Google</span>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="col-5 py-1" style={{border: '1px solid lightgray' ,borderRadius:'5px'}}>
+                                <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
                                   <div className="d-flex align-items-center justify-content-center">
                                     <div className="form-group">
                                       <BsApple style={{ fontSize: 25 }} />
                                     </div>
-                                    <div className="form-group " style={{marginLeft:5}}>
+                                    <div className="form-group " style={{ marginLeft: 5 }}>
                                       <span>Apple</span>
                                     </div>
                                   </div>
@@ -357,22 +360,22 @@ const Login = () => {
                               </div>
 
                               <div className="row justify-content-center">
-                                <div className="col-5 py-1 mx-2" style={{border: '1px solid lightgray' ,borderRadius:'5px'}}>
+                                <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
                                   <div className="d-flex align-items-center justify-content-center">
                                     <div className="form-group">
                                       <FcGoogle style={{ fontSize: 25 }} />
                                     </div>
-                                    <div className="form-group" style={{marginLeft:5}}>
+                                    <div className="form-group" style={{ marginLeft: 5 }}>
                                       <span>Google</span>
                                     </div>
                                   </div>
                                 </div>
-                                <div className="col-5 py-1" style={{border: '1px solid lightgray' ,borderRadius:'5px'}}>
+                                <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
                                   <div className="d-flex align-items-center justify-content-center">
                                     <div className="form-group">
                                       <BsApple style={{ fontSize: 25 }} />
                                     </div>
-                                    <div className="form-group " style={{marginLeft:5}}>
+                                    <div className="form-group " style={{ marginLeft: 5 }}>
                                       <span>Apple</span>
                                     </div>
                                   </div>
