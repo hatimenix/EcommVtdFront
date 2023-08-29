@@ -21,7 +21,15 @@ const selectedCategory = JSON.parse(localStorage.getItem('selectedCategory'));
 if (selectedCategory) {
   store.dispatch(selectCategory(selectedCategory));
 }
-
+// const container = document.getElementById('root');
+// const root = createRoot(container);
+// root.render(
+  
+//     <Provider store={store}>
+//       <PersistProvider>
+//         <App />
+//       </PersistProvider>
+//     </Provider>
 
 ReactDOM.render(
   <Provider store={store__}>
