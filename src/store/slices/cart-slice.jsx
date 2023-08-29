@@ -6,11 +6,11 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState: {
         cartItems: [], // Ensure this property is defined
-  },
+    },
     reducers: {
         addToCart(state, action) {
             const product = action.payload;
-            if (!product.variation) {
+            if (!product.is_deleted) {
                 const cartItem = state.cartItems.find(item => item.id === product.id);
                 if (!cartItem) {
                     state.cartItems.push({
