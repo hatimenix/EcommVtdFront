@@ -14,6 +14,8 @@ import { faHeart as regIc } from '@fortawesome/free-regular-svg-icons'
 import axios from 'axios';
 import { fetchLikeCounts } from '../../store/slices/favoriteSlice';
 import { BsShieldCheck } from 'react-icons/bs';
+import ArticleModal from './article-modal-view/ArticleModal';
+import fadeAnimationHandler from './animationHandler/fadeAnimationHandler';
 
 
 const ArticleGridDsSingleTwo = ({
@@ -67,6 +69,7 @@ const ArticleGridDsSingleTwo = ({
     };
 
 
+    const [modalShow, setModalShow] = useState(false);
 
 
     const isOutOfStock = article.stock <= 0;
@@ -114,18 +117,27 @@ const ArticleGridDsSingleTwo = ({
                 <div style={sellerNameStyle}>{correspondingSeller.first_name}</div>
 
                 <div style={{ marginTop: '50px' }} className="product-img">
-
                     <Link to={process.env.PUBLIC_URL + '/articles/' + article.id_art}>
-
-
-                        <img
-                            src={article.images[0].image}
-                            alt={article.titre}
-                        />
-
-
+                        <Carousel
+                            autoPlay={false}
+                            showArrows={false}
+                            showIndicators={true}
+                            showStatus={false}
+                            showThumbs={false}
+                            selectedItem={hovered ? 1 : 0}
+                            animationHandler={fadeAnimationHandler} // Use the custom animation handler
+                            className="carousel"
+                        >
+                            {article.images.map((image, index) => (
+                                <div key={index} className="slide">
+                                    <img
+                                        src={image.image}
+                                        alt={article.titre}
+                                    />
+                                </div>
+                            ))}
+                        </Carousel>
                     </Link>
-
 
 
 
@@ -171,7 +183,7 @@ const ArticleGridDsSingleTwo = ({
                             </button>
                         )}
 
-                        <button onClick={() => console.log("test")} title="Quick View">
+                        <button onClick={() => setModalShow(true)} title="Quick View">
                             <i className="fa fa-eye"></i>
                         </button>
 
@@ -256,6 +268,12 @@ const ArticleGridDsSingleTwo = ({
             </div>
 
 
+            <ArticleModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                article={article}
+
+            />
         </Fragment>
     );
 };

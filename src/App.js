@@ -66,6 +66,10 @@ const App = () => {
 
 
 
+            <Route
+              path={process.env.PUBLIC_URL + "/art"}
+              element={<ArticleGridDs />}
+            />
 
 
 
