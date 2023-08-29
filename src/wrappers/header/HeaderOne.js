@@ -35,9 +35,9 @@ const HeaderOne = ({
     <header className={clsx("header-area clearfix", headerBgClass, headerPositionClass)}>
       <div
         className={clsx(
-          "header-top-area", 
-          headerPaddingClass, top === "visible" ? "d-none d-lg-block" : "d-none", 
-          borderStyle === "fluid-border" && "border-none" 
+          "header-top-area",
+          headerPaddingClass, top === "visible" ? "d-none d-lg-block" : "d-none",
+          borderStyle === "fluid-border" && "border-none"
         )}
       >
         <div className={layout === "container-fluid" ? layout : "container"}>
@@ -48,8 +48,8 @@ const HeaderOne = ({
 
       <div
         className={clsx(
-          headerPaddingClass, 
-          "sticky-bar header-res-padding clearfix", 
+          headerPaddingClass,
+          "sticky-bar header-res-padding clearfix",
           scroll > headerTop && "stick"
         )}
       >
@@ -57,7 +57,11 @@ const HeaderOne = ({
           <div className="row">
             <div className="col-xl-2 col-lg-2 col-md-6 col-4">
               {/* header logo */}
-              <Logo imageUrl="https://pngimg.com/uploads/nike/nike_PNG11.png" logoClass="logo" />
+              <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"}
+
+
+
+                logoClass="logo" />
             </div>
             <div className="col-xl-8 col-lg-8 d-none d-lg-block">
               {/* Nav menu */}

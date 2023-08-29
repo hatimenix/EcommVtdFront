@@ -1,0 +1,284 @@
+import React, { Fragment, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import '../../assets/css/CustomCarousel.css'
+
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHeart as solIc } from '@fortawesome/free-solid-svg-icons'
+import { faHeart as regIc } from '@fortawesome/free-regular-svg-icons'
+import axios from 'axios';
+import { fetchLikeCounts } from '../../store/slices/favoriteSlice';
+import { BsShieldCheck } from 'react-icons/bs';
+
+
+const ArticleGridDsSingleTwo = ({
+    article,
+    cartItem,
+    wishlistItem,
+    compareItem,
+    spaceBottomClass,
+    colorClass,
+    titlePriceClass,
+
+}) => {
+    const [hovered, setHovered] = useState(false);
+    const [isLiked, setIsLiked] = useState(false);
+    const dispatch = useDispatch();
+
+    const [likeCount, setLikeCount] = useState(0);
+    const [heartSolid, setHeartSolid] = useState(true);
+
+
+    const csts = useSelector((state) => state.cst.csts);
+
+
+    const toggleLike = () => {
+        if (heartSolid) {
+            setLikeCount(likeCount + 1);
+        } else {
+            setLikeCount(likeCount - 1);
+        }
+        setHeartSolid(!heartSolid);
+    };
+
+    useEffect(() => {
+        axios.get(`http://127.0.0.1:8000/article-likes-count/`)
+            .then(response => {
+                const likesCounts = response.data;
+                if (article.id_art in likesCounts) {
+                    setLikeCount(likesCounts[article.id_art]);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching likes count:', error);
+            });
+    }, [article.id_art]);
+
+
+
+    const handleLikeClick = () => {
+        setIsLiked(prevLiked => !prevLiked);
+        likeCount++
+    };
+
+
+
+
+    const isOutOfStock = article.stock <= 0;
+
+    const correspondingSeller = csts.find(c => c.id === article.customer_id);
+
+    if (!correspondingSeller) {
+        return null;
+    }
+
+    const avatarStyle = {
+        position: 'absolute',
+        top: '00px',
+        left: '10px',
+        width: '40px',
+        height: '40px',
+        backgroundColor: '#fff',
+        borderRadius: '50%',
+        padding: '0px',
+        boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+        overflow: 'hidden',
+    };
+
+
+    const sellerNameStyle = {
+        position: 'absolute',
+        top: '10px',
+        right: '140px',
+        fontSize: '12px',
+    };
+
+
+
+    return (
+        <Fragment>
+            <div
+                className={clsx('product-wrap-2', spaceBottomClass, colorClass, { 'out-of-stock': isOutOfStock })}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+            >
+                <div style={avatarStyle}>
+                    <img src={correspondingSeller.image} alt={correspondingSeller.name} width="40" height="40" />
+
+                </div>
+                <div style={sellerNameStyle}>{correspondingSeller.first_name}</div>
+
+                <div style={{ marginTop: '50px' }} className="product-img">
+
+                    <Link to={process.env.PUBLIC_URL + '/articles/' + article.id_art}>
+
+
+                        <img
+                            src={article.images[0].image}
+                            alt={article.titre}
+                        />
+
+
+                    </Link>
+
+
+
+
+
+
+
+                    <div className="product-action-2">
+                        {'product.affiliateLink' ? (
+                            <a
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                title="Buy now"
+                            >
+                                {" "}
+                                <i className="fa fa-shopping-cart"></i>{" "}
+                            </a>
+                        ) : 'product.variation' && 1 >= 1 ? (
+                            <Link
+                                to={`${process.env.PUBLIC_URL}/product/${1}`}
+                                title="Select options"
+                            >
+                                <i className="fa fa-cog"></i>
+                            </Link>
+                        ) : 1 && 1 > 0 ? (
+                            <button
+                                onClick={() => console.log()}
+                                className={
+                                    cartItem !== undefined && 1 > 0
+                                        ? "active"
+                                        : ""
+                                }
+                                disabled={cartItem !== undefined && 1 > 0}
+                                title={
+                                    cartItem !== undefined ? "Added to cart" : "Add to cart"
+                                }
+                            >
+                                {" "}
+                                <i className="fa fa-shopping-cart"></i>{" "}
+                            </button>
+                        ) : (
+                            <button disabled className="active" title="Out of stock">
+                                <i className="fa fa-shopping-cart"></i>
+                            </button>
+                        )}
+
+                        <button onClick={() => console.log("test")} title="Quick View">
+                            <i className="fa fa-eye"></i>
+                        </button>
+
+                        <button
+                            className={compareItem !== undefined ? "active" : ""}
+                            disabled={compareItem !== undefined}
+                            title={
+                                compareItem !== undefined
+                                    ? "Added to compare"
+                                    : "Add to compare"
+                            }
+                            onClick={() => console.log()}
+                        >
+                            <i className="fa fa-retweet"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                {isOutOfStock && (
+                    <div className="out-of-stock-container">
+                        <div className="out-of-stock-icon">
+                            <i className="fa fa-ban"></i>
+                        </div>  &nbsp; &nbsp;
+                        <div style={{ textAlign: 'center' }} className="out-of-stock-text">En rupture de stock</div>
+
+                    </div>
+                )}
+
+                {!isOutOfStock && (
+                    <div className="full-of-stock-container">
+                        <div className="full-of-stock-icon">
+                            <i style={{ color: "white" }} className="fa fa-ban"></i>
+                        </div>  &nbsp; &nbsp;
+                        <div className="full-of-stock-text"></div>
+
+                    </div>
+                )}
+
+
+                <div className="product-content-2">
+                    <div className={`title-price-wrap-2 ${titlePriceClass ? titlePriceClass : ''}`}>
+                        <div className="title-likes-row"   >
+
+
+
+                            <h3 className={isOutOfStock ? "article-title out-of-stock-text-reg" : "article-title"}>
+                                <Link to={process.env.PUBLIC_URL + '/articles/' + article.id_art}>
+                                    {article.titre}
+                                </Link>
+                            </h3>
+
+                            {true && (
+                                <div className="heart-count-container">
+                                    <FontAwesomeIcon
+                                        icon={heartSolid ? regIc : solIc}
+                                        className="heart-icon"
+                                        onClick={toggleLike}
+                                    />
+                                    &nbsp;
+                                    <span className="wishlist-count">{likeCount}</span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="price-2">
+                            {article.unit_prix !== undefined ? (
+                                <span>{parseFloat(article.unit_prix).toFixed(2)} £</span>
+                            ) : (
+                                <span>Price not available</span>
+                            )}
+                        </div>
+                        <div className="price-sell">
+                            {article.prix_vente !== undefined ? (
+                                <span>{parseFloat(article.prix_vente).toFixed(2)} £ incl. <BsShieldCheck /></span>
+                            ) : (
+                                <span>Price not available</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </Fragment>
+    );
+};
+
+ArticleGridDsSingleTwo.propTypes = {
+    cartItem: PropTypes.shape({}),
+    compareItem: PropTypes.shape({}),
+    wishlistItem: PropTypes.shape({}),
+    article: PropTypes.shape({
+        id_art: PropTypes.number.isRequired,
+        titre: PropTypes.string.isRequired,
+        unit_prix: PropTypes.string,
+        stock: PropTypes.number.isRequired,
+
+        images: PropTypes.arrayOf(
+            PropTypes.shape({
+                image: PropTypes.string.isRequired
+            })
+        ).isRequired
+    }),
+    spaceBottomClass: PropTypes.string,
+    colorClass: PropTypes.string,
+    titlePriceClass: PropTypes.string,
+};
+
+export default ArticleGridDsSingleTwo;
