@@ -4,7 +4,7 @@
     "title": "Stylish",
     "subtitle": "Female Clothes",
     "text": "30% off Summer Vacation",
-    "image": "/assets/img/slider/female_banner_v3.jpg",
+    "image": "/assets/img/slider_/5.jpg",
     "url": "/shop-grid-standard"
   },
   {
@@ -12,7 +12,39 @@
     "title": "Stylish",
     "subtitle": "Male Clothes",
     "text": "30% off Summer Vacation",
-    "image": "/assets/img/slider/male_banner_v4.jpg",
+    "image": "/assets/img/slider_/1.jpg",
+    "url": "/shop-grid-standard"
+  },
+  {
+    "id": 3,
+    "title": "Stylish",
+    "subtitle": "Female Clothes",
+    "text": "30% off Summer Vacation",
+    "image": "/assets/img/slider_/2.jpg",
+    "url": "/shop-grid-standard"
+  },
+  {
+    "id": 4,
+    "title": "Stylish",
+    "subtitle": "Female Clothes",
+    "text": "30% off Summer Vacation",
+    "image": "/assets/img/slider_/3.jpg",
+    "url": "/shop-grid-standard"
+  },
+  {
+    "id": 5,
+    "title": "Stylish",
+    "subtitle": "Female Clothes",
+    "text": "30% off Summer Vacation",
+    "image": "/assets/img/slider_/4.jpg",
+    "url": "/shop-grid-standard"
+  },
+  {
+    "id": 6,
+    "title": "Stylish",
+    "subtitle": "Female Clothes",
+    "text": "30% off Summer Vacation",
+    "image": "/assets/img/slider_/6.jpg",
     "url": "/shop-grid-standard"
   }
 ]

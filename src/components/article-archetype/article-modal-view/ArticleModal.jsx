@@ -298,7 +298,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                 <div className="pro-details-cart btn-hover">
                                     <a
                                         href="test.com"
-                                        rel="noopener noreferrer"
+                                        rel="noopener noreferr  er"
                                         target="_blank"
                                     >
                                         Buy Now
