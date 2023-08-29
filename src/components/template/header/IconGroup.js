@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import Login from "../../../pages/Authentication/Login";
 // import MenuCart from "./sub-components/MenuCart";
 
+
 const IconGroup = ({ iconWhiteClass }) => {
   const handleClick = e => {
     e.currentTarget.nextSibling.classList.toggle("active");
