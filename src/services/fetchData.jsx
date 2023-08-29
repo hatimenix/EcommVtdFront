@@ -39,6 +39,35 @@ export const fetchArticleById = createAsyncThunk(
     }
 );
 
+export const fetchArticlesdetails = async (id_art) => {
+    const response = await axios.get(`${BASE_URL}articles/${id_art}/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
+
+
+export const fetchReplies = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}replies/`, {
+      withCredentials: true, // If you need credentials
+    });
+    return response.data;
+  } catch (error) {
+    // Handle any errors here
+    console.error('Error fetching replies:', error);
+    throw error; // Optionally re-throw the error to handle it elsewhere
+  }
+};
+
+export const fetchReviews = async () => {
+    const response = await axios.get(`${BASE_URL}reviews/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
+
+
 export const fetchCategories = async () => {
     const response = await axios.get(`${BASE_URL}categories/`, {
         withCredentials: true,

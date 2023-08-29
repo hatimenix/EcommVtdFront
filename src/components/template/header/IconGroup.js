@@ -9,7 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Login from "../../../pages/Authentication/Login";
-// import MenuCart from "./sub-components/MenuCart";
+import MenuCart from "./sub-components/MenuCart";
 
 
 const IconGroup = ({ iconWhiteClass }) => {
@@ -122,7 +122,7 @@ const IconGroup = ({ iconWhiteClass }) => {
           </span>
         </button>
         {/* menu cart */}
-        {/* <MenuCart /> */}
+        <MenuCart />
       </div>
       <div className="same-style cart-wrap d-block d-lg-none">
         <Link className="icon-cart" to={process.env.PUBLIC_URL + "/cart"}>
