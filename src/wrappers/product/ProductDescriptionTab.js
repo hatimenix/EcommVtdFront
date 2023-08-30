@@ -2,9 +2,71 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviews } from "../../services/fetchData";
+import { useEffect } from "react";
+import { setReviews } from "../../store/slices/reviewsSlice";
+import { useState } from "react";
 
 const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
+  const reviews = useSelector((state) => state.review.reviews);
+
+  const dispatch = useDispatch()
+
+  const [count, setCount] = useState(0)
+
+  
+  // useEffect(() => {
+  //   dispatch(setReviews(fetchReviews))
+
+  // }, [dispatch])
+  
+  
+  useEffect(() => {
+    fetchReviews()
+      .then((rv) => {
+        dispatch(setReviews(rv));
+        setCount(rv.length)
+        
+      })
+      .catch((error) => {
+        console.error('Error fetching reviews:', error);
+      });
+    
+  }, [dispatch]);
+
+  console.log("reviews", reviews)
+
+  // for (let index = 0; index < reviews.length; index++) {
+  //   const review = reviews[index];
+  //   console.log("review ", index, ":", review)
+    
+  //   const replies = review[0].replies
+  // console.log("replies", replies)
+
+    
+  // }
+{
+  reviews.map((review, index) => (
+    <div key={index}>
+      <p>Review {index + 1}:</p>
+      <p>{review.review_text}</p>
+      
+      {/* Map through the replies of the current review */}
+      {review.replies.map((reply, replyIndex) => (
+        <div key={replyIndex}>
+          <p>Reply {replyIndex + 1}:</p>
+          <p>{reply.reply_text}</p>
+          {/* You can display other reply properties as needed */}
+        </div>
+      ))}
+    </div>
+  ))
+}
+
   return (
+    <div>
+      {reviews ? (
     <div className={clsx("description-review-area", spaceBottomClass)}>
       <div className="container">
         <div className="description-review-wrapper">
@@ -19,7 +81,7 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
                 <Nav.Link eventKey="productDescription">Description</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link eventKey="productReviews">Reviews(2)</Nav.Link>
+                <Nav.Link eventKey="productReviews">Reviews({count})</Nav.Link>
               </Nav.Item>
             </Nav>
             <Tab.Content className="description-review-bottom">
@@ -49,82 +111,63 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
                 <div className="row">
                   <div className="col-lg-7">
                     <div className="review-wrapper">
-                      <div className="single-review">
-                        <div className="review-img">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/img/testimonial/1.jpg"
-                            }
-                            alt=""
-                          />
-                        </div>
-                        <div className="review-content">
-                          <div className="review-top-wrap">
-                            <div className="review-left">
-                              <div className="review-name">
-                                <h4>White Lewis</h4>
+                      {reviews.map((review, index) => (
+                        <div key={index} className="single-review">
+                          <div className="review-img">
+                            <img
+                              src={process.env.PUBLIC_URL + "/assets/img/testimonial/1.jpg"}
+                              alt=""
+                            />
+                          </div>
+                          <div className="review-content">
+                            <div className="review-top-wrap">
+                              <div className="review-left">
+                                <div className="review-name">
+                                  <h4>{review.reviewer}</h4>
+                                </div>
+                                <div className="review-rating">
+                                  {/* Add your rating display logic here */}
+                                </div>
                               </div>
-                              <div className="review-rating">
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
+                              <div className="review-left">
+                                <button>Reply</button>
                               </div>
                             </div>
-                            <div className="review-left">
-                              <button>Reply</button>
+                            <div className="review-bottom">
+                              <p>{review.review_text}</p>
                             </div>
-                          </div>
-                          <div className="review-bottom">
-                            <p>
-                              Vestibulum ante ipsum primis aucibus orci
-                              luctustrices posuere cubilia Curae Suspendisse
-                              viverra ed viverra. Mauris ullarper euismod
-                              vehicula. Phasellus quam nisi, congue id nulla.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="single-review child-review">
-                        <div className="review-img">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/img/testimonial/2.jpg"
-                            }
-                            alt=""
-                          />
-                        </div>
-                        <div className="review-content">
-                          <div className="review-top-wrap">
-                            <div className="review-left">
-                              <div className="review-name">
-                                <h4>White Lewis</h4>
+                            {/* Render replies associated with this review */}
+                            {review.replies.map((reply, replyIndex) => (
+                              <div key={replyIndex} className="single-review child-review">
+                                <div className="review-img">
+                                  <img
+                                    src={process.env.PUBLIC_URL + "/assets/img/testimonial/2.jpg"}
+                                    alt=""
+                                  />
+                                </div>
+                                <div className="review-content">
+                                  <div className="review-top-wrap">
+                                    <div className="review-left">
+                                      <div className="review-name">
+                                        <h4>{reply.author}</h4>
+                                      </div>
+                                      <div className="review-rating">
+                                        {/* Add rating display logic for replies here */}
+                                      </div>
+                                    </div>
+                                    <div className="review-left">
+                                      <button>Reply</button>
+                                    </div>
+                                  </div>
+                                  <div className="review-bottom">
+                                    <p>{reply.text}</p>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="review-rating">
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                                <i className="fa fa-star" />
-                              </div>
-                            </div>
-                            <div className="review-left">
-                              <button>Reply</button>
-                            </div>
-                          </div>
-                          <div className="review-bottom">
-                            <p>
-                              Vestibulum ante ipsum primis aucibus orci
-                              luctustrices posuere cubilia Curae Suspendisse
-                              viverra ed viverra. Mauris ullarper euismod
-                              vehicula. Phasellus quam nisi, congue id nulla.
-                            </p>
+                            ))}
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
                   <div className="col-lg-5">
@@ -135,11 +178,7 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
                           <div className="star-box">
                             <span>Your rating:</span>
                             <div className="ratting-star">
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
-                              <i className="fa fa-star" />
+                              {/* Add your star rating input here */}
                             </div>
                           </div>
                           <div className="row">
@@ -174,6 +213,10 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
           </Tab.Container>
         </div>
       </div>
+        </div>
+      ) : (
+          "nothing"
+      )}
     </div>
   );
 };

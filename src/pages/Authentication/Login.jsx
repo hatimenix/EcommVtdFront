@@ -43,7 +43,9 @@ const Login = () => {
         setRefresh(data.refresh)
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
-        navigate('/espace-vendeur')
+        navigate('/')
+        window.location.reload()
+        
       })
       .catch((err) => {
         const response = err.response;

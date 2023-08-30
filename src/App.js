@@ -14,7 +14,8 @@ import { setCategories } from "./store/slices/categoriesSlice";
 import FooterOne from "./wrappers/footer/FooterOne";
 import objPersist from "./services/persistFetch";
 import persistanceThroughObjects from "./services/persistFetch";
-
+import Articledetails from './pages/shop-product/Product'; // Assuming this is where your individual Article component is located
+const Cart = lazy(() => import("./pages/other/Cart"));
 
 
 const App = () => {
@@ -58,9 +59,20 @@ const App = () => {
               path={process.env.PUBLIC_URL + "/profil"}
               element={<Profile />}
             />
+            <Route
+              path={process.env.PUBLIC_URL + "/articles/:articleId"}
+              element={<Articledetails />}
+            />
 
+            <Route
+                path={process.env.PUBLIC_URL + "/cart"}
+                element={<Cart/>}
+              />
 
-
+            <Route
+              path={process.env.PUBLIC_URL + "/art"}
+              element={<ArticleGridDs />}
+            />
 
 
 

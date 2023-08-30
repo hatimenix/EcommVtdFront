@@ -80,9 +80,10 @@ const HeaderOne = ({
                   <Dropdown.Item href="#">Separated link</Dropdown.Item>
                 </DropdownButton>
                 <InputGroup.Text style={{ backgroundColor: "transparent", borderRight: "none" }}><AiOutlineSearch /></InputGroup.Text>
-                <Form.Control className="myInput" style={{ backgroundColor: "transparent", borderLeft: "none" , height: 'fit-content' }} placeholder="Chercher des articles" aria-label="Text input with dropdown button" />
+                <Form.Control style={{ backgroundColor: "transparent", borderLeft: "none" ,boxShadow:"none" , height: 'fit-content' ,outline:"none" , borderColor:"#dee2e6"}} placeholder="Chercher des articles" aria-label="Text input with dropdown button" />
               </InputGroup>
             </div>
+            <div className="col-xl-6 col-lg-6 col-md-3 d-none d-md-block d-xl-none d-lg-none" ></div>
             <div className="col-xl-4 col-lg-4 col-md-6 col-8 mt-3">
               {/* Icon group */}
               <IconGroup />

@@ -95,9 +95,11 @@
   margin-left: 40%;
   @media #{$md-layout} {
     margin-top: 0;
+    margin-left: 10%;
   }
   @media #{$xs-layout} {
     margin-top: 0;
+    margin-left: 10%;
   }
   &.logo-hm5 {
     margin-top: 41px;
@@ -454,9 +456,11 @@
   // margin-top: 32px;
   @media #{$md-layout} {
     margin-top: 0;
+    margin-right: 5%;
   }
   @media #{$xs-layout} {
     margin-top: 2px;
+    margin-right: 5%;
   }
   .same-style {
     position: relative;
@@ -556,7 +560,7 @@
   .same-style.account-setting {
     > a,
     button {
-      font-size: 24px;
+      font-size: 20px;
     }
 
     > button {
@@ -579,7 +583,7 @@
     }
     button,
     & > a {
-      font-size: 24px;
+      font-size: 20px;
 
       position: relative;
 
