@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { setArticles } from '../store/slices/articlesSlice';
 
 const BASE_URL = 'http://127.0.0.1:8000/';
 
@@ -10,7 +11,10 @@ export const fetchArticlesByCategory = createAsyncThunk(
             const response = await axios.get(`${BASE_URL}articles/category/${categoryId}/`, {
                 withCredentials: true,
             });
+            console.log("response", response.data);
+            setArticles(response.data)
             return response.data;
+
         } catch (error) {
 
             throw error;
@@ -48,16 +52,16 @@ export const fetchArticlesdetails = async (id_art) => {
 
 
 export const fetchReplies = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}replies/`, {
-      withCredentials: true, // If you need credentials
-    });
-    return response.data;
-  } catch (error) {
-    // Handle any errors here
-    console.error('Error fetching replies:', error);
-    throw error; // Optionally re-throw the error to handle it elsewhere
-  }
+    try {
+        const response = await axios.get(`${BASE_URL}replies/`, {
+            withCredentials: true, // If you need credentials
+        });
+        return response.data;
+    } catch (error) {
+        // Handle any errors here
+        console.error('Error fetching replies:', error);
+        throw error; // Optionally re-throw the error to handle it elsewhere
+    }
 };
 
 export const fetchReviews = async () => {

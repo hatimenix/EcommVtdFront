@@ -46,7 +46,7 @@ const Login = () => {
         setRefresh(data.refresh)
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
-        navigate('/espace-vendeur')
+        navigate('/')
 
       })
       .catch((err) => {
@@ -62,7 +62,7 @@ const Login = () => {
       })
   }
 
-  
+
 
   //Register
   const [firstName, setFirstName] = useState('')
@@ -259,7 +259,7 @@ const Login = () => {
                               <div className="text-center mb-2">
                                 <span>Or log in with</span>
                               </div>
-                             
+
                               <div className="row justify-content-center">
                                 <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
                                   <div className="d-flex align-items-center justify-content-center">

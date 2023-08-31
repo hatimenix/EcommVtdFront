@@ -1835,7 +1835,7 @@ textarea:focus {
     &:hover::after {
       right: auto;
       left: 0;
-
+      border-radius: 10px;
       width: 100%;
     }
   }

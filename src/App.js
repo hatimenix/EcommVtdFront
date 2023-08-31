@@ -71,6 +71,14 @@ const App = () => {
               element={<ArticleGridDs />}
             />
 
+            <Route
+              path={process.env.PUBLIC_URL + "/category/:categoryId"} // Updated route path
+              element={
+                <Home />
+              }
+            />
+
+
 
 
 

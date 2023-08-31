@@ -13,7 +13,12 @@ const categoriesSlice = createSlice({
         },
         selectCategory(state, action) {
             const selectedCategory = action.payload;
-            localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory)); // Store selected category in localStorage
+            console.log("payload", action.payload);
+            localStorage.setItem('selectedCategory', JSON.stringify(selectedCategory))
+
+
+                ;
+            // Store selected category in localStorage
             state.selectedCategory = selectedCategory;
         },
 
