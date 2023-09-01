@@ -17,6 +17,7 @@ const Cart = () => {
   
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
+  // console.log('image: ', cartItems[0].image[0]);
 
   return (
     <Fragment>
@@ -83,10 +84,11 @@ const Cart = () => {
                                     <img
                                       className="img-fluid"
                                       src={
-                                        process.env.PUBLIC_URL +
-                                        cartItem.images[0].image
+                                        // process.env.PUBLIC_URL
+                                        'http://localhost:8000' +
+                                        cartItem.image[0]
                                       }
-                                      alt=""
+                                      alt=" image unavailable"
                                     />
                                   </Link>
                                 </td>
@@ -99,7 +101,7 @@ const Cart = () => {
                                       cartItem.id
                                     }
                                   >
-                                    {cartItem.name}
+                                    {cartItem.titre}
                                   </Link>
                                   {cartItem.selectedProductColor &&
                                   cartItem.selectedProductSize ? (

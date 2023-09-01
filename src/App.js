@@ -12,6 +12,9 @@ import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming 
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
+const Wishlist = lazy(() => import("./pages/other/Wishlist"));
+const Checkout = lazy(() => import("./pages/other/Checkout"));
+
 const App = () => {
 
   persistanceThroughObjects()
@@ -56,11 +59,19 @@ const App = () => {
               path={process.env.PUBLIC_URL + "/articles/:articleId"}
               element={<ProductTabRight />}
             />
-
+            <Route
+                path={process.env.PUBLIC_URL + "/wishlist"}
+                element={<Wishlist/>}
+              />
             <Route
                 path={process.env.PUBLIC_URL + "/cart"}
                 element={<Cart/>}
               />
+
+            <Route
+                path={process.env.PUBLIC_URL + "/checkout"}
+                element={<Checkout/>}
+              /> 
 
             <Route
               path={process.env.PUBLIC_URL + "/art"}
