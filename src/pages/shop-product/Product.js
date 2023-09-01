@@ -5,9 +5,9 @@ import { fetchArticleById, fetchArticlesdetails } from "../../services/fetchData
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import ProductImageDescription from "../../wrappers/product/ProductImageDescription";
+import ProductImageDescription from "./productslider/product/ProductImageDescription";
 // import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
-import ProductDescriptionTab from "../../wrappers/product/ProductDescriptionTab";
+import ProductDescriptionTab from "./productslider/product/ProductDescriptionTab";
 
 const Articledetails = () => {
   let { id_art, articleId } = useParams();
@@ -16,8 +16,6 @@ const Articledetails = () => {
   const dispatch = useDispatch();
   const  articles  = useSelector((state) => state.article.articleDetail);
   const  categories  = useSelector((state)=> state.article.categorie);
-  console.log("current article:", articles)
-  console.log("current cat:", categories)
 
     
 useEffect(() => {

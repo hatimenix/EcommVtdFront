@@ -73,7 +73,12 @@
     color: #ff0000;
 }
 
-
+.custom-image {
+    width: 600px;
+    /* Adjust to your desired width */
+    height: 800px;
+    /* Adjust to your desired height */
+}
 
 .price-sell{
     color: #20bfaa;

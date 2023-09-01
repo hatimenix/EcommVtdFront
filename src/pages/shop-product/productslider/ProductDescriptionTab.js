@@ -3,16 +3,14 @@ import clsx from "clsx";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReviews } from "../../services/fetchData";
+import { fetchReviews } from "../../../services/fetchData";
 import { useEffect } from "react";
-import { setReviews } from "../../store/slices/reviewsSlice";
+import { setReviews } from "../../../store/slices/reviewsSlice";
 import { useState } from "react";
 
 const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
   const reviews = useSelector((state) => state.review.reviews);
-
   const dispatch = useDispatch()
-
   const [count, setCount] = useState(0)
 
   
@@ -20,7 +18,6 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
   //   dispatch(setReviews(fetchReviews))
 
   // }, [dispatch])
-  
   
   useEffect(() => {
     fetchReviews()
@@ -57,7 +54,6 @@ const ProductDescriptionTab = ({ spaceBottomClass, productFullDesc }) => {
         <div key={replyIndex}>
           <p>Reply {replyIndex + 1}:</p>
           <p>{reply.reply_text}</p>
-          {/* You can display other reply properties as needed */}
         </div>
       ))}
     </div>
