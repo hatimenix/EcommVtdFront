@@ -10,7 +10,7 @@ const MenuCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
   let cartTotalPrice = 0;
 
-    console.log('image: ', cartItems);
+    // console.log('image: ', cartItems);
 
 
   return (

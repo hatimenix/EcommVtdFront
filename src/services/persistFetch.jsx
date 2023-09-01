@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchCategories, fetchPanier } from './fetchData';
+import { initFavoris } from '../store/slices/wishlist-slice';
+import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
     const dispatch = useDispatch();
@@ -28,6 +29,15 @@ const usePersistData = () => {
             try {
                 const panier = await fetchPanier(1);
                 dispatch(initCart(panier));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+
+
+            // recuperation du favoris
+            try {
+                const favori = await fetchFavori(1);
+                dispatch(initFavoris(favori));
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }

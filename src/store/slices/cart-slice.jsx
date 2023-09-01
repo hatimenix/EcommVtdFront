@@ -26,7 +26,8 @@ const addPanier = async (dataForm) => {
 //update le panier
 const updatePanier = async (id_pan, dataForm) => {
     try {
-        const response = await axios.put(`${BASE_URL}panier/${id_pan}/`, dataForm);
+        const response = await axios.patch(`${BASE_URL}panier/${id_pan}/`, dataForm);
+        // console.log('updating..............', dataForm);
         return response.data;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -56,7 +57,7 @@ const cartSlice = createSlice({
             const product = action.payload;
             if (product.id_art) {
                 const cartItem = state.cartItems.find(item => item.id_art === product.id_art);
-                console.log("le produit et l'article: ", product)
+                // console.log("le produit et l'article: ", product)
 
                 if (!cartItem) {
 
@@ -70,7 +71,7 @@ const cartSlice = createSlice({
                     addPanier(dataForm)
                     state.cartItems = retrievePanier(1)
 
-                    console.log("Ajout de l'article: ", state.cartItems)
+                    // console.log("Ajout de l'article: ", state.cartItems)
 
                     // state.cartItems.push({
                     //     ...product,

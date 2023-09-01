@@ -70,14 +70,15 @@ const Wishlist = () => {
                                   <Link
                                     to={
                                       process.env.PUBLIC_URL +
-                                      "/product/" +
-                                      wishlistItem.id
+                                      "/articles/" +
+                                      wishlistItem.id_art
                                     }
                                   >
                                     <img
                                       className="img-fluid"
                                       src={
-                                        process.env.PUBLIC_URL +
+                                        // process.env.PUBLIC_URL +
+                                        'http://localhost:8000' +
                                         wishlistItem.image[0]
                                       }
                                       alt=""
@@ -89,11 +90,11 @@ const Wishlist = () => {
                                   <Link
                                     to={
                                       process.env.PUBLIC_URL +
-                                      "/product/" +
-                                      wishlistItem.id
+                                      "/articles/" +
+                                      wishlistItem.id_art
                                     }
                                   >
-                                    {wishlistItem.name}
+                                    {wishlistItem.titre}
                                   </Link>
                                 </td>
 
@@ -171,7 +172,7 @@ const Wishlist = () => {
                                 <td className="product-remove">
                                   <button
                                     onClick={() =>
-                                      dispatch(deleteFromWishlist(wishlistItem.id))
+                                      dispatch(deleteFromWishlist(wishlistItem.id_fav))
                                     }
                                   >
                                     <i className="fa fa-times"></i>

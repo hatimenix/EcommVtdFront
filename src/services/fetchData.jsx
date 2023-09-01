@@ -106,3 +106,14 @@ export const fetchPanier = async (id_user) => {
     // console.log("le panier: ", response.data);
     return response.data;
 };
+
+
+
+//recuperation du favoris
+export const fetchFavori = async (id_user) => {
+    const response = await axios.get(`${BASE_URL}favoris/?search=${id_user}`, {
+        withCredentials: true,
+    });
+    // console.log("le panier: ", response.data);
+    return response.data;
+};
