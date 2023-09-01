@@ -5,9 +5,9 @@ import { fetchArticleById, fetchArticlesByCategory } from "../../services/fetchD
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import ProductDescriptionTab from "../../wrappers/product/ProductDescriptionTab";
-import ProductImageDescription from "../../wrappers/product/ProductImageDescription";
-import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
+import ProductDescriptionTab from "./productslider/ProductDescriptionTab";
+import ProductImageDescription from "./productslider/ProductImageDescription";
+import RelatedProductSlider from "./productslider/RelatedProductSlider";
 
 const ProductTabRight = () => {
   let { articleId } = useParams();

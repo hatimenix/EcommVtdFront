@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getArticleCartQuantity } from "../../helpers/product";
+import { getProductCartQuantity } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import { addToCart } from "../../store/slices/cart-slice";
 import { addToWishlist } from "../../store/slices/wishlist-slice";
@@ -41,7 +41,7 @@ const ProductDescriptionInfo = ({
   const [productStock, setProductStock] = useState(product.stock);
   const [quantityCount, setQuantityCount] = useState(1);
 
-  const productCartQty = getArticleCartQuantity(
+  const productCartQty = getProductCartQuantity(
     cartItems,
     product,
     selectedProperty ? selectedProperty.couleur : "",

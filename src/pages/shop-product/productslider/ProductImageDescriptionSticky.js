@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
-import { getDiscountPrice } from "../../helpers/product";
-import ProductDescriptionInfo from "../../components/product/ProductDescriptionInfo";
-import ProductImageGallerySticky from "../../components/product/ProductImageGallerySticky";
+import { getDiscountPrice } from "../../../helpers/product";
+import ProductDescriptionInfo from "../../../components/product/ProductDescriptionInfo";
+import ProductImageGallerySticky from "../../../components/product/ProductImageGallerySticky";
 
 const ProductImageDescriptionSticky = ({ spaceTopClass, spaceBottomClass, product }) => {
   const currency = useSelector((state) => state.currency);

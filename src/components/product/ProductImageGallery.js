@@ -57,8 +57,7 @@ const ProductImageGallery = ({ product }) => {
                     src={process.env.PUBLIC_URL + single.image}
                     className=""
                     alt=""
-                    style={{ width: "600px", height: '800px', objectFit: 'contain' }}
-
+                    style={{ width : "200px", hieght : "400px"}}
                   />
                 </div>
               </SwiperSlide>
@@ -83,6 +82,7 @@ const ProductImageGallery = ({ product }) => {
                     src={process.env.PUBLIC_URL + single.image}
                     className=""
                     alt=""
+                    style={{ width : "200px", hieght : "400px"}}
                   />
                 </div>
               </SwiperSlide>

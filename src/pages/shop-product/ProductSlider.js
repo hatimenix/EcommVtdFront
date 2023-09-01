@@ -5,9 +5,9 @@ import { fetchArticleById} from "../../services/fetchData";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import RelatedProductSlider from "../../wrappers/product/RelatedProductSlider";
-import ProductDescriptionTab from "../../wrappers/product/ProductDescriptionTab";
-import ProductImageDescriptionSlider from "../../wrappers/product/ProductImageDescriptionSlider";
+import RelatedProductSlider from "./productslider/RelatedProductSlider";
+import ProductDescriptionTab from "./productslider/ProductDescriptionTab";
+import ProductImageDescriptionSlider from "./productslider/ProductImageDescriptionSlider";
 
 const ProductSlider = () => {
   let { id_art, articleId } = useParams();

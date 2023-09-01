@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import clsx from "clsx";
-import Swiper, { SwiperSlide } from "../../components/swiper";
-import SectionTitle from "../../components/section-title/SectionTitle";
-import ProductGridSingle from "../../components/product/ProductGridSingle";
-import { getArticles } from "../../helpers/product";
-import { fetchArticleById, fetchArticlesByCategory } from "../../services/fetchData";
-import { useLocation, useParams } from "react-router";
+import Swiper, { SwiperSlide } from "../../../components/swiper";
+import SectionTitle from "../../../components/section-title/SectionTitle";
+import ProductGridSingle from "../../../components/product/ProductGridSingle";
+import { getProducts } from "../../../helpers/product";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchArticleById } from "../../../services/fetchData";
 
 const settings = {
   loop: false,

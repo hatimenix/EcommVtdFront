@@ -91,10 +91,8 @@ const ProductImageGalleryLeftThumb = ({ product, thumbPosition }) => {
                     <div className="single-image">
                       <img
                         src={process.env.PUBLIC_URL + single.image}
-                        className=""
+                        className="img-fluid"
                         alt=""
-                        style={{ width: "600px", height: '800px', objectFit: 'contain' }}
-
                       />
                     </div>
                   </SwiperSlide>
@@ -125,6 +123,7 @@ const ProductImageGalleryLeftThumb = ({ product, thumbPosition }) => {
                         src={process.env.PUBLIC_URL + single.image}
                         className="img-fluid"
                         alt=""
+                        style={{ width : "200px", hieght : "400px"}}                        
                       />
                     </div>
                   </SwiperSlide>

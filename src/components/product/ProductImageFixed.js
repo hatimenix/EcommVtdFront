@@ -23,7 +23,7 @@ const ProductImageFixed = ({ product }) => {
             src={process.env.PUBLIC_URL + product.images.image[0]}
             alt=""
             className=""
-            style={{ width: "600px", height: '800px', objectFit: 'contain' }}
+            style={{ width : "200px", hieght : "400px"}}
 
           />
         ) : (

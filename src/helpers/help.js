@@ -1,30 +1,21 @@
-// get products
-export const getProducts = (products, category, type, limit) => {
-  const finalProducts = category
-    ? products.filter(
-        product => product.category.filter(single => single === category)[0]
-      )
-    : products;
+export const getArticles = (articles, category) => {
+  // Check if articles is defined and is an array
+  if (!articles || !Array.isArray(articles)) {
+    return []; // Return an empty array or handle the error as appropriate
+  }
 
-  if (type && type === "new") {
-    const newProducts = finalProducts.filter(single => single.new);
-    return newProducts.slice(0, limit ? limit : newProducts.length);
-  }
-  if (type && type === "bestSeller") {
-    return finalProducts
-      .sort((a, b) => {
-        return b.saleCount - a.saleCount;
-      })
-      .slice(0, limit ? limit : finalProducts.length);
-  }
-  if (type && type === "saleItems") {
-    const saleItems = finalProducts.filter(
-      single => single.discount && single.discount > 0
-    );
-    return saleItems.slice(0, limit ? limit : saleItems.length);
-  }
-  return finalProducts.slice(0, limit ? limit : finalProducts.length);
+  // If a category is provided, filter articles by category
+  const filteredArticles = category
+    ? articles.filter(article => article.categorie_id === category)
+    : articles;
+
+  // You can include additional filtering or sorting logic here if needed
+
+  return filteredArticles;
 };
+
+
+
 
 // get product discount price
 export const getDiscountPrice = (price, discount) => {
@@ -32,109 +23,105 @@ export const getDiscountPrice = (price, discount) => {
 };
 
 // get product cart quantity
-export const getProductCartQuantity = (cartItems, product, color, size) => {
-  let productInCart = cartItems.find(
-    single =>
-      single.id === product.id &&
-      (single.selectedProductColor
-        ? single.selectedProductColor === color
-        : true) &&
-      (single.selectedProductSize ? single.selectedProductSize === size : true)
+// Create a utility function to get the cart quantity for articles
+export const getArticleCartQuantity = (cartItems, article) => {
+  // Find the article in the cart that matches the provided article
+  const articleInCart = cartItems.find(
+    (single) => single.id_art === article.id_art
   );
-  if (cartItems.length >= 1 && productInCart) {
-    if (product.variation) {
-      return cartItems.find(
-        single =>
-          single.id === product.id &&
-          single.selectedProductColor === color &&
-          single.selectedProductSize === size
-      ).quantity;
-    } else {
-      return cartItems.find(single => product.id === single.id).quantity;
-    }
-  } else {
-    return 0;
-  }
+
+  // If the article is in the cart, return its quantity, otherwise return 0
+  return articleInCart ? articleInCart.quantity : 0;
 };
 
-export const cartItemStock = (item, color, size) => {
-  if (item.stock) {
-    return item.stock;
+// Create a utility function to get the stock of an article variation
+export const articleVariationStock = (article, color, size) => {
+  // Check if the article has stock defined
+  if (article.stock) {
+    return article.stock;
   } else {
-    return item.variation
-      .filter(single => single.color === color)[0]
-      .size.filter(single => single.name === size)[0].stock;
+    // If the article has variations, find the stock of the specified color and size
+    const variation = article.variation.find(
+      (v) => v.color === color && v.size === size
+    );
+    return variation ? variation.stock : 0;
   }
 };
 
 //get products based on category
-export const getSortedProducts = (products, sortType, sortValue) => {
-  if (products && sortType && sortValue) {
+// Create a utility function to get sorted articles
+export const getSortedArticles = (articles, sortType, sortValue) => {
+  if (articles && sortType && sortValue) {
     if (sortType === "category") {
-      return products.filter(
-        product => product.category.filter(single => single === sortValue)[0]
+      return articles.filter(
+        (article) => article.categorie_id === sortValue
       );
     }
     if (sortType === "tag") {
-      return products.filter(
-        product => product.tag.filter(single => single === sortValue)[0]
+      return articles.filter(
+        (article) => article.tag.filter((tag) => tag === sortValue)[0]
       );
     }
     if (sortType === "color") {
-      return products.filter(
-        product =>
-          product.variation &&
-          product.variation.filter(single => single.color === sortValue)[0]
+      return articles.filter(
+        (article) =>
+          article.variation &&
+          article.variation.filter((variation) => variation.color === sortValue)[0]
       );
     }
     if (sortType === "size") {
-      return products.filter(
-        product =>
-          product.variation &&
-          product.variation.filter(
-            single => single.size.filter(single => single.name === sortValue)[0]
+      return articles.filter(
+        (article) =>
+          article.variation &&
+          article.variation.filter((variation) =>
+            variation.size.find((size) => size.name === sortValue)
           )[0]
       );
     }
     if (sortType === "filterSort") {
-      let sortProducts = [...products];
+      let sortArticles = [...articles];
       if (sortValue === "default") {
-        return sortProducts;
+        return sortArticles;
       }
       if (sortValue === "priceHighToLow") {
-        return sortProducts.sort((a, b) => {
-          return b.price - a.price;
+        return sortArticles.sort((a, b) => {
+          return b.prix_vente - a.prix_vente;
         });
       }
       if (sortValue === "priceLowToHigh") {
-        return sortProducts.sort((a, b) => {
-          return a.price - b.price;
+        return sortArticles.sort((a, b) => {
+          return a.prix_vente - b.prix_vente;
         });
       }
     }
   }
-  return products;
+  return articles;
 };
+
 
 // get individual element
-const getIndividualItemArray = array => {
-  let individualItemArray = array.filter(function(v, i, self) {
-    return i === self.indexOf(v);
-  });
-  return individualItemArray;
+// Create a utility function to get individual articles from an array
+export const getIndividualArticles = (articles) => {
+  return articles.filter((article, index, self) =>
+    self.findIndex((a) => a.id_art === article.id_art) === index
+  );
 };
 
-// get individual categories
-export const getIndividualCategories = products => {
+// Utility function to get unique items from an array
+export const getIndividualItemArray = (array) => {
+  return array.filter((item, index, self) => self.indexOf(item) === index);
+};
+
+// Create a utility function to get individual categories from products
+export const getIndividualCategories = (products) => {
   let productCategories = [];
   products &&
-    products.map(product => {
-      return (
-        product.category &&
-        product.category.map(single => {
-          return productCategories.push(single);
-        })
-      );
+    products.forEach((product) => {
+      if (product.category) {
+        product.category.forEach((single) => {
+          productCategories.push(single);
+        });
+      }
     });
   const individualProductCategories = getIndividualItemArray(productCategories);
   return individualProductCategories;

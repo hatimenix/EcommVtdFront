@@ -5,7 +5,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "./sub-components/ProductRating";
 import Swiper, { SwiperSlide } from "../../components/swiper";
-import { getArticleCartQuantity } from "../../helpers/product";
+import { getProductCartQuantity } from "../../helpers/product";
 import { addToCart } from "../../store/slices/cart-slice";
 import { addToWishlist } from "../../store/slices/wishlist-slice";
 import { addToCompare } from "../../store/slices/compare-slice";
@@ -25,7 +25,7 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
     product.properties ? product.stock : product.stock
   );
   const [quantityCount, setQuantityCount] = useState(1);
-  const productCartQty = getArticleCartQuantity(
+  const productCartQty = getProductCartQuantity(
     cartItems,
     product,
     selectedProductColor,
@@ -76,8 +76,9 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
                       <div className="single-image">
                         <img
                           src={process.env.PUBLIC_URL + img.image}
-                          className="img-fluid"
+                          className=""
                           alt="Product"
+                          style={{ width : "200px", hieght : "400px"}}
                         />
                       </div>
                     </SwiperSlide>
@@ -94,8 +95,9 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
                       <div className="single-image">
                         <img
                           src={process.env.PUBLIC_URL + img.image}
-                          className="img-fluid"
+                          className=""
                           alt=""
+                          style={{ width : "200px", hieght : "400px"}}
                         />
                       </div>
                     </SwiperSlide>
