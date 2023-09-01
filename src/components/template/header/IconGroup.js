@@ -97,7 +97,7 @@ const IconGroup = ({ iconWhiteClass }) => {
               <Link to={process.env.PUBLIC_URL + "/compare"}>
                 <i className="pe-7s-chat" />
                 <span className="count-style">
-                  {/* {compareItems && compareItems.length ? compareItems.length : 0} */}
+                  {compareItems && compareItems.length ? compareItems.length : 0}
                 </span>
               </Link>
             </div>
@@ -106,7 +106,7 @@ const IconGroup = ({ iconWhiteClass }) => {
                 <i className="pe-7s-bell" />
                 <span className="count-style">
                   1
-                  {/* {compareItems && compareItems.length ? compareItems.length : 0} */}
+                  {compareItems && compareItems.length ? compareItems.length : 0}
                 </span>
               </Link>
             </div>
@@ -114,7 +114,7 @@ const IconGroup = ({ iconWhiteClass }) => {
               <Link to={process.env.PUBLIC_URL + "/wishlist"}>
                 <i className="pe-7s-like" />
                 <span className="count-style">
-                  {/* {wishlistItems && wishlistItems.length ? wishlistItems.length : 0} */}
+                  {wishlistItems && wishlistItems.length ? wishlistItems.length : 0}
                 </span>
               </Link>
             </div>
@@ -122,7 +122,7 @@ const IconGroup = ({ iconWhiteClass }) => {
               <button className="icon-cart" onClick={e => handleClick(e)}>
                 <i className="pe-7s-shopbag" />
                 <span className="count-style">
-                  {/* {cartItems && cartItems.length ? cartItems.length : 0} */}
+                  {cartItems && cartItems.length ? cartItems.length : 0}
                 </span>
               </button>
               <MenuCart />
@@ -131,7 +131,7 @@ const IconGroup = ({ iconWhiteClass }) => {
               <Link className="icon-cart" to={process.env.PUBLIC_URL + "/cart"}>
                 <i className="pe-7s-shopbag" />
                 <span className="count-style">
-                  {/* {cartItems && cartItems.length ? cartItems.length : 0} */}
+                  {cartItems && cartItems.length ? cartItems.length : 0}
                 </span>
               </Link>
             </div>
