@@ -16,7 +16,7 @@ import objPersist from "./services/persistFetch";
 import persistanceThroughObjects from "./services/persistFetch";
 import Articledetails from './pages/shop-product/Product'; // Assuming this is where your individual Article component is located
 const Cart = lazy(() => import("./pages/other/Cart"));
-
+const Wishlist = lazy(() => import("./pages/other/Wishlist"));
 
 const App = () => {
 
@@ -63,7 +63,10 @@ const App = () => {
               path={process.env.PUBLIC_URL + "/articles/:articleId"}
               element={<Articledetails />}
             />
-
+<Route
+                path={process.env.PUBLIC_URL + "/wishlist"}
+                element={<Wishlist/>}
+              />
             <Route
                 path={process.env.PUBLIC_URL + "/cart"}
                 element={<Cart/>}

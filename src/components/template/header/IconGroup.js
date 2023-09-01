@@ -48,9 +48,9 @@ const IconGroup = ({ iconWhiteClass }) => {
     localStorage.removeItem("REFRESH_TOKEN");
     navigate('/')
   };
-  // const { compareItems } = useSelector((state) => state.compare);
-  // const { wishlistItems } = useSelector((state) => state.wishlist);
-  // const { cartItems } = useSelector((state) => state.cart);
+  const { compareItems } = useSelector((state) => state.compare);
+  const { wishlistItems } = useSelector((state) => state.wishlist);
+  const { cartItems } = useSelector((state) => state.cart);
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
@@ -102,7 +102,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         <Link to={process.env.PUBLIC_URL + "/compare"}>
           <i className="pe-7s-shuffle" />
           <span className="count-style">
-            {/* {compareItems && compareItems.length ? compareItems.length : 0} */}
+            {compareItems && compareItems.length ? compareItems.length : 0}
           </span>
         </Link>
       </div>
@@ -110,7 +110,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         <Link to={process.env.PUBLIC_URL + "/wishlist"}>
           <i className="pe-7s-like" />
           <span className="count-style">
-            {/* {wishlistItems && wishlistItems.length ? wishlistItems.length : 0} */}
+            {wishlistItems && wishlistItems.length ? wishlistItems.length : 0}
           </span>
         </Link>
       </div>
@@ -118,7 +118,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         <button className="icon-cart" onClick={e => handleClick(e)}>
           <i className="pe-7s-shopbag" />
           <span className="count-style">
-            {/* {cartItems && cartItems.length ? cartItems.length : 0} */}
+            {cartItems && cartItems.length ? cartItems.length : 0}
           </span>
         </button>
         {/* menu cart */}
@@ -128,7 +128,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         <Link className="icon-cart" to={process.env.PUBLIC_URL + "/cart"}>
           <i className="pe-7s-shopbag" />
           <span className="count-style">
-            {/* {cartItems && cartItems.length ? cartItems.length : 0} */}
+            {cartItems && cartItems.length ? cartItems.length : 0}
           </span>
         </Link>
       </div>
