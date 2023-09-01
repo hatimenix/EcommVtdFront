@@ -7,19 +7,12 @@ import Dash from "./pages/EspaceVendeur/Dashboard/Dash";
 import ProfileSide from "./pages/ProfileSettings/ProfileSide";
 import Profile from "./pages/ProfileSettings/Profile";
 import ArticleGridDs from "./components/article-archetype/ArticleGridDs";
-import { useDispatch } from "react-redux";
-import { fetchArticles, fetchCategories } from "./services/fetchData";
-import { setArticles } from "./store/slices/articlesSlice";
-import { setCategories } from "./store/slices/categoriesSlice";
-import FooterOne from "./wrappers/footer/FooterOne";
-import objPersist from "./services/persistFetch";
 import persistanceThroughObjects from "./services/persistFetch";
 import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming this is where your individual Article component is located
 
 
-
+const Cart = lazy(() => import("./pages/other/Cart"));
 const App = () => {
-
 
   persistanceThroughObjects()
 
@@ -64,7 +57,10 @@ const App = () => {
               element={<ProductTabRight />}
             />
 
-
+            <Route
+                path={process.env.PUBLIC_URL + "/cart"}
+                element={<Cart/>}
+              />
 
             <Route
               path={process.env.PUBLIC_URL + "/art"}

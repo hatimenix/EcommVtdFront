@@ -1798,6 +1798,7 @@ textarea:focus {
 
   a,
   button {
+
     position: relative;
     isolation: isolate;
     transition: all 0.5s ease-in-out 0s;
@@ -1805,6 +1806,7 @@ textarea:focus {
     &:hover {
       color: #fff;
       border: 1px solid $theme-color;
+
     }
 
     &::before,
@@ -1827,7 +1829,7 @@ textarea:focus {
 
       width: 0;
 
-      background: $theme-color;
+      background: #2596be;
     }
 
     &:hover::after {

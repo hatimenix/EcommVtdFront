@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useStateContext } from "./context/ContextProvider.jsx";
 
 const axiosClient = axios.create({
   baseURL: "http://127.0.0.1:8000/",
@@ -7,7 +6,9 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("ACCESS_TOKEN");
-  config.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
@@ -16,41 +17,35 @@ axiosClient.interceptors.response.use(
     return response;
   },
   async (error) => {
-    const { response } = error;
+    console.error("Axios Error:", error);
 
-    if (
-      response &&
-      response.status === 401 &&
-      response.data.code === "token_not_valid"
-    ) {
-      
-      const refreshToken = localStorage.getItem("REFRESH_TOKEN");
-      if (!refreshToken) {
-        // redirect to login page or show error message
-        
-        return Promise.reject(error);
-      }
+    const originalRequest = error.config;
+    const refreshToken = localStorage.getItem("REFRESH_TOKEN");
 
+    if (error.response && error.response.status === 401 && refreshToken) {
       try {
-        const response = await axios.post(
+        const refreshResponse = await axios.post(
           "http://127.0.0.1:8000/token/customer/refresh/",
           { refresh: refreshToken }
         );
-        const accessToken = response.data.access;
-        localStorage.setItem("ACCESS_TOKEN", accessToken);
-        error.config.headers.Authorization = `Bearer ${accessToken}`;
-        return axiosClient(error.config);
-      } catch (err) {
-        // redirect to login page or show error message
-        return Promise.reject(error);
+
+        const newAccessToken = refreshResponse.data.access;
+        localStorage.setItem("ACCESS_TOKEN", newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return axiosClient(originalRequest);
+      } catch (refreshError) {
+        console.error("Token Refresh Error:", refreshError);
+        // Handle refresh error (e.g., redirect to login)
       }
     }
 
-    throw error;
+    return Promise.reject(error);
   }
 );
 
 export default axiosClient;
+
 
 export const linkImage = 'http://127.0.0.1:8000'
 

@@ -20,7 +20,7 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
         : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`)}
     >
       <nav>
-        <ul>
+        {/* <ul>
           {localStorage.getItem('ACCESS_TOKEN') ?
             <>
               <li>
@@ -533,7 +533,7 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
             </>
           }
 
-        </ul>
+        </ul> */}
       </nav>
     </div>
   );
