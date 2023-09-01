@@ -11,8 +11,8 @@ const ProductImageGallery = ({ product }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [index, setIndex] = useState(-1);
   const slides = product?.images.map((img, i) => ({
-      src: process.env.PUBLIC_URL + img.image,
-      key: i,
+    src: process.env.PUBLIC_URL + img.image,
+    key: i,
   }));
 
   // swiper slider settings
@@ -21,7 +21,7 @@ const ProductImageGallery = ({ product }) => {
     loop: true,
     effect: "fade",
     fadeEffect: {
-      crossFade: true
+      crossFade: true,
     },
     thumbs: { swiper: thumbsSwiper },
     modules: [EffectFade, Thumbs],
@@ -35,24 +35,16 @@ const ProductImageGallery = ({ product }) => {
     freeMode: true,
     loop: true,
     slideToClickedSlide: true,
-    navigation: true
+    navigation: true,
   };
+
+  // Define the desired width and height for your images
+  const imageWidth = "200px"; // Adjust this to your preferred width
+  const imageHeight = "200px"; // Adjust this to your preferred height
 
   return (
     <Fragment>
       <div className="product-large-image-wrapper">
-        {/* {product.discount || product.new ? (
-          <div className="product-img-badges">
-            {product.discount ? (
-              <span className="pink">-{product.discount}%</span>
-            ) : (
-              ""
-            )}
-            {product.new ? <span className="purple">New</span> : ""}
-          </div>
-        ) : (
-          ""
-        )} */}
         {product?.images?.length ? (
           <Swiper options={gallerySwiperParams}>
             {product.images.map((single, key) => (
@@ -63,22 +55,23 @@ const ProductImageGallery = ({ product }) => {
                 <div className="single-image">
                   <img
                     src={process.env.PUBLIC_URL + single.image}
-                    className="img-fluid"
+                    className=""
                     alt=""
+                    style={{ width: "600px", height: '800px', objectFit: 'contain' }}
+
                   />
                 </div>
               </SwiperSlide>
             ))}
             <AnotherLightbox
-                open={index >= 0}
-                index={index}
-                close={() => setIndex(-1)}
-                slides={slides}
-                plugins={[Thumbnails, Zoom, Fullscreen]}
+              open={index >= 0}
+              index={index}
+              close={() => setIndex(-1)}
+              slides={slides}
+              plugins={[Thumbnails, Zoom, Fullscreen]}
             />
           </Swiper>
         ) : null}
-
       </div>
       <div className="product-small-image-wrapper mt-15">
         {product?.images?.length ? (
@@ -88,7 +81,7 @@ const ProductImageGallery = ({ product }) => {
                 <div className="single-image">
                   <img
                     src={process.env.PUBLIC_URL + single.image}
-                    className="img-fluid"
+                    className=""
                     alt=""
                   />
                 </div>
@@ -102,7 +95,7 @@ const ProductImageGallery = ({ product }) => {
 };
 
 ProductImageGallery.propTypes = {
-  product: PropTypes.shape({})
+  product: PropTypes.shape({}),
 };
 
 export default ProductImageGallery;

@@ -5,7 +5,7 @@ import { Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "./sub-components/ProductRating";
 import Swiper, { SwiperSlide } from "../../components/swiper";
-import { getProductCartQuantity } from "../../helpers/product";
+import { getArticleCartQuantity } from "../../helpers/product";
 import { addToCart } from "../../store/slices/cart-slice";
 import { addToWishlist } from "../../store/slices/wishlist-slice";
 import { addToCompare } from "../../store/slices/compare-slice";
@@ -16,16 +16,16 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
   const { cartItems } = useSelector((state) => state.cart);
 
   const [selectedProductColor, setSelectedProductColor] = useState(
-    product.variation ? product.variation[0].color : ""
+    product.properties ? product.properties.color : ""
   );
   const [selectedProductSize, setSelectedProductSize] = useState(
-    product.variation ? product.variation[0].size[0].name : ""
+    product.propeties ? product.properties.size : ""
   );
   const [productStock, setProductStock] = useState(
-    product.variation ? product.variation[0].size[0].stock : product.stock
+    product.properties ? product.stock : product.stock
   );
   const [quantityCount, setQuantityCount] = useState(1);
-  const productCartQty = getProductCartQuantity(
+  const productCartQty = getArticleCartQuantity(
     cartItems,
     product,
     selectedProductColor,
@@ -69,13 +69,13 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
         <div className="col-md-5 col-sm-12 col-xs-12">
           <div className="product-large-image-wrapper">
             <Swiper options={gallerySwiperParams}>
-              {product.image &&
-                product.image.map((img, i) => {
+              {product.images &&
+                product.images.map((img, i) => {
                   return (
                     <SwiperSlide key={i}>
                       <div className="single-image">
                         <img
-                          src={process.env.PUBLIC_URL + img}
+                          src={process.env.PUBLIC_URL + img.image}
                           className="img-fluid"
                           alt="Product"
                         />
@@ -87,13 +87,13 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
           </div>
           <div className="product-small-image-wrapper mt-15">
             <Swiper options={thumbnailSwiperParams}>
-              {product.image &&
-                product.image.map((img, i) => {
+              {product.images &&
+                product.images.map((img, i) => {
                   return (
                     <SwiperSlide key={i}>
                       <div className="single-image">
                         <img
-                          src={process.env.PUBLIC_URL + img}
+                          src={process.env.PUBLIC_URL + img.image}
                           className="img-fluid"
                           alt=""
                         />
@@ -106,19 +106,19 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
         </div>
         <div className="col-md-7 col-sm-12 col-xs-12">
           <div className="product-details-content quickview-content">
-            <h2>{product.name}</h2>
+            <h2>{product.titre}</h2>
             <div className="product-details-price">
               {discountedPrice !== null ? (
                 <Fragment>
                   <span>
-                    {currency.currencySymbol + finalDiscountedPrice}
+                    {currency.currencySymbol + product.unit_prix}
                   </span>{" "}
                   <span className="old">
-                    {currency.currencySymbol + finalProductPrice}
+                    {currency.currencySymbol + product.prix_vente}
                   </span>
                 </Fragment>
               ) : (
-                <span>{currency.currencySymbol + finalProductPrice} </span>
+                <span>{currency.currencySymbol + product.prix_vente} </span>
               )}
             </div>
             {product.rating && product.rating > 0 ? (
@@ -131,23 +131,23 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
               ""
             )}
             <div className="pro-details-list">
-              <p>{product.shortDescription}</p>
+              <p>{product.description}</p>
             </div>
 
-            {product.variation ? (
+            {product.properties ? (
               <div className="pro-details-size-color">
                 <div className="pro-details-color-wrap">
                   <span>Color</span>
                   <div className="pro-details-color-content">
-                    {product.variation.map((single, key) => {
+                    {product.properties.map((single, key) => {
                       return (
                         <label
-                          className={`pro-details-color-content--single ${single.color}`}
+                          className={`pro-details-color-content--single ${single.couleur}`}
                           key={key}
                         >
                           <input
                             type="radio"
-                            value={single.color}
+                            value={single.couleur}
                             name="product-color"
                             checked={
                               single.color === selectedProductColor
@@ -155,9 +155,9 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
                                 : ""
                             }
                             onChange={() => {
-                              setSelectedProductColor(single.color);
-                              setSelectedProductSize(single.size[0].name);
-                              setProductStock(single.size[0].stock);
+                              setSelectedProductColor(single.couleur);
+                              setSelectedProductSize(single.size);
+                              setProductStock(product.stock);
                               setQuantityCount(1);
                             }}
                           />
@@ -170,9 +170,9 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
                 <div className="pro-details-size">
                   <span>Size</span>
                   <div className="pro-details-size-content">
-                    {product.variation &&
-                      product.variation.map(single => {
-                        return single.color === selectedProductColor
+                    {product.properties &&
+                      product.properties.map(single => {
+                        return single.couleur === selectedProductColor
                           ? single.size.map((singleSize, key) => {
                               return (
                                 <label
@@ -181,7 +181,7 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
                                 >
                                   <input
                                     type="radio"
-                                    value={singleSize.name}
+                                    value={singleSize.size}
                                     checked={
                                       singleSize.name ===
                                       selectedProductSize
@@ -190,14 +190,14 @@ function ProductModal({ product, currency, discountedPrice, finalProductPrice, f
                                     }
                                     onChange={() => {
                                       setSelectedProductSize(
-                                        singleSize.name
+                                        singleSize.size
                                       );
-                                      setProductStock(singleSize.stock);
+                                      setProductStock(product.stock);
                                       setQuantityCount(1);
                                     }}
                                   />
                                   <span className="size-name">
-                                    {singleSize.name}
+                                    {singleSize.size}
                                   </span>
                                 </label>
                               );

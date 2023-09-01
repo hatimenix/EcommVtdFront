@@ -22,7 +22,9 @@ const ProductImageFixed = ({ product }) => {
           <img
             src={process.env.PUBLIC_URL + product.images.image[0]}
             alt=""
-            className="img-fluid"
+            className=""
+            style={{ width: "600px", height: '800px', objectFit: 'contain' }}
+
           />
         ) : (
           ""
