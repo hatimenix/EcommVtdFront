@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
-import { fetchArticles, fetchCategories } from './fetchData';
+import { initCart } from '../store/slices/cart-slice';
+import { fetchArticles, fetchCategories, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
     const dispatch = useDispatch();
@@ -19,6 +20,14 @@ const usePersistData = () => {
             try {
                 const categories = await fetchCategories();
                 dispatch(setCategories(categories));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+
+            // recuperation du panier
+            try {
+                const panier = await fetchPanier(1);
+                dispatch(initCart(panier));
             } catch (error) {
                 console.error('Error fetching categories:', error);
             }
