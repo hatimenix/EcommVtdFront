@@ -21,33 +21,29 @@ const Login = () => {
   const { setIsLoading } = useStateContext()
   const [token, setToken] = useState()
   const [refresh, setRefresh] = useState()
-
   const [message, setMessage] = useState()
-  // let { pathname } = useLocation();
 
+  //check if the login form inputs are filled
   const isFormFilled = email && password;
-  const onSubmit = ev => {
 
+  //login method
+  const onSubmit = ev => {
     ev.preventDefault()
     if (!isFormFilled) {
       setMessage(' Veuillez remplir tout les champs')
       return
     }
-    // setIsLoading(true)
     const payload = {
       email,
       password,
     }
-
     axiosClient.post('token/customer/', payload)
       .then(({ data }) => {
-
         setToken(data.access);
         setRefresh(data.refresh)
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
         navigate('/')
-
       })
       .catch((err) => {
         const response = err.response;
@@ -62,13 +58,10 @@ const Login = () => {
       })
   }
 
-
-
   //Register
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [confirmPwd, setConfirmPwd] = useState('')
-  const [address, setAddress] = useState('')
   const [gender, setGender] = useState('')
   const [emailRegister, setEmailRegister] = useState("")
   const [passwordRegister, setPasswordRegister] = useState("")
@@ -79,17 +72,20 @@ const Login = () => {
 
   const isRegisterFormFilled = !emailRegister || !passwordRegister || !firstName || !lastName || !confirmPwd || !gender;
 
-  // useEffect(() => {
-  //   axiosClient.get('/customers/').then(res => {
-  //     setListCustomers(res.data)
-  //   })
-  // }, [])
+  useEffect(() => {
+    axiosClient.get('/customers/').then(res => {
+      setListCustomers(res.data)
+    })
+  }, [])
 
-  // function update() {
-  //   axiosClient.get('/customers/').then(res => {
-  //     setListCustomers(res.data)
-  //   })
-  // }
+  function update() {
+    axiosClient.get('/customers/').then(res => {
+      setListCustomers(res.data)
+    })
+  }
+
+
+  //check if the passowrd is valid
   const isPasswordValid = (password) => {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*_|èàç()/."';:,?ù])[0-9a-zA-Z@#$%^&+=!*_|èàç()/."';:,?ù]{8,}$/;
     const specialchar = /[@#$%^&+=!*_|èàç()/."';:,?ù]/;
@@ -99,19 +95,15 @@ const Login = () => {
     const uppercaseRegex = /[A-Z]/;
 
     let errors = [];
-
     if (!minLengthRegex.test(password)) {
       errors.push(' Le mot de passe doit comporter au moins 8 caractères.');
     }
-
     if (!digitRegex.test(password)) {
       errors.push(' Le mot de passe doit contenir au moins un chiffre.');
     }
-
     if (!lowercaseRegex.test(password)) {
       errors.push(' Le mot de passe doit contenir au moins une lettre minuscule.');
     }
-
     if (!uppercaseRegex.test(password)) {
       errors.push(' Le mot de passe doit contenir au moins une lettre majuscule.');
     }
@@ -121,14 +113,14 @@ const Login = () => {
     if (password.length > 20) {
       errors.push(' Le mot de passe ne doit pas dépasser 20 caractères.');
     }
-
     if (errors.length > 0) {
       setMessageRegister(errors[0]);
       return false;
     }
-
     return passwordRegex.test(password);
   };
+
+  //register method
   const onRegister = ev => {
     ev.preventDefault()
     if (isRegisterFormFilled) {
@@ -142,12 +134,11 @@ const Login = () => {
       setMessageRegister(" Veuillez confirmer votre mot de passe")
       return
     }
-    // const check = listCustomers.filter(row => row.email === emailRegister)
-    // if (check.length > 0) {
-    //   setMessageRegister(" Cet email existe déjà")
-    //   return
-    // }
-
+    const check = listCustomers.filter(row => row.email === emailRegister)
+    if (check.length > 0) {
+      setMessageRegister(" Cet email existe déjà")
+      return
+    }
     const formData = new FormData()
     formData.append("first_name", firstName)
     formData.append("last_name", lastName)
@@ -157,12 +148,12 @@ const Login = () => {
     // formData.append("addres", address)
     formData.append("etat", true)
 
-    axios.post('http://127.0.0.1:8000/customers/', formData).then(() => {
+    axiosClient.post('/customers/', formData).then(() => {
       setMessageRegister()
-      // update()
       window.location.reload()
     })
   }
+
   return (
     <Fragment>
       <SEO

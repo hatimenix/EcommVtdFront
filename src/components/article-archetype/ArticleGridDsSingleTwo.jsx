@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import '../../assets/css/CustomCarousel.css'
-
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as solIc } from '@fortawesome/free-solid-svg-icons'
@@ -16,6 +17,7 @@ import { fetchLikeCounts } from '../../store/slices/favoriteSlice';
 import { BsShieldCheck } from 'react-icons/bs';
 import ArticleModal from './article-modal-view/ArticleModal';
 import fadeAnimationHandler from './animationHandler/fadeAnimationHandler';
+import { Button } from 'react-bootstrap';
 
 
 const ArticleGridDsSingleTwo = ({
@@ -101,6 +103,22 @@ const ArticleGridDsSingleTwo = ({
         fontSize: '12px',
     };
 
+    const maxLength = 20; // Set your desired maximum length
+
+    const text = article.titre;
+    const shouldShowTooltip = text.length > maxLength;
+
+    const tcTitle = shouldShowTooltip ? `${text.slice(0, maxLength)}...` : text;
+
+
+
+
+    const tooltipContent = shouldShowTooltip ? (
+        <Tooltip >
+            {text}
+        </Tooltip>
+    ) : null;
+
 
 
     return (
@@ -130,7 +148,7 @@ const ArticleGridDsSingleTwo = ({
                         >
                             {article.images.map((image, index) => (
                                 <div key={index} className="slide">
-                                    <img
+                                    <img style={{ width: "200px", height: "260px" }}
                                         src={image.image}
                                         alt={article.titre}
                                     />
@@ -232,7 +250,15 @@ const ArticleGridDsSingleTwo = ({
 
                             <h3 className={isOutOfStock ? "article-title out-of-stock-text-reg" : "article-title"}>
                                 <Link to={process.env.PUBLIC_URL + '/articles/' + article.id_art}>
-                                    {article.titre}
+
+                                    {shouldShowTooltip ? (
+                                        <OverlayTrigger placement="top" overlay={tooltipContent}>
+                                            <span>{tcTitle}</span>
+                                        </OverlayTrigger>
+                                    ) : (
+                                        <span>{text}</span>
+                                    )}
+
                                 </Link>
                             </h3>
 

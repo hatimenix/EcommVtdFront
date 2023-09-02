@@ -74,7 +74,7 @@ const CatNav = () => {
                             onClick={() => handleCategoryClick(subcategory.id_cat, subcategory.level)}
                         >
                             <span className="category-icon">
-                                <img src={subcategory.icon} alt={subcategory.titre} />
+                                <img src={subcategory.icon} />
                             </span>
                             {subcategory.titre}
                         </span>
@@ -112,7 +112,7 @@ const CatNav = () => {
                         >
                             {parentCategory.level !== 0 && ( // Check the level before rendering the icon
                                 <span className="category-icon">
-                                    <img src={parentCategory.icon} alt={parentCategory.titre} />
+                                    <img src={parentCategory.icon} />
                                 </span>
                             )}
                             {parentCategory.titre}

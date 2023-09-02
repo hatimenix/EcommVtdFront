@@ -60,31 +60,38 @@ const ArticleGridDs = ({ limit }) => {
 
 
 
-    // useEffect(() => {
-    //     // Fetch CST data
-    //     if (str == '/') {
-    //         localStorage.removeItem('selectedCategory');
 
-    //     }
+    const category = dispatch(selectCategory(selectedCategory));
+    let catId = 0
 
-
-    // }, []);
-
-
-    // const category = dispatch(selectCategory(selectedCategory));
-    // const catId = category.payload.id_cat;
+    if (category.payload == null) {
+        catId = null;
+    } else {
+        catId = category.payload.id_cat
+    }
 
 
-    // const selectedCat = categories.find((category) => category.id_cat === lastCharacter);
+    console.log("catId", catId);
 
 
-
-    // console.log("lastCharacter : ", lastCharacter);
-
+    const selectedCat = categories.find((category) => category.id_cat === lastCharacter || category.id_cat === catId);
 
 
+    const cLoc = useLocation()
+    const cRoad = cLoc.pathname
 
+    console.log('current path === ', cRoad);
 
+    const [catTitle, setCatTitle] = useState("");
+
+    useEffect(() => {
+        if (selectedCat == undefined) {
+            setCatTitle("Catégorie Undefined ")
+        } else {
+            setCatTitle(selectedCat.titre)
+        }
+    }, [selectedCat]);
+    console.log(catTitle);
 
 
     return (
@@ -109,24 +116,29 @@ const ArticleGridDs = ({ limit }) => {
 
 
 
-                        <SectionTitle
-                            titleText={"jdj"}
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-20"
-                        />
-                        <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={articles}
-                                categories={categories}
-                                csts={csts}
-                                selectedCategory={selectedCategory}
-                                limit={limit}
-                                spaceBottomClass="mb-25"
-                            />
-                        </div>
+                        {cRoad !== '/' ?
+                            <>
+                                <SectionTitle
+                                    titleText={catTitle}
+                                    // subTitleText="Latest arrivals & offers "
+                                    // positionClass="text-center"
+                                    spaceClass="mb-20"
+                                />
+                                <div className="row five-column">
+                                    <ArticleGridDsTwo
+                                        articles={articles}
+                                        categories={categories}
+                                        csts={csts}
+                                        selectedCategory={selectedCategory}
+                                        limit={limit}
+                                        spaceBottomClass="mb-25"
+                                    />
+                                </div>
+                            </>
 
+                            : <></>
 
+                        }
 
 
                         <SectionTitle

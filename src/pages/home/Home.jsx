@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../../store/slices/categoriesSlice";
 import { fetchArticlesByCategory } from "../../services/fetchData";
+import NestedMenuNavbar from "../../components/NestedMenuNavBar";
 
 const Home = () => {
 
@@ -17,36 +18,6 @@ const Home = () => {
   const params = useParams();
   const articles = useSelector((state) => state.article.articles);
 
-  // useEffect(() => {
-  //   dispatch(selectCategory({ id_cat: params.categoryId }));
-  // }, [dispatch, params.categoryId]);
-
-  // localStorage.setItem('selectedCategory', JSON.stringify({ id_cat: params.categoryId }));
-  // // }, [params.categoryId, dispatch]);
-
-
-
-  // console.log("selectedCategory storage : ", JSON.parse(localStorage.getItem('selectedCategory')));
-
-
-  // useEffect(() => {
-
-
-  //   if (params.categoryId) {
-  //     // const selectedCat = categories.find((category) => category.id_cat === categoryId);
-  //     dispatch(selectCategory({ id_cat: params.categoryId }));
-  //     dispatch(fetchArticlesByCategory(params.categoryId)); //
-  //   }
-
-
-
-
-
-
-  // }, [dispatch, params.categoryId]);
-
-
-  // dispatch(selectCategory({ id_cat: 6 }));
 
 
   return (
@@ -61,6 +32,7 @@ const Home = () => {
       >
 
         <CatNav />
+        {/* <NestedMenuNavbar /> */}
         <HeroSliderTen />
 
 
