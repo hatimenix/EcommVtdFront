@@ -4,15 +4,21 @@ import axiosClient, { linkImage } from '../../axios-client';
 import axios from 'axios';
 import PersonalInfosCmp from './PersonalInfosCmp';
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { BiSolidUserDetail } from "react-icons/bi";
+import { BiSolidUserDetail,BiTrendingDown } from "react-icons/bi";
 import { BsShieldLockFill } from "react-icons/bs"
+import { MdPayment } from "react-icons/md"
 import { Navigate, useNavigate, useHistory } from 'react-router-dom';
 import SecurityProfile from './SecurityProfile';
+import Reduction from './Reduction';
+import Paiement from './Paiement';
 
 
 const LinkItems = [
     { name: "Détail profil", icon: BiSolidUserDetail, path: "/gestion-profil" },
     { name: "Mot de passe & Sécurité", icon: BsShieldLockFill, path: "/mot-de-passe-et-sécurité" },
+    { name: "Paiements", icon: MdPayment, path: "/paiement" },
+    { name: "Réduction sur les lots", icon: BiTrendingDown, path: "/réduction-sur-les-lots" },
+
 ];
 
 function ProfileSide() {
@@ -59,6 +65,12 @@ function ProfileSide() {
         }
         if (selectedLink === "/mot-de-passe-et-sécurité") {
             return <SecurityProfile/>;
+        }
+        if (selectedLink === "/réduction-sur-les-lots") {
+            return <Reduction/>;
+        }
+        if (selectedLink === "/paiement") {
+            return <Paiement/>;
         }
         
     };

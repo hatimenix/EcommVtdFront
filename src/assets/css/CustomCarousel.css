@@ -1,0 +1,117 @@
+
+
+
+/* Add styles for the overlay */
+.out-of-stock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent gray background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: white;
+    z-index: 1;
+}
+
+
+.title-likes-row {
+    display: flex;
+    align-items: baseline;
+    /* Align the baseline of title and likes */
+    justify-content: space-between;
+}
+
+/* Article title */
+.article-title {
+    flex: 1;
+    margin-right: 10px;
+    max-width: calc(100% - 60px);
+ }
+
+.heart-icon {
+    font-size: 18px;
+    margin-right: 5px;
+  
+}
+
+.wishlist-count {
+    font-size: 14px;
+    color: #333;
+}
+
+
+
+
+
+
+.out-of-stock-container {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    background-color: #f2f2f2;
+    border-top: 1px solid #e0e0e0;
+    position: relative;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.out-of-stock-text {
+    color: #ff0000;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.out-of-stock-icon {
+    font-size: 19px;
+    color: #ff0000;
+}
+
+.custom-image {
+    width: 600px;
+    /* Adjust to your desired width */
+    height: 800px;
+    /* Adjust to your desired height */
+}
+
+.price-sell{
+    color: #20bfaa;
+}
+
+/* Article title */
+.out-of-stock-text-reg {
+pointer-events: none;
+    cursor: not-allowed;
+}
+
+.title-likes-row-bc {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    cursor: not-allowed;
+}
+
+
+
+.seller-avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.seller-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}

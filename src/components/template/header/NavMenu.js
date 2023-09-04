@@ -21,8 +21,13 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
         : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`)}
     >
       <nav>
+<<<<<<< HEAD
         <ul>
           {localStorage.getItem('ROLE') === "vendeur" ?
+=======
+        {/* <ul>
+          {localStorage.getItem('ACCESS_TOKEN') ?
+>>>>>>> 5a88eb0f251fc3ce4e29406b6472563a847dc942
             <>
               <li>
                 <Link to={process.env.PUBLIC_URL + "/contact"}>
@@ -534,7 +539,7 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
             </>
           }
 
-        </ul>
+        </ul> */}
       </nav>
     </div>
   );

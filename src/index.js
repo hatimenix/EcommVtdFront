@@ -9,16 +9,32 @@ import 'swiper/swiper-bundle.min.css';
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "./assets/scss/style.scss";
+import ReactDOM from 'react-dom';
 
 
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(
-    <Provider store={store}>
-      <PersistProvider>
-        <App />
-      </PersistProvider>
-    </Provider>
+import store__ from './store/store__';
+import { selectCategory } from "./store/slices/categoriesSlice";
+
+
+const selectedCategory = JSON.parse(localStorage.getItem('selectedCategory'));
+if (selectedCategory) {
+  store.dispatch(selectCategory(selectedCategory));
+}
+// const container = document.getElementById('root');
+// const root = createRoot(container);
+// root.render(
+  
+//     <Provider store={store}>
+//       <PersistProvider>
+//         <App />
+//       </PersistProvider>
+//     </Provider>
+
+ReactDOM.render(
+  <Provider store={store__}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
 

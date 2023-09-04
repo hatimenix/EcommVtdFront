@@ -6,6 +6,10 @@ import SEO from "../../components/seo";
 import { motion } from "framer-motion";
 import { useStateContext } from "../../context/ContextProvider";
 import axiosClient from '../../axios-client';
+import { FcGoogle } from "react-icons/fc";
+import { BsApple } from "react-icons/bs";
+import axios from "axios";
+import GoogleLogin from "react-google-login";
 
 const Login = () => {
 
@@ -17,35 +21,31 @@ const Login = () => {
   const { setIsLoading } = useStateContext()
   const [token, setToken] = useState()
   const [refresh, setRefresh] = useState()
-
   const [message, setMessage] = useState()
-  // let { pathname } = useLocation();
 
+  //check if the login form inputs are filled
   const isFormFilled = email && password;
 
+  //login method
   const onSubmit = ev => {
-
     ev.preventDefault()
     if (!isFormFilled) {
       setMessage(' Veuillez remplir tout les champs')
       return
     }
-    // setIsLoading(true)
     const payload = {
       email,
       password,
     }
-
-    axiosClient.post('token/buyer/', payload)
+    axiosClient.post('token/customer/', payload)
       .then(({ data }) => {
-
         setToken(data.access);
         setRefresh(data.refresh)
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
-        localStorage.setItem("ROLE", "acheteur")
         navigate('/')
-
+        window.location.reload()
+        
       })
       .catch((err) => {
         const response = err.response;
@@ -64,7 +64,6 @@ const Login = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [confirmPwd, setConfirmPwd] = useState('')
-  const [address, setAddress] = useState('')
   const [gender, setGender] = useState('')
   const [emailRegister, setEmailRegister] = useState("")
   const [passwordRegister, setPasswordRegister] = useState("")
@@ -73,32 +72,64 @@ const Login = () => {
 
   const [listBuyers, setListBuyers] = useState([])
 
+  const isRegisterFormFilled = !emailRegister || !passwordRegister || !firstName || !lastName || !confirmPwd || !gender;
+
   useEffect(() => {
-    axiosClient.get('/buyers/').then(res => {
-      setListBuyers(res.data)
+    axiosClient.get('/customers/').then(res => {
+      setListCustomers(res.data)
     })
   }, [])
 
-  function update(){
-    axiosClient.get('/buyers/').then(res => {
-      setListBuyers(res.data)
+  function update() {
+    axiosClient.get('/customers/').then(res => {
+      setListCustomers(res.data)
     })
   }
 
-  const checkEmail = (email) => {
-    const check = listBuyers.filter(row => row.email === email)
-    console.log(check);
-  }
 
+  //check if the passowrd is valid
+  const isPasswordValid = (password) => {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*_|èàç()/."';:,?ù])[0-9a-zA-Z@#$%^&+=!*_|èàç()/."';:,?ù]{8,}$/;
+    const specialchar = /[@#$%^&+=!*_|èàç()/."';:,?ù]/;
+    const minLengthRegex = /^.{8,}$/;
+    const digitRegex = /\d/;
+    const lowercaseRegex = /[a-z]/;
+    const uppercaseRegex = /[A-Z]/;
 
-  console.log(checkEmail('zedfghn@dd.add'));
+    let errors = [];
+    if (!minLengthRegex.test(password)) {
+      errors.push(' Le mot de passe doit comporter au moins 8 caractères.');
+    }
+    if (!digitRegex.test(password)) {
+      errors.push(' Le mot de passe doit contenir au moins un chiffre.');
+    }
+    if (!lowercaseRegex.test(password)) {
+      errors.push(' Le mot de passe doit contenir au moins une lettre minuscule.');
+    }
+    if (!uppercaseRegex.test(password)) {
+      errors.push(' Le mot de passe doit contenir au moins une lettre majuscule.');
+    }
+    if (!specialchar.test(password)) {
+      errors.push(' Le mot de passe doit contenir au moins un caractère spécial (@#$%^&+=).');
+    }
+    if (password.length > 20) {
+      errors.push(' Le mot de passe ne doit pas dépasser 20 caractères.');
+    }
+    if (errors.length > 0) {
+      setMessageRegister(errors[0]);
+      return false;
+    }
+    return passwordRegex.test(password);
+  };
+
+  //register method
   const onRegister = ev => {
     ev.preventDefault()
     if (confirmPwd !== passwordRegister) {
       setMessageRegister(" Veuillez confirmer votre mot de passe")
       return
     }
-    const check = listBuyers.filter(row => row.email === emailRegister)
+    const check = listCustomers.filter(row => row.email === emailRegister)
     if (check.length > 0) {
       setMessageRegister(" Cet email existe déjà")
       return
@@ -112,12 +143,12 @@ const Login = () => {
     formData.append("addres", address)
     formData.append("etat", true)
 
-    axiosClient.post('/buyers/', formData).then(() => {
+    axiosClient.post('/customers/', formData).then(() => {
       setMessageRegister()
-      update()
       window.location.reload()
     })
   }
+
   return (
     <Fragment>
       <SEO
@@ -214,6 +245,35 @@ const Login = () => {
                                   <span>Login</span>
                                 </button>
                               </div>
+                              <hr style={{ color: 'lightgray' }} />
+                              <div className="text-center mb-2">
+                                <span>Or log in with</span>
+                              </div>
+                             
+                              <div className="row justify-content-center">
+                                <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    <div className="form-group">
+                                      <FcGoogle style={{ fontSize: 25 }} />
+                                    </div>
+                                    <div className="form-group" style={{ marginLeft: 5 }}>
+                                      <span>Google</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    <div className="form-group">
+                                      <BsApple style={{ fontSize: 25 }} />
+                                    </div>
+                                    <div className="form-group " style={{ marginLeft: 5 }}>
+                                      <span>Apple</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
                             </form>
                           </div>
                         </div>
@@ -285,6 +345,33 @@ const Login = () => {
                                 <button type="button" className="rounded-3" onClick={onRegister}>
                                   <span>Register</span>
                                 </button>
+                              </div>
+                              <hr style={{ color: 'lightgray' }} />
+                              <div className="text-center mb-2">
+                                <span>Or sign up with</span>
+                              </div>
+
+                              <div className="row justify-content-center">
+                                <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    <div className="form-group">
+                                      <FcGoogle style={{ fontSize: 25 }} />
+                                    </div>
+                                    <div className="form-group" style={{ marginLeft: 5 }}>
+                                      <span>Google</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                  <div className="d-flex align-items-center justify-content-center">
+                                    <div className="form-group">
+                                      <BsApple style={{ fontSize: 25 }} />
+                                    </div>
+                                    <div className="form-group " style={{ marginLeft: 5 }}>
+                                      <span>Apple</span>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </form>
                           </div>
