@@ -48,16 +48,16 @@ export const fetchArticlesdetails = async (id_art) => {
 
 
 export const fetchReplies = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}replies/`, {
-      withCredentials: true, // If you need credentials
-    });
-    return response.data;
-  } catch (error) {
-    // Handle any errors here
-    console.error('Error fetching replies:', error);
-    throw error; // Optionally re-throw the error to handle it elsewhere
-  }
+    try {
+        const response = await axios.get(`${BASE_URL}replies/`, {
+            withCredentials: true, // If you need credentials
+        });
+        return response.data;
+    } catch (error) {
+        // Handle any errors here
+        console.error('Error fetching replies:', error);
+        throw error; // Optionally re-throw the error to handle it elsewhere
+    }
 };
 
 export const fetchReviews = async () => {
@@ -66,6 +66,20 @@ export const fetchReviews = async () => {
     });
     return response.data;
 };
+
+
+export const fetchProperties = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}properties/`, {
+      withCredentials: true,
+    });
+      return response.data;
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    return [];
+  }
+};
+
 
 
 export const fetchCategories = async () => {
@@ -96,3 +110,13 @@ export const fetchCst = createAsyncThunk('seller/fetchCst', async () => {
     });
     return response.data;
 });
+
+
+//recuperation du panier
+export const fetchPanier = async (id_user) => {
+    const response = await axios.get(`${BASE_URL}panier/?search=${id_user}`, {
+        withCredentials: true,
+    });
+    // console.log("le panier: ", response.data);
+    return response.data;
+};

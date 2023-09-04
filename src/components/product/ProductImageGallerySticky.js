@@ -22,7 +22,8 @@ const productImageGallerySticky = ({ product }) => {
             <img
               src={process.env.PUBLIC_URL + single}
               alt=""
-              className="img-fluid"
+              className=""
+              style={{ width : "200px", hieght : "400px"}}
             />
           </div>
         ))}

@@ -10,9 +10,12 @@ const MenuCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
   let cartTotalPrice = 0;
 
+    console.log('image: ', cartItems);
+
+
   return (
     <div className="shopping-cart-content">
-      {cartItems && cartItems.length > 0 ? (
+      {cartItems && cartItems.length > 0 ? ( 
         <Fragment>
           <ul>
             {cartItems.map((item) => {
@@ -32,12 +35,12 @@ const MenuCart = () => {
                 : (cartTotalPrice += finalProductPrice * item.quantity);
 
               return (
-                <li className="single-shopping-cart" key={item.cartItemId}>
+                <li className="single-shopping-cart" key={item.id_pan}>
                   <div className="shopping-cart-img">
                     <Link to={process.env.PUBLIC_URL + "/product/" + item.id}>
                       <img
                         alt=""
-                        src={process.env.PUBLIC_URL + item.images[0].image}
+                        src={'http://localhost:8000' + item.image[0]}
                         className="img-fluid"
                       />
                     </Link>
@@ -68,7 +71,7 @@ const MenuCart = () => {
                     )}
                   </div>
                   <div className="shopping-cart-delete">
-                    <button onClick={() => dispatch(deleteFromCart(item.cartItemId))}>
+                    <button onClick={() => dispatch(deleteFromCart(item.id_pan))}>
                       <i className="fa fa-times-circle" />
                     </button>
                   </div>

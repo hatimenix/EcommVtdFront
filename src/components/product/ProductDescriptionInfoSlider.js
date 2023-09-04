@@ -20,13 +20,13 @@ const ProductDescriptionInfoSlider = ({
 }) => {
   const dispatch = useDispatch();
   const [selectedProductColor, setSelectedProductColor] = useState(
-    product.variation ? product.variation[0].color : ""
+    product.properties ? product.properties.couleur : ""
   );
   const [selectedProductSize, setSelectedProductSize] = useState(
-    product.variation ? product.variation[0].size[0].name : ""
+    product.properties ? product.properties.size : ""
   );
   const [productStock, setProductStock] = useState(
-    product.variation ? product.variation[0].size[0].stock : product.stock
+    product.properties ? product.stock : product.stock
   );
   const [quantityCount, setQuantityCount] = useState(1);
 
@@ -39,17 +39,17 @@ const ProductDescriptionInfoSlider = ({
 
   return (
     <div className="product-details-content pro-details-slider-content">
-      <h2>{product.name}</h2>
+      <h2>{product.titre}</h2>
       <div className="product-details-price justify-content-center">
         {discountedPrice !== null ? (
           <Fragment>
-            <span>{currency.currencySymbol + finalDiscountedPrice}</span>{" "}
+            <span>{currency.currencySymbol + product.unit_prix}</span>{" "}
             <span className="old">
-              {currency.currencySymbol + finalProductPrice}
+              {currency.currencySymbol + product.prix_vente}
             </span>
           </Fragment>
         ) : (
-          <span>{currency.currencySymbol + finalProductPrice} </span>
+          <span>{currency.currencySymbol + product.prix_vente} </span>
         )}
       </div>
       {product.rating && product.rating > 0 ? (
@@ -62,31 +62,31 @@ const ProductDescriptionInfoSlider = ({
         ""
       )}
       <div className="pro-details-list">
-        <p>{product.shortDescription}</p>
+        <p>{product.description}</p>
       </div>
 
-      {product.variation ? (
+      {product.properties ? (
         <div className="pro-details-size-color justify-content-center">
           <div className="pro-details-color-wrap">
             <span>Color</span>
             <div className="pro-details-color-content">
-              {product.variation.map((single, key) => {
+              {product.properties.map((single, key) => {
                 return (
                   <label
-                    className={`pro-details-color-content--single ${single.color}`}
+                    className={`pro-details-color-content--single ${single.couleur}`}
                     key={key}
                   >
                     <input
                       type="radio"
-                      value={single.color}
+                      value={single.couleur}
                       name="product-color"
                       checked={
-                        single.color === selectedProductColor ? "checked" : ""
+                        single.couleur === selectedProductColor ? "checked" : ""
                       }
                       onChange={() => {
-                        setSelectedProductColor(single.color);
-                        setSelectedProductSize(single.size[0].name);
-                        setProductStock(single.size[0].stock);
+                        setSelectedProductColor(single.couleur);
+                        setSelectedProductSize(single.size);
+                        setProductStock(product.stock);
                         setQuantityCount(1);
                       }}
                     />
@@ -99,9 +99,9 @@ const ProductDescriptionInfoSlider = ({
           <div className="pro-details-size">
             <span>Size</span>
             <div className="pro-details-size-content">
-              {product.variation &&
-                product.variation.map(single => {
-                  return single.color === selectedProductColor
+              {product.properties &&
+                product.properties.map(single => {
+                  return single.couleur === selectedProductColor
                     ? single.size.map((singleSize, key) => {
                         return (
                           <label
@@ -110,15 +110,15 @@ const ProductDescriptionInfoSlider = ({
                           >
                             <input
                               type="radio"
-                              value={singleSize.name}
+                              value={singleSize.size}
                               checked={
-                                singleSize.name === selectedProductSize
+                                singleSize.size === selectedProductSize
                                   ? "checked"
                                   : ""
                               }
                               onChange={() => {
-                                setSelectedProductSize(singleSize.name);
-                                setProductStock(singleSize.stock);
+                                setSelectedProductSize(singleSize.size);
+                                setProductStock(product.stock);
                                 setQuantityCount(1);
                               }}
                             />
@@ -227,7 +227,7 @@ const ProductDescriptionInfoSlider = ({
         </div>
       )}
       {product.category ? (
-        <div className="pro-details-meta justify-content-center">
+        <div className="pro-details-meta">
           <span>Categories :</span>
           <ul>
             {product.category.map((single, key) => {
