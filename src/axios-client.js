@@ -5,11 +5,11 @@ const axiosClient = axios.create({
   baseURL: "http://127.0.0.1:8000/",
 });
 
-axiosClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("ACCESS_TOKEN");
-  config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+// axiosClient.interceptors.request.use((config) => {
+//   const token = localStorage.getItem("ACCESS_TOKEN");
+//   config.headers.Authorization = `Bearer ${token}`;
+//   return config;
+// });
 
 axiosClient.interceptors.response.use(
   (response) => {
@@ -23,17 +23,15 @@ axiosClient.interceptors.response.use(
       response.status === 401 &&
       response.data.code === "token_not_valid"
     ) {
-      
       const refreshToken = localStorage.getItem("REFRESH_TOKEN");
       if (!refreshToken) {
         // redirect to login page or show error message
-        
         return Promise.reject(error);
       }
 
       try {
         const response = await axios.post(
-          "http://127.0.0.1:8000/token/customer/refresh/",
+          "http://127.0.0.1:8000/api/token/refresh/",
           { refresh: refreshToken }
         );
         const accessToken = response.data.access;
@@ -51,6 +49,3 @@ axiosClient.interceptors.response.use(
 );
 
 export default axiosClient;
-
-export const linkImage = 'http://127.0.0.1:8000'
-

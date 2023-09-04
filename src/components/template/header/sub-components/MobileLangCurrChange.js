@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-// import { setCurrency } from "../../../store/slices/currency-slice"
+import { setCurrency } from "../../../store/slices/currency-slice"
 
 const MobileLangCurrChange = () => {
   const { i18n } = useTranslation();
@@ -15,7 +15,7 @@ const MobileLangCurrChange = () => {
 
   const setCurrencyTrigger = e => {
     const currencyName = e.target.value;
-    // dispatch(setCurrency(currencyName));
+    dispatch(setCurrency(currencyName));
     closeMobileMenu();
   };
 

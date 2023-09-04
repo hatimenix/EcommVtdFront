@@ -36,15 +36,15 @@ const Login = () => {
       password,
     }
 
-    axiosClient.post('token/buyer/', payload)
+    axiosClient.post('token/seller/', payload)
       .then(({ data }) => {
 
         setToken(data.access);
         setRefresh(data.refresh)
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
-        localStorage.setItem("ROLE", "acheteur")
-        navigate('/')
+        localStorage.setItem("ROLE", "vendeur")
+        navigate('/espace-vendeur')
 
       })
       .catch((err) => {
@@ -71,22 +71,22 @@ const Login = () => {
 
   const [messageRegister, setMessageRegister] = useState('')
 
-  const [listBuyers, setListBuyers] = useState([])
+  const [listSellers, setListSellers] = useState([])
 
   useEffect(() => {
-    axiosClient.get('/buyers/').then(res => {
-      setListBuyers(res.data)
+    axiosClient.get('/sellers/').then(res => {
+      setListSellers(res.data)
     })
   }, [])
 
   function update(){
-    axiosClient.get('/buyers/').then(res => {
-      setListBuyers(res.data)
+    axiosClient.get('/sellers/').then(res => {
+      setListSellers(res.data)
     })
   }
 
   const checkEmail = (email) => {
-    const check = listBuyers.filter(row => row.email === email)
+    const check = listSellers.filter(row => row.email === email)
     console.log(check);
   }
 
@@ -98,7 +98,7 @@ const Login = () => {
       setMessageRegister(" Veuillez confirmer votre mot de passe")
       return
     }
-    const check = listBuyers.filter(row => row.email === emailRegister)
+    const check = listSellers.filter(row => row.email === emailRegister)
     if (check.length > 0) {
       setMessageRegister(" Cet email existe déjà")
       return
@@ -112,7 +112,7 @@ const Login = () => {
     formData.append("addres", address)
     formData.append("etat", true)
 
-    axiosClient.post('/buyers/', formData).then(() => {
+    axiosClient.post('/sellers/', formData).then(() => {
       setMessageRegister()
       update()
       window.location.reload()
@@ -135,7 +135,7 @@ const Login = () => {
             left: 0,
             width: "100%",
             height: "70%",
-            background: "linear-gradient(to right, #89c2f3, #fdb0ff)",
+            background: "linear-gradient(to right, #053399b3, #1987545e)",
             opacity: 0.7,
             filter: "blur(60px)",
           }}

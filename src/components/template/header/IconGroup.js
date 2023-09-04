@@ -1,26 +1,19 @@
 import PropTypes from "prop-types";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
 import NavMenu from "./NavMenu";
 import { useEffect, useState } from "react";
 import OffcanvasMenu from "./OffcanvasMenu";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
-import Login from "../../../pages/Authentication/Login";
+
 // import MenuCart from "./sub-components/MenuCart";
 
 const IconGroup = ({ iconWhiteClass }) => {
   const handleClick = e => {
     e.currentTarget.nextSibling.classList.toggle("active");
   };
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const navigate = useNavigate()
-
+ 
   const [scroll, setScroll] = useState(0);
   const [headerTop, setHeaderTop] = useState(0);
   const [offcanvasActive, setOffcanvasActive] = useState(false);
@@ -41,12 +34,7 @@ const IconGroup = ({ iconWhiteClass }) => {
   const getActiveState = state => {
     setOffcanvasActive(state);
   };
-  const onLogout = (ev) => {
-    ev.preventDefault();
-    localStorage.removeItem("ACCESS_TOKEN");
-    localStorage.removeItem("REFRESH_TOKEN");
-    navigate('/')
-  };
+
   // const { compareItems } = useSelector((state) => state.compare);
   // const { wishlistItems } = useSelector((state) => state.wishlist);
   // const { cartItems } = useSelector((state) => state.cart);
@@ -75,25 +63,19 @@ const IconGroup = ({ iconWhiteClass }) => {
         </button>
         <div className="account-dropdown">
           <ul>
-          {!localStorage.getItem('ACCESS_TOKEN') ?
-          <>
-           <li>
-              <Link onClick={handleShow}>Login</Link>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/login-register"}>Login</Link>
             </li>
             <li>
               <Link to={process.env.PUBLIC_URL + "/login-register"}>
                 Register
               </Link>
-            </li></> : <li>
-              <Link to={process.env.PUBLIC_URL + "/profil"}>
-                My account
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/my-account"}>
+                my account
               </Link>
-              <Link onClick={onLogout}>
-                Logout
-              </Link>
-            </li>}
-            
-            
+            </li>
           </ul>
         </div>
       </div>
@@ -144,15 +126,6 @@ const IconGroup = ({ iconWhiteClass }) => {
         activeState={offcanvasActive}
         getActiveState={getActiveState}
       />
-     
-
-      <Modal  size="md" show={show} onHide={handleClose}>
-        
-        <Modal.Body  >
-        <Modal.Header  closeButton/>
-            <Login/>
-        </Modal.Body>
-      </Modal>
     </div>
   );
 };
@@ -160,5 +133,7 @@ const IconGroup = ({ iconWhiteClass }) => {
 IconGroup.propTypes = {
   iconWhiteClass: PropTypes.string,
 };
+
+
 
 export default IconGroup;
