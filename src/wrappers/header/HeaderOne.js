@@ -64,27 +64,25 @@ const HeaderOne = ({
               {/* header logo */}
               <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"} logoClass="logo" />
             </div>
-            <div className="col-xl-6 col-lg-6 d-none d-lg-block"  >
+            <div className="col-xl-5 col-lg-5 d-none d-lg-block"  >
               {/* Nav menu */}
               <InputGroup style={{ width: '100%', minHeight: '20px', outline: "none", boxShadow: "none", }} size="sm" className="mt-3 myInputGroup">
                 <DropdownButton
                   variant="outline-secondary"
-                  title="Dropdown"
+                  title="Articles"
                   id="input-group-dropdown-1"
                   size="sm"
                 >
-                  <Dropdown.Item href="#">Action</Dropdown.Item>
-                  <Dropdown.Item href="#">Another action</Dropdown.Item>
-                  <Dropdown.Item href="#">Something else here</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item href="#">Separated link</Dropdown.Item>
+                  <Dropdown.Item href="#">Articles</Dropdown.Item>
+                  <Dropdown.Item href="#">Membres</Dropdown.Item>
+                  
                 </DropdownButton>
                 <InputGroup.Text style={{ backgroundColor: "transparent", borderRight: "none" }}><AiOutlineSearch /></InputGroup.Text>
                 <Form.Control style={{ backgroundColor: "transparent", borderLeft: "none" ,boxShadow:"none" , height: 'fit-content' ,outline:"none" , borderColor:"#dee2e6"}} placeholder="Chercher des articles" aria-label="Text input with dropdown button" />
               </InputGroup>
             </div>
             <div className="col-xl-6 col-lg-6 col-md-3 d-none d-md-block d-xl-none d-lg-none" ></div>
-            <div className="col-xl-4 col-lg-4 col-md-6 col-8 mt-3">
+            <div className="col-xl-5 col-lg-5 col-md-6 col-8 mt-3">
               {/* Icon group */}
               <IconGroup />
             </div>
