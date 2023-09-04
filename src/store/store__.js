@@ -9,6 +9,9 @@ import cartReducer from './slices/cart-slice';
 import currencyReducer from './slices/currency-slice';
 import reviewReducer from './slices/reviewsSlice';
 import replieReducer from './slices/repliesSlice';
+import propertiesReducer from './slices/propertiesSlice';
+import userReducer from './slices/userSlice';
+
 
 const store = configureStore({
     reducer: {
@@ -21,7 +24,10 @@ const store = configureStore({
         cart: cartReducer,
         currency: currencyReducer,
         review: reviewReducer,
-        replie:replieReducer
+        replie: replieReducer,
+        propertie: propertiesReducer,
+        user: userReducer
+
 
     },
 

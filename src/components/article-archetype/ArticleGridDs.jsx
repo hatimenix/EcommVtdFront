@@ -10,6 +10,8 @@ import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIconTwo";
 import ArticleGridDsTwo from "./ArticleGridDsTwo";
 import HeroSliderTen from "../../wrappers/hero-slider/HeroSliderTen";
 import { useLocation } from "react-router-dom";
+import { fetchUser } from "../../store/slices/userSlice";
+import { useCurrentUserSelector } from "../../store/selectors/selectors";
 
 const ArticleGridDs = ({ limit }) => {
     const dispatch = useDispatch();
@@ -79,10 +81,11 @@ const ArticleGridDs = ({ limit }) => {
 
     const cLoc = useLocation()
     const cRoad = cLoc.pathname
+    const [catTitle, setCatTitle] = useState("");
+
 
     console.log('current path === ', cRoad);
 
-    const [catTitle, setCatTitle] = useState("");
 
     useEffect(() => {
         if (selectedCat == undefined) {
@@ -92,6 +95,15 @@ const ArticleGridDs = ({ limit }) => {
         }
     }, [selectedCat]);
     console.log(catTitle);
+
+
+    const currentUser = useCurrentUserSelector()
+
+    useEffect(() => {
+        dispatch(fetchUser());
+    }, [dispatch]);
+
+    console.log('current user status ', currentUser.is_seller);
 
 
     return (
@@ -106,13 +118,16 @@ const ArticleGridDs = ({ limit }) => {
 
                 {true ?
 
+
                     <>
+
                         <SectionTitle
                             titleText="Recommandé pour toi"
                             // subTitleText="Latest arrivals & offers "
                             // positionClass="text-center"
                             spaceClass="mb-20 mt-80"
                         />
+                        <p>{currentUser.first_name}</p>
 
 
 

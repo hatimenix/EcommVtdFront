@@ -72,6 +72,20 @@ export const fetchReviews = async () => {
 };
 
 
+export const fetchProperties = async () => {
+  try {
+    const response = await axios.get(`${BASE_URL}properties/`, {
+      withCredentials: true,
+    });
+      return response.data;
+  } catch (error) {
+    console.error('Error fetching properties:', error);
+    return [];
+  }
+};
+
+
+
 export const fetchCategories = async () => {
     const response = await axios.get(`${BASE_URL}categories/`, {
         withCredentials: true,
@@ -100,3 +114,13 @@ export const fetchCst = createAsyncThunk('seller/fetchCst', async () => {
     });
     return response.data;
 });
+
+
+//recuperation du panier
+export const fetchPanier = async (id_user) => {
+    const response = await axios.get(`${BASE_URL}panier/?search=${id_user}`, {
+        withCredentials: true,
+    });
+    // console.log("le panier: ", response.data);
+    return response.data;
+};
