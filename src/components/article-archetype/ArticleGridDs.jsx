@@ -22,18 +22,27 @@ const ArticleGridDs = ({ limit }) => {
     const iCategories = useSelector((state) => state.categorie.categories);
 
     const __articlesRec = useArticleSelector();
-    const __categoriesRec = useCategorySelector();
+    // const __categoriesRec = useCategorySelector();
 
     const __recs = useRecSelector()
-    console.log("recs", __recs);
+    let targetedArticles = []; // Declare it as an empty array
 
+    // If __recs is an array
+    if (Array.isArray(__recs)) {
+        __recs.forEach(rec => {
+            const correspondingArticle = __articlesRec.find(article => article.id_art === rec.article);
 
+            if (correspondingArticle) {
+                targetedArticles.push(correspondingArticle); // Add matching articles to targetedArticles
+            }
+        });
+    } else {
+        console.log('Invalid __recs data.');
+    }
 
+    // const correspondingArticle = __articlesRec.find(article => article.id_art === __recs.article);
 
-
-    // const correspondingArticle = __articlesRec.find(article => article.id === idToFind);
-
-
+    // console.log('art', correspondingArticle);
 
 
 
@@ -121,6 +130,8 @@ const ArticleGridDs = ({ limit }) => {
     // console.log('current user status ', currentUser.is_seller);
 
 
+    console.log('TargetedARticles ', targetedArticles);
+
     return (
         <div className="product-area pb-60 section-padding-1">
             <div className="container-fluid">
@@ -142,15 +153,15 @@ const ArticleGridDs = ({ limit }) => {
                             // positionClass="text-center"
                             spaceClass="mb-20 mt-80"
                         />
-                        {/* <div className="row five-column">
+                        <div className="row five-column">
                             <ArticleGridDsTwo
-                                articles={iArticles}
-                                categories={iCategories}
+                                articles={targetedArticles}
+                                // categories={iCategories}
                                 csts={csts}
                                 limit={limit}
                                 spaceBottomClass="mb-25"
                             />
-                        </div> */}
+                        </div>
 
 
                         {cRoad !== '/' ?

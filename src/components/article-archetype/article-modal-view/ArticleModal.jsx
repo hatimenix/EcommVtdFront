@@ -9,7 +9,7 @@ import Swiper, { SwiperSlide } from "../../../components/swiper";
 // import { addToCart } from "../../store/slices/cart-slice";
 // import { addToWishlist } from "../../store/slices/wishlist-slice";
 // import { addToCompare } from "../../store/slices/compare-slice";
-
+import './styleModal.scss'
 function ArticleModal({ product, article, currency, discountedPrice, finalProductPrice, finalDiscountedPrice, show, onHide, wishlistItem, compareItem }) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const dispatch = useDispatch();
