@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchCategories, fetchCst, fetchPanier } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier } from './fetchData';
+import { setArticleRec } from '../store/slices/articlesRecSlice';
 
 const usePersistData = () => {
     const dispatch = useDispatch();
@@ -32,12 +33,12 @@ const usePersistData = () => {
                 console.error('Error fetching categories:', error);
             }
 
-             // recuperation du customer
+
             try {
-                const cstm = fetchCst();
-                dispatch(cstm);
+                const recs = await fetchArticlesRec();
+                dispatch(setArticleRec(recs));
             } catch (error) {
-                console.error('Error fetching categories:', error);
+                console.error('Error fetching recs:', error);
             }
         };
 

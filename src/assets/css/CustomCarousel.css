@@ -1,4 +1,11 @@
-
+/* MyComponent.css */
+.custom-tooltip {
+    background-color: red;
+    /* Change the background color */
+    color: white;
+    /* Change the text color */
+    /* Add any other styles you want for your tooltip */
+}
 
 
 /* Add styles for the overlay */

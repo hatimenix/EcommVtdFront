@@ -13,7 +13,7 @@ const HeroSliderTenSingle = ({ data }) => {
           <div className="col-xl-6 col-lg-7 col-md-8 col-12 ms-auto">
             <div className="slider-content-3 slider-animated-1 text-center">
               <h3 className="animated">{data.title}</h3>
-              <h1 className="animated">{data.subtitle}</h1>
+              <h1 className="animated" style={{ color: '#fff' }}>{data.subtitle}</h1>
               <p className="animated">{data.text}</p>
               <div className="slider-btn btn-hover">
                 <Link
