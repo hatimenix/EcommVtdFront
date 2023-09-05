@@ -16,6 +16,7 @@ import MenuCart from "./sub-components/MenuCart";
 import axiosClient, { linkImage } from "../../../axios-client";
 import { Image } from "react-bootstrap";
 import { Dropdown } from 'react-bootstrap';
+import { useStateContext } from "../../../context/ContextProvider";
 
 
 const IconGroup = ({ iconWhiteClass }) => {
@@ -58,15 +59,10 @@ const IconGroup = ({ iconWhiteClass }) => {
   const { compareItems } = useSelector((state) => state.compare);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
-  const [User, setUser] = useState([]);
+  const { user } = useStateContext();
   const [image, setImage] = useState()
 
-  useEffect(() => {
-    axiosClient.get('/auth/user/').then(({ data }) => {
-      setUser(data);
-    });
-
-  }, []);
+  
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
@@ -140,7 +136,7 @@ const IconGroup = ({ iconWhiteClass }) => {
             <Dropdown style={{ height: '10px' }} >
               <Dropdown.Toggle variant="none" id="dropdown-basic" style={{ border: "none", boxShadow: "none", padding: 0 }}>
                 <Image roundedCircle
-                  src={image ? image : linkImage + User.image}
+                  src={image ? image : linkImage + user.image}
                   alt="avatar"
                   style={{ width: '30px', height: '30px' }}
                 />

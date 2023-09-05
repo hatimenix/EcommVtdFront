@@ -11,6 +11,7 @@ import { Navigate, useNavigate, useHistory } from 'react-router-dom';
 import SecurityProfile from './SecurityProfile';
 import Reduction from './Reduction';
 import Paiement from './Paiement';
+import { useStateContext } from '../../context/ContextProvider';
 
 
 const LinkItems = [
@@ -22,8 +23,7 @@ const LinkItems = [
 ];
 
 function ProfileSide() {
-    const [User, setUser] = useState([]);
-
+    const { user } = useStateContext();
     const [selectedImage, setSelectedImage] = useState()
     const [image, setImage] = useState()
 
@@ -36,10 +36,7 @@ function ProfileSide() {
 
     // Authentification
     useEffect(() => {
-        axiosClient.get('/auth/user/').then(({ data }) => {
-            setUser(data);
-            console.log(data);
-        });
+       
 
         if (selectedImage) {
             setImage(URL.createObjectURL(selectedImage))
@@ -49,7 +46,7 @@ function ProfileSide() {
     const saveImage = () => {
         const formData = new FormData()
         formData.append('image', selectedImage)
-        axiosClient.put('/user_image_update/' + User.id + '/', formData).then(() => {
+        axiosClient.put('/user_image_update/' + user.id + '/', formData).then(() => {
             setSelectedImage()
             setImage()
         })
@@ -108,7 +105,7 @@ function ProfileSide() {
                                 <div className="card mb-4">
                                     <div className="card-body text-center">
                                         <div style={{ position: 'relative' }}>
-                                            <img src={image ? image : linkImage + User.image} alt="avatar"
+                                            <img src={image ? image : linkImage + user.image} alt="avatar"
                                                 className="rounded-circle img-fluid" style={{ width: "150px", height: '150px' }} />
                                             {selectedImage && image &&
                                                 <div
@@ -122,9 +119,9 @@ function ProfileSide() {
                                                 </div>
                                             }
                                         </div>
-                                        <h5 className="my-3">{User.first_name} {User.last_name}</h5>
-                                        <p className="text-muted mb-1">{User.rue}</p>
-                                        <p className="text-muted mb-4">{`${User.pays}, ${User.ville} ${User.code_postal}`} </p>
+                                        <h5 className="my-3">{user.first_name} {user.last_name}</h5>
+                                        <p className="text-muted mb-1">{user.rue}</p>
+                                        <p className="text-muted mb-4">{`${user.pays}, ${user.ville} ${user.code_postal}`} </p>
                                         <div className="d-flex justify-content-center mb-2">
                                             <button type="button" className="btn btn-sm btn-outline-primary" style={{ position: 'relative' }}>
                                                 <span>Choisissez une photo</span>
