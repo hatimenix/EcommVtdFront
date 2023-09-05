@@ -4,7 +4,7 @@ import { AiOutlineLock } from 'react-icons/ai';
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import visa from './visa.png'
 import mastercard from './shopping.png'
-import { useStateContext } from '../../context/ContextProvider';
+import { useStateContext } from '../../../context/ContextProvider';
 import { FaCcMastercard } from 'react-icons/fa';
 import { RiVisaFill } from 'react-icons/ri';
 import { BsFillCreditCard2BackFill } from 'react-icons/bs';
@@ -126,7 +126,7 @@ function Paiement() {
                 onHide={handleClose}
                 backdrop="static"
                 keyboard={false}
-
+                
             >
                 <Modal.Header style={{ borderBottom: 'none', justifyContent: 'center' ,position:'relative'}} closeButton>
                     <Modal.Title >Informations de paiement</Modal.Title>
