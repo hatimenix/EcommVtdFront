@@ -60,23 +60,27 @@ const App = () => {
               element={<ProductTabRight />}
             />
             <Route
-                path={process.env.PUBLIC_URL + "/wishlist"}
-                element={<Wishlist/>}
-              />
-            <Route
-                path={process.env.PUBLIC_URL + "/cart"}
-                element={<Cart/>}
-              />
-
-            <Route
-                path={process.env.PUBLIC_URL + "/checkout"}
-                element={<Checkout/>}
-              /> 
-
-            <Route
-              path={process.env.PUBLIC_URL + "/art"}
-              element={<ArticleGridDs />}
+              path={process.env.PUBLIC_URL + "/wishlist"}
+              element={<Wishlist />}
             />
+            <Route
+              path={process.env.PUBLIC_URL + "/cart"}
+              element={<Cart />}
+            />
+
+            <Route
+              path={process.env.PUBLIC_URL + "/checkout"}
+              element={<Checkout />}
+            />
+
+
+            <Route
+              path={process.env.PUBLIC_URL + "/category/:categoryId"} // Updated route path
+              element={
+                <Home />
+              }
+            />
+
 
 
 

@@ -44,8 +44,6 @@ const Login = () => {
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
         navigate('/')
-        window.location.reload()
-        
       })
       .catch((err) => {
         const response = err.response;
@@ -252,7 +250,7 @@ const Login = () => {
                               <div className="text-center mb-2">
                                 <span>Or log in with</span>
                               </div>
-                             
+
                               <div className="row justify-content-center">
                                 <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
                                   <div className="d-flex align-items-center justify-content-center">
