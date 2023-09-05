@@ -5,35 +5,34 @@ import axios from 'axios';
 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useStateContext } from '../../context/ContextProvider';
 
 function PersonalInfosCmp() {
-    const [User, setUser] = useState([]);
+    const { user } = useStateContext();
     const [listVendeurs, setListVendeurs] = useState([])
     const [message, setMessage] = useState()
 
-    // const [firstName, setFirstName] = useState()
-    // const [lastName, setLastName] = useState()
-    // const [codeP, setCodeP] = useState()
-    // const [rue, setRue] = useState()
-    // const [ville, setVille] = useState()
-    // const [pays, setPays] = useState()
-    // const [tel, setTel] = useState()
-    // const [birthday, setBirthday] = useState()
+    const [firstName, setFirstName] = useState()
+    const [lastName, setLastName] = useState()
+    const [codeP, setCodeP] = useState()
+    const [rue, setRue] = useState()
+    const [ville, setVille] = useState()
+    const [pays, setPays] = useState()
+    const [tel, setTel] = useState()
+    const [birthday, setBirthday] = useState()
 
     //get the inputs values
-    const handleInputChange = (event) => {
-        const target = event.target;
-        const name = target.name;
-        const value = target.type === "file" ? target.files[0] : target.value;
-        setUser({ ...User, [name]: value });
-    };
+    // const handleInputChange = (event) => {
+    //     const target = event.target;
+    //     const name = target.name;
+    //     const value = target.type === "file" ? target.files[0] : target.value;
+    //     setUser({ ...User, [name]: value });
+    // };
     const emailRegex = /^[a-zA-Z][a-zA-Z0-9._-]*@[a-zA-Z]+(?:-[a-zA-Z]+)?\.[a-zA-Z]{2,}$/;
     const codepRegex = /^(\d{3})$|(\d{6})$|([A-Z]\d{4}[A-Z]{3})$|(\d{4})$|(\d{4})$|(?:FI)*(\d{5})$|(?:AZ)*(\d{4})$|(\d{5})$|(?:BB)*(\d{5})$|(\d{4})$|(\d{4})$|(\d{4})$|(\d{3}\d?)$|([A-Z]{2}\d{2})$|([A-Z]{2}\d{4})$|(\d{8})$|(\d{6})$|([ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]) ?(\d[ABCEGHJKLMNPRSTVWXYZ]\d)$|(\d{4})$|(\d{7})$|(\d{6})$|(\d{4})$|(?:CP)*(\d{5})$|(\d{4})$|(\d{4})$|(\d{4})$|(\d{5})$|(\d{5})$|(?:FI)*(\d{5})$|(\d{5})$|(\d{4})$|(\d{6})$|(?:SEOUL)*(\d{6})$|(\d{5})$|(\d{6})$|(\d{5})$|(\d{4})$|(\d{5})$|(\d{5})$|(\d{10})$|(\d{3})$|(\d{5})$|(\d{5})$|([A-Z]\d{2}[A-Z]{2})|([A-Z]\d{3}[A-Z]{2})|([A-Z]{2}\d{2}[A-Z]{2})|([A-Z]{2}\d{3}[A-Z]{2})|([A-Z]\d[A-Z]\d[A-Z]{2})|([A-Z]{2}\d[A-Z]\d[A-Z]{2})|(GIR0AA)$|(\d{5})$|(\d{7})$|([A-Z]\d{2}[A-Z]{2})|([A-Z]\d{3}[A-Z]{2})|([A-Z]{2}\d{2}[A-Z]{2})|([A-Z]{2}\d{3}[A-Z]{2})|([A-Z]\d[A-Z]\d[A-Z]{2})|([A-Z]{2}\d[A-Z]\d[A-Z]{2})|(GIR0AA)$|(\d{5})$|(\d{4}(\d{4})?)$|(\d{4})$|(\d{5})$|(\d{6})$|(\d{5})$|(\d{6})$|(?:SEOUL)*(\d{6})$|(\d{5})$|(\d{5})$|(\d{5})$|(\d{6})$|(\d{4})$|(\d{7})$|(97500)$|(\d{9})$|(\d{7})$|(96940)$|(\d{4})$|((97|98)(4|7|8)\d{2})$|(\d{6})$|(\d{6})$|(\d{6})$|(\d{5})$|(\d{5})$|(?:SE)*(\d{5})$|(\d{6})$|(STHL1ZZ)$|(?:SI)*(\d{4})$|(\d{5})$|4789\d$|(\d{5})$|(?:CP)*(\d{4})$|([A-Z]\d{3})$|(TKCA 1ZZ)$|(\d{5})$|(\d{6})$|(\d{6})$|(\d{4})$|(\d{5})$|(\d{5})$|(986\d{2})$|(\d{5})$|(\d{4})$|(\d{5})$|(\d{5})$|([A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2})$/i;
 
     useEffect(() => {
-        axiosClient.get('/auth/user/').then(({ data }) => {
-            setUser(data);
-        });
+
         axiosClient
             .get("/customers/")
             .then((res) => setListVendeurs(res.data));
@@ -45,7 +44,6 @@ function PersonalInfosCmp() {
     // };
     //edit form submit
     const handleSubmit = (event) => {
-        console.log(User.id)
         // if (!emailRegex.test(User.email)) {
         //     setMessage("Veuillez entrer un email valide.");
         //     return;
@@ -57,14 +55,28 @@ function PersonalInfosCmp() {
 
         const formData = new FormData();
         //formData.append("password", user.password);
-        formData.append("first_name", User.first_name);
-        formData.append("last_name", User.last_name);
-        formData.append("tel", User.tel);
-        if(User.birthday)formData.append("birthday", User.birthday);
-        formData.append("pays", User.pays);
-        formData.append("ville", User.ville);
-        formData.append("rue", User.rue);
-        formData.append("code_postal", User.code_postal);
+        if (firstName) {
+            formData.append("first_name", firstName);
+        }
+        if (lastName) {
+            formData.append("last_name", lastName);
+        }
+        if (tel) {
+            formData.append("tel", tel);
+        }
+        if (birthday) formData.append("birthday", birthday);
+        if (pays) {
+            formData.append("pays", pays);
+        }
+        if (ville) {
+            formData.append("ville", ville);
+        }
+        if (rue) {
+            formData.append("rue", rue);
+        }
+        if (codeP) {
+            formData.append("code_postal", codeP);
+        }
 
         // if (User.first_name.trim() === "" || User.first_name.trim() === "" || (User.ville && User.ville.trim() === "") || (User.rue && User.rue.trim() === "") || (User.code_postal && User.code_postal.trim() === "")) {
         //     setMessage("Veuillez remplir les champs correctement");
@@ -83,11 +95,11 @@ function PersonalInfosCmp() {
         // }
 
         try {
-            axiosClient.put(`/user_update/${User.id}/`, formData).then(() => {
+            axiosClient.put(`/user_update/${user.id}/`, formData).then(() => {
                 setMessage('')
                 toast.success('Profil modifié avec succès', {
                     position: toast.POSITION.TOP_CENTER,
-                    autoClose:4000,
+                    autoClose: 4000,
                 });
             })
         } catch (err) {
@@ -97,7 +109,7 @@ function PersonalInfosCmp() {
     const handleCategoryChange = selectedCategoryId => {
         // Handle the selected category ID here
         console.log('Selected Category ID:', selectedCategoryId);
-      };
+    };
 
     return (
         <div className="col-lg-8">
@@ -109,7 +121,7 @@ function PersonalInfosCmp() {
                             <p className="mb-0">Nom</p>
                         </div>
                         <div className="col-sm-9">
-                            <input placeholder='Entrez votre nom' defaultValue={User.last_name} name='last_name' type="text" onChange={handleInputChange} id="last_name" className="form-control-sm h-50" style={{
+                            <input placeholder='Entrez votre nom' defaultValue={user.last_name} name='last_name' type="text" onChange={(e) => setLastName(e.target.value)} id="last_name" className="form-control-sm h-50" style={{
                                 borderTop: "none",
                                 borderRight: "none",
                                 borderLeft: "none",
@@ -119,7 +131,7 @@ function PersonalInfosCmp() {
                                 backgroundColor: "#f8f9fa57",
                                 "::placeholder": {
                                     color: "lightgray",
-                                  }
+                                }
                             }} />
 
                         </div>
@@ -130,7 +142,7 @@ function PersonalInfosCmp() {
                             <p className="mb-0">Prenom</p>
                         </div>
                         <div className="col-sm-9">
-                            <input placeholder='Entrez votre prénom' defaultValue={User.first_name} name='first_name' type="text" onChange={handleInputChange} id="first_name" className="form-control-sm h-50" style={{
+                            <input placeholder='Entrez votre prénom' defaultValue={user.first_name} name='first_name' type="text" onChange={(e) => setFirstName(e.target.value)} id="first_name" className="form-control-sm h-50" style={{
                                 borderTop: "none",
                                 borderRight: "none",
                                 borderLeft: "none",
@@ -147,7 +159,7 @@ function PersonalInfosCmp() {
                             <p className="mb-0">Mail</p>
                         </div>
                         <div className="col-sm-9">
-                        <input placeholder='Entrez votre mail' defaultValue={User.email}  type="email" id="email" className="form-control form-control-sm h-50"  style={{border:"none"}}/>
+                        <input placeholder='Entrez votre mail' defaultValue={user.email}  type="email" id="email" className="form-control form-control-sm h-50"  style={{border:"none"}}/>
                         </div>
                     </div> */}
                     <br />
@@ -156,7 +168,7 @@ function PersonalInfosCmp() {
                             <p className="mb-0">Phone</p>
                         </div>
                         <div className="col-sm-9" >
-                            <input placeholder='Numéro' defaultValue={User.tel} type="tel" name='tel' onChange={handleInputChange} id="tel" className="form-control-sm h-50" style={{
+                            <input placeholder='Numéro' defaultValue={user.tel} type="tel" name='tel' onChange={(e) => setTel(e.target.value)} id="tel" className="form-control-sm h-50" style={{
                                 borderTop: "none",
                                 borderRight: "none",
                                 borderLeft: "none",
@@ -173,7 +185,7 @@ function PersonalInfosCmp() {
                             <p className="mb-0">Date de naissance</p>
                         </div>
                         <div className="col-sm-9">
-                            <input defaultValue={User.birthday} name='birthday' onChange={handleInputChange} type="date" id="birthday" className="form-control-sm h-50" style={{
+                            <input defaultValue={user.birthday} name='birthday' onChange={(e) => setBirthday(e.target.value)} type="date" id="birthday" className="form-control-sm h-50" style={{
                                 borderTop: "none",
                                 borderRight: "none",
                                 borderLeft: "none",
@@ -197,7 +209,7 @@ function PersonalInfosCmp() {
                                     <p className="mb-0">Pays</p>
                                 </div>
                                 <div className="col-md-4 mb-2 mb-md-0">
-                                    <input placeholder='Entrez votre pays' defaultValue={User.pays} name="pays" onChange={handleInputChange} type="text" id="pays" className="form-control-sm h-50" style={{
+                                    <input placeholder='Entrez votre pays' defaultValue={user.pays} name="pays" onChange={(e) => setPays(e.target.value)} type="text" id="pays" className="form-control-sm h-50" style={{
                                         borderTop: "none",
                                         borderRight: "none",
                                         borderLeft: "none",
@@ -212,7 +224,7 @@ function PersonalInfosCmp() {
                                     <p className="mb-0">Ville</p>
                                 </div>
                                 <div className="col-md-3">
-                                    <input placeholder='Entrez votre ville' defaultValue={User.ville} name="ville" onChange={handleInputChange} type="text" id="ville" className="form-control-sm h-50" style={{
+                                    <input placeholder='Entrez votre ville' defaultValue={user.ville} name="ville" onChange={(e) => setVille(e.target.value)} type="text" id="ville" className="form-control-sm h-50" style={{
                                         borderTop: "none",
                                         borderRight: "none",
                                         borderLeft: "none",
@@ -231,7 +243,7 @@ function PersonalInfosCmp() {
                                     <p className="mb-0">Rue</p>
                                 </div>
                                 <div className="col-md-4 mb-2 mb-md-0">
-                                    <input placeholder='Entrez votre rue' defaultValue={User.rue} name="rue" onChange={handleInputChange} type="text" id="rue" className="form-control-sm h-50" style={{
+                                    <input placeholder='Entrez votre rue' defaultValue={user.rue} name="rue" onChange={(e) => setRue(e.target.value)} type="text" id="rue" className="form-control-sm h-50" style={{
                                         borderTop: "none",
                                         borderRight: "none",
                                         borderLeft: "none",
@@ -246,7 +258,7 @@ function PersonalInfosCmp() {
                                     <p className="mb-0">Code Postal</p>
                                 </div>
                                 <div className="col-md-3">
-                                    <input placeholder='Entrez votre code postale' defaultValue={User.code_postal} name="code_postal" onChange={handleInputChange} type="text" id="code_postal" className="form-control-sm h-50" style={{
+                                    <input placeholder='Entrez votre code postale' defaultValue={user.code_postal} name="code_postal" onChange={(e) => setCodeP(e.target.value)} type="text" id="code_postal" className="form-control-sm h-50" style={{
                                         borderTop: "none",
                                         borderRight: "none",
                                         borderLeft: "none",
@@ -260,13 +272,13 @@ function PersonalInfosCmp() {
                         </div>
                     </div>
                     <div className='text-end'>
-                    <button type="button" className="btn btn-sm btn-outline-success mt-2 px-3 py-1 " onClick={handleSubmit} style={{ position: 'relative' }}>
-                                    Enregistrer
-                                </button>
-                                
+                        <button type="button" className="btn btn-sm btn-outline-success mt-2 px-3 py-1 " onClick={handleSubmit} style={{ position: 'relative' }}>
+                            Enregistrer
+                        </button>
+
                     </div>
                     <ToastContainer />
-                    
+
                 </div>
             </div>
         </div>

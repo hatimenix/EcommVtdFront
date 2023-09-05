@@ -4,20 +4,17 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useStateContext } from '../../context/ContextProvider';
 
 function SecurityProfile() {
-    const [User, setUser] = useState([]);
+    const { user } = useStateContext();
     //password variables
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState()
 
-    useEffect(() => {
-        axiosClient.get('/auth/user/').then(({ data }) => {
-            setUser(data);
-        });
-    }, []);
+   
     const isPasswordValid = (password) => {
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*_|èàç()/."';:,?ù])[0-9a-zA-Z@#$%^&+=!*_|èàç()/."';:,?ù]{8,}$/;
         const specialchar = /[@#$%^&+=!*_|èàç()/."';:,?ù]/;
@@ -64,7 +61,7 @@ function SecurityProfile() {
             return;
         }
         axiosClient
-            .put(`/change_password/${User.id}/`, {
+            .put(`/change_password/${user.id}/`, {
                 old_password: oldPassword,
                 new_password: newPassword,
                 confirm_password: confirmPassword
@@ -96,7 +93,7 @@ function SecurityProfile() {
                             <p className="mb-4"><span className="text-primary font-italic me-1">Gestion email</span></p>
                             <div className="row">
                                 <div className="col-sm-8">
-                                    <p class="h4" className="mb-0">{User.email}</p>
+                                    <p class="h4" className="mb-0">{user.email}</p>
                                 </div>
                                 <div className="col-sm-4 text-end">
                                 <button type="button" class="btn btn-sm btn-outline-success">Modifier</button>
