@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { resetSelectedCategory, selectCategory } from '../store/slices/categoriesSlice';
-import { setArticles } from '../store/slices/articlesSlice';
-import { fetchArticles, fetchArticlesByCategory } from '../services/fetchData';
+import { resetSelectedCategory, selectCategory } from '../../store/slices/categoriesSlice';
+import { setArticles } from '../../store/slices/articlesSlice';
+import { fetchArticles, fetchArticlesByCategory } from '../../services/fetchData';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import '../assets/css/catnav.css';
+import '../../assets/css/catnav.css';
 
-const CatNav = () => {
+const NestedNav = () => {
     const categories = useSelector((state) => state.categorie.categories);
     const selectedCategory = useSelector((state) => state.categorie.selectedCategory);
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Hook to handle navigation
-    const params = useParams(); // Hook to get URL parameters
+    const navigate = useNavigate();
+    const params = useParams();
 
 
 
@@ -35,21 +35,19 @@ const CatNav = () => {
         if (categoryLevel === 2) {
             const selectedCat = categories.find((category) => category.id_cat === categoryId);
             dispatch(selectCategory({ id_cat: categoryId }));
-            dispatch(fetchArticlesByCategory(categoryId)); // Fetch articles for the selected category
+            dispatch(fetchArticlesByCategory(categoryId));
             navigate(`/category/${categoryId}`);
-            window.location.reload() // Navigate to the category path
+            window.location.reload()
 
         }
     };
 
     const reloadAllArticles = async () => {
         try {
-            localStorage.removeItem('selectedCategory'); // Remove selected category from localStorage
+            localStorage.removeItem('selectedCategory');
 
-            // Reset the selected category
             dispatch(resetSelectedCategory());
             navigate(`/`);
-            // Fetch all articles again
             window.location.reload()
 
 
@@ -110,7 +108,7 @@ const CatNav = () => {
                             className={`category-title`}
                             onClick={() => handleCategoryClick(parentCategory.id_cat)}
                         >
-                            {parentCategory.level !== 0 && ( // Check the level before rendering the icon
+                            {parentCategory.level !== 0 && (
                                 <span className="category-icon">
                                     <img src={parentCategory.icon} />
                                 </span>
@@ -125,4 +123,4 @@ const CatNav = () => {
     );
 };
 
-export default CatNav;
+export default NestedNav;

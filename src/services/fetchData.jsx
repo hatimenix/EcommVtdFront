@@ -28,6 +28,13 @@ export const fetchArticles = async () => {
     return response.data;
 };
 
+export const fetchArticlesRec = async () => {
+    const response = await axios.get(`${BASE_URL}tracked-articles/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
+
 export const fetchArticleById = createAsyncThunk(
     'article/fetchById',
     async (articleId, thunkAPI) => {
@@ -73,15 +80,15 @@ export const fetchReviews = async () => {
 
 
 export const fetchProperties = async () => {
-  try {
-    const response = await axios.get(`${BASE_URL}properties/`, {
-      withCredentials: true,
-    });
-      return response.data;
-  } catch (error) {
-    console.error('Error fetching properties:', error);
-    return [];
-  }
+    try {
+        const response = await axios.get(`${BASE_URL}properties/`, {
+            withCredentials: true,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching properties:', error);
+        return [];
+    }
 };
 
 

@@ -11,7 +11,7 @@ import ArticleGridDsTwo from "./ArticleGridDsTwo";
 import HeroSliderTen from "../../wrappers/hero-slider/HeroSliderTen";
 import { useLocation } from "react-router-dom";
 import { fetchUser } from "../../store/slices/userSlice";
-import { useCurrentUserSelector } from "../../store/selectors/selectors";
+import { useArticleSelector, useCategorySelector, useCurrentUserSelector, useRecSelector } from "../../store/selectors/selectors";
 
 const ArticleGridDs = ({ limit }) => {
     const dispatch = useDispatch();
@@ -21,13 +21,27 @@ const ArticleGridDs = ({ limit }) => {
     const iArticles = useSelector((state) => state.article.articles);
     const iCategories = useSelector((state) => state.categorie.categories);
 
+    const __articlesRec = useArticleSelector();
+    const __categoriesRec = useCategorySelector();
+
+    const __recs = useRecSelector()
+    console.log("recs", __recs);
+
+
+
+
+
+    // const correspondingArticle = __articlesRec.find(article => article.id === idToFind);
+
+
+
+
+
+
+
     const csts = useSelector((state) => state.cst.csts);
     const location = useLocation();
 
-    console.log("all articles : ", articles);
-
-
-    console.log("current location , ", location.pathname);
 
 
     const str = location.pathname;
@@ -73,7 +87,6 @@ const ArticleGridDs = ({ limit }) => {
     }
 
 
-    console.log("catId", catId);
 
 
     const selectedCat = categories.find((category) => category.id_cat === lastCharacter || category.id_cat === catId);
@@ -84,7 +97,6 @@ const ArticleGridDs = ({ limit }) => {
     const [catTitle, setCatTitle] = useState("");
 
 
-    console.log('current path === ', cRoad);
 
 
     useEffect(() => {
@@ -97,13 +109,16 @@ const ArticleGridDs = ({ limit }) => {
     console.log(catTitle);
 
 
-    const currentUser = useCurrentUserSelector()
+    const currentuser = useSelector((state) => state.user);
 
     useEffect(() => {
         dispatch(fetchUser());
     }, [dispatch]);
 
-    console.log('current user status ', currentUser.is_seller);
+    // console.log('cuser', userData);
+
+
+    // console.log('current user status ', currentUser.is_seller);
 
 
     return (
@@ -127,8 +142,15 @@ const ArticleGridDs = ({ limit }) => {
                             // positionClass="text-center"
                             spaceClass="mb-20 mt-80"
                         />
-                        <p>{currentUser.first_name}</p>
-
+                        {/* <div className="row five-column">
+                            <ArticleGridDsTwo
+                                articles={iArticles}
+                                categories={iCategories}
+                                csts={csts}
+                                limit={limit}
+                                spaceBottomClass="mb-25"
+                            />
+                        </div> */}
 
 
                         {cRoad !== '/' ?

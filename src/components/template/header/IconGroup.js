@@ -104,7 +104,7 @@ const IconGroup = ({ iconWhiteClass }) => {
             <div className="same-style header-compare d-none d-lg-block d-md-block">
               <Link to={process.env.PUBLIC_URL + "/compare"}>
                 <i className="pe-7s-bell" />
-                <span className="count-style">
+                <span className="count-style text-center align-items-center">
                   1
                   {compareItems && compareItems.length ? compareItems.length : 0}
                 </span>
@@ -150,12 +150,18 @@ const IconGroup = ({ iconWhiteClass }) => {
                 {/* Dropdown menu items */}
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
                   <Link to={process.env.PUBLIC_URL + "/profil"}>
-                    My account
+                    Mon profil
                   </Link>
                 </Dropdown.Item >
-                <Link onClick={onLogout}>
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
-                    Logout
+                  <Link to={process.env.PUBLIC_URL + "/gestion-profil"}>
+                    Mes paramètres
+                  </Link>
+                </Dropdown.Item >
+                
+                <Link onClick={onLogout}>
+                <Dropdown.Item style={{ backgroundColor: "transparent" ,color:'red'}}>
+                    Se déconnecter
                   
                 </Dropdown.Item>
                 </Link>

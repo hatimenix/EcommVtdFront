@@ -3,12 +3,12 @@ import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import ArticleGridDs from "../../components/article-archetype/ArticleGridDs";
 import HeroSliderTen from "../../wrappers/hero-slider/HeroSliderTen";
-import CatNav from "../../components/CatNav";
+import CatNav from "../../components/nav-archetype/NavState";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../../store/slices/categoriesSlice";
 import { fetchArticlesByCategory } from "../../services/fetchData";
-import NestedMenuNavbar from "../../components/NestedMenuNavBar";
+import NestedNav from "../../components/nav-archetype/NavState";
 
 const Home = () => {
 
@@ -31,8 +31,7 @@ const Home = () => {
         headerPaddingClass="header-padding-1"
       >
 
-        <CatNav />
-        {/* <NestedMenuNavbar /> */}
+        <NestedNav />
         <HeroSliderTen />
 
 

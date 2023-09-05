@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import articleReducer from './slices/articlesSlice';
 import categorieReducer from './slices/categoriesSlice';
 import favoriReducer from './slices/favoriteSlice';
@@ -11,6 +11,8 @@ import reviewReducer from './slices/reviewsSlice';
 import replieReducer from './slices/repliesSlice';
 import propertiesReducer from './slices/propertiesSlice';
 import userReducer from './slices/userSlice';
+import firstNameMiddleware from './middlewares/userMiddleware';
+import recReducer from './slices/articlesRecSlice';
 
 
 const store = configureStore({
@@ -26,10 +28,12 @@ const store = configureStore({
         review: reviewReducer,
         replie: replieReducer,
         propertie: propertiesReducer,
-        user: userReducer
+        user: userReducer,
+        rec: recReducer
 
 
     },
+    middleware: [...getDefaultMiddleware(), firstNameMiddleware],
 
 });
 

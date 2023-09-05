@@ -22,3 +22,6 @@ export const useCurrentUserSelector = () => {
 };
 
 
+export const useRecSelector = () => {
+    return useSelector((state) => state.rec.recs);
+};
