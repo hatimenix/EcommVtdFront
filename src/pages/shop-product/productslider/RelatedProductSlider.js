@@ -49,17 +49,17 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
   }, [dispatch, articleId]);
 
   // Ensure that currentCategory is correctly assigned or handle null values
-  const currentCategory = currentArticle ? currentArticle.categorie : null;
+  const currentCustomer = currentArticle ? currentArticle.customer_id : null;
 
   // Define an array to store filtered related articles
   // let filteredArticles = [];
 
 useEffect(() => {
   // Fetch related articles by category if the current category is available
-  if (currentCategory) {
+  if (currentCustomer) {
     // Filter articles based on related_article IDs and category
     const filtered = allArticles.filter((article) =>
-      article.categorie === currentCategory && article.id_art !== currentArticle.id_art
+      article.customer_id === currentCustomer && article.id_art !== currentArticle.id_art
     );
 
     // Check if the current article is in the filtered list
@@ -72,7 +72,7 @@ useEffect(() => {
 
     setFilteredArticles(filtered);
   }
-}, [dispatch, currentCategory, currentArticle, allArticles, articleId]);
+}, [dispatch, currentCustomer, currentArticle, allArticles, articleId]);
 
 
   console.log("Filtered Articles (prods):", filteredArticles);

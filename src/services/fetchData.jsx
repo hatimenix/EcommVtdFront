@@ -39,6 +39,21 @@ export const fetchArticleById = createAsyncThunk(
     }
 );
 
+export const fetchBoosts = createAsyncThunk(
+  'boosts/fetchBoosts',
+  async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}boosts/`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching boosts:', error);
+      throw error;
+    }
+  }
+);
+
 export const fetchArticlesdetails = async (id_art) => {
     const response = await axios.get(`${BASE_URL}articles/${id_art}/`, {
         withCredentials: true,

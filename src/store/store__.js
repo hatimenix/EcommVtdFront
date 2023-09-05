@@ -10,7 +10,7 @@ import currencyReducer from './slices/currency-slice';
 import reviewReducer from './slices/reviewsSlice';
 import replieReducer from './slices/repliesSlice';
 import propertiesReducer from './slices/propertiesSlice';
-
+import boostReducer from './slices/boostSlice';
 const store = configureStore({
     reducer: {
         article: articleReducer,
@@ -23,7 +23,9 @@ const store = configureStore({
         currency: currencyReducer,
         review: reviewReducer,
         replie: replieReducer,
-        propertie: propertiesReducer
+        propertie: propertiesReducer,
+        boosts: boostReducer
+
 
 
     },
