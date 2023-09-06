@@ -16,6 +16,7 @@ import MenuCart from "./sub-components/MenuCart";
 import axiosClient, { linkImage } from "../../../axios-client";
 import { Image } from "react-bootstrap";
 import { Dropdown } from 'react-bootstrap';
+import { useStateContext } from "../../../context/ContextProvider";
 
 
 const IconGroup = ({ iconWhiteClass }) => {
@@ -58,15 +59,10 @@ const IconGroup = ({ iconWhiteClass }) => {
   const { compareItems } = useSelector((state) => state.compare);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
-  const [User, setUser] = useState([]);
+  const { user } = useStateContext();
   const [image, setImage] = useState()
 
-  useEffect(() => {
-    axiosClient.get('/auth/user/').then(({ data }) => {
-      setUser(data);
-    });
-
-  }, []);
+  
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
@@ -104,7 +100,7 @@ const IconGroup = ({ iconWhiteClass }) => {
             <div className="same-style header-compare d-none d-lg-block d-md-block">
               <Link to={process.env.PUBLIC_URL + "/compare"}>
                 <i className="pe-7s-bell" />
-                <span className="count-style">
+                <span className="count-style text-center align-items-center">
                   1
                   {compareItems && compareItems.length ? compareItems.length : 0}
                 </span>
@@ -140,7 +136,7 @@ const IconGroup = ({ iconWhiteClass }) => {
             <Dropdown style={{ height: '10px' }} >
               <Dropdown.Toggle variant="none" id="dropdown-basic" style={{ border: "none", boxShadow: "none", padding: 0 }}>
                 <Image roundedCircle
-                  src={image ? image : linkImage + User.image}
+                  src={image ? image : linkImage + user.image}
                   alt="avatar"
                   style={{ width: '30px', height: '30px' }}
                 />
@@ -150,12 +146,18 @@ const IconGroup = ({ iconWhiteClass }) => {
                 {/* Dropdown menu items */}
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
                   <Link to={process.env.PUBLIC_URL + "/profil"}>
-                    My account
+                    Mon profil
                   </Link>
                 </Dropdown.Item >
-                <Link onClick={onLogout}>
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
-                    Logout
+                  <Link to={process.env.PUBLIC_URL + "/gestion-profil"}>
+                    Mes paramètres
+                  </Link>
+                </Dropdown.Item >
+                
+                <Link onClick={onLogout}>
+                <Dropdown.Item style={{ backgroundColor: "transparent" ,color:'red'}}>
+                    Se déconnecter
                   
                 </Dropdown.Item>
                 </Link>

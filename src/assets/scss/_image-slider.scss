@@ -1,14 +1,17 @@
-/*----- 12. image slider style  -----*/
-
 .single-image {
   overflow: hidden;
+
   a {
     img {
-      width: 100%;
+      width: 600px;
+      /* Set the width to 600 pixels */
+      height: 800px;
+      /* Set the height to 800 pixels */
       transition: all 0.5s ease 0s;
       transform: scale(1);
     }
   }
+
   &:hover a img {
     transform: scale(1.1);
   }

@@ -2,20 +2,16 @@ import React, { Fragment, useEffect, useState } from 'react'
 import LayoutOne from '../../layouts/LayoutOne';
 import axiosClient, { linkImage } from '../../axios-client';
 import { useNavigate } from 'react-router-dom';
+import { useStateContext } from '../../context/ContextProvider';
 
 
 function Profile() {
-    const [User, setUser] = useState([]);
-
+    const { user } = useStateContext();
     const [selectedImage, setSelectedImage] = useState()
     const [image, setImage] = useState()
 
 
-    useEffect(() => {
-        axiosClient.get('/auth/user/').then(({ data }) => {
-            setUser(data);
-        });
-    }, []);
+    
 
     const navigate = useNavigate()
 
@@ -31,11 +27,11 @@ function Profile() {
                             <div className="col-lg-4">
                                 <div className="card mb-4" style={{height:"90%"}}>
                                     <div className="card-body text-center">
-                                        <img src={image ? image : linkImage+User.image} alt="avatar"
+                                        <img src={image ? image : linkImage+user.image} alt="avatar"
                                             className="rounded-circle img-fluid" style={{ width: "150px", height: '150px' }} />
-                                        <h5 className="my-3">{User.first_name} {User.last_name}</h5>
-                                        <p className="text-muted mb-1">{User.rue}</p>
-                                        <p className="text-muted mb-4">{`${User.pays}, ${User.ville} ${User.code_postal}`} </p>
+                                        <h5 className="my-3">{user.first_name} {user.last_name}</h5>
+                                        <p className="text-muted mb-1">{user.rue}</p>
+                                        <p className="text-muted mb-4">{`${user.pays}, ${user.ville} ${user.code_postal}`} </p>
 
                                     </div>
                                 </div>
@@ -48,7 +44,7 @@ function Profile() {
                                                 <p className="mb-0">Nom complet</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{User.first_name} {User.last_name}</p>
+                                                <p className="text-muted mb-0">{user.first_name} {user.last_name}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -58,7 +54,7 @@ function Profile() {
                                                 <p className="mb-0">Mail</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{User.email}</p>
+                                                <p className="text-muted mb-0">{user.email}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -67,7 +63,7 @@ function Profile() {
                                                 <p className="mb-0">Telephone</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{User.tel}</p>
+                                                <p className="text-muted mb-0">{user.tel}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -76,7 +72,7 @@ function Profile() {
                                                 <p className="mb-0">Date de naissance</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{User.birthday}</p>
+                                                <p className="text-muted mb-0">{user.birthday}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -85,7 +81,7 @@ function Profile() {
                                                 <p className="mb-0">Sexe</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{User.gender}</p>
+                                                <p className="text-muted mb-0">{user.gender}</p>
                                             </div>
                                         </div>
                                         <div className='col-sm-12 text-end'>

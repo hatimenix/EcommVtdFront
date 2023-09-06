@@ -1,12 +1,14 @@
 import PropTypes from "prop-types";
-import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getProductCartQuantity } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import { addToCart } from "../../store/slices/cart-slice";
 import { addToWishlist } from "../../store/slices/wishlist-slice";
 import { addToCompare } from "../../store/slices/compare-slice";
+import { setProperties } from "../../store/slices/propertiesSlice";
+import { fetchProperties } from "../../services/fetchData";
+import { Link } from "react-router-dom"; // Add this import
 
 const ProductDescriptionInfo = ({
   product,
@@ -18,36 +20,88 @@ const ProductDescriptionInfo = ({
   wishlistItem,
   compareItem,
 }) => {
+  const properties = useSelector((state) => state.propertie.properties);
   const dispatch = useDispatch();
-  const [selectedProductColor, setSelectedProductColor] = useState(
-    product.variation ? product.variation[0].color : ""
-  );
-  const [selectedProductSize, setSelectedProductSize] = useState(
-    product.variation ? product.variation[0].size[0].name : ""
-  );
-  const [productStock, setProductStock] = useState(
-    product.variation ? product.variation[0].size[0].stock : product.stock
-  );
+
+  const [selectedColor, setSelectedColor] = useState(""); // Initialize with an empty string
+  const [selectedSize, setSelectedSize] = useState("");   // Initialize with an empty string
+
+
+  useEffect(() => {
+    fetchProperties()
+      .then((prop) => {
+        dispatch(setProperties(prop));
+      })
+      .catch((error) => {
+        console.error("Error fetching properties:", error);
+      });
+  }, [dispatch]);
+
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [productStock, setProductStock] = useState(product.stock);
   const [quantityCount, setQuantityCount] = useState(1);
 
   const productCartQty = getProductCartQuantity(
     cartItems,
     product,
-    selectedProductColor,
-    selectedProductSize
+    selectedProperty ? selectedProperty.couleur : "",
+    selectedProperty ? selectedProperty.taille : ""
   );
+
+  // Function to handle property selection
+  const handlePropertyChange = (property) => {
+    setSelectedProperty(property);
+    setProductStock(property.stock);
+    setQuantityCount(1);
+  };
+
+  // Filter properties based on the current product's article ID
+  const filteredProperties = properties.filter(
+    (property) => property.article === product.id_art
+  );
+
+  // Group properties by their key (e.g., taille, couleur)
+  const groupProperties = () => {
+    const groupedProps = {};
+    if (filteredProperties) {
+      filteredProperties.forEach((property) => {
+        for (const [key, value] of Object.entries(property)) {
+          if (
+            key !== "id_pro" &&
+            key !== "article" &&
+            typeof value === "string" &&
+            !value.includes("Out of Stock")
+          ) {
+            if (!groupedProps[key]) {
+              groupedProps[key] = [];
+            }
+            if (
+              !groupedProps[key].includes(value) &&
+              !value.includes("DEFAULT VALUE")
+            ) {
+              groupedProps[key].push(value);
+            }
+          }
+        }
+      });
+    }
+    return groupedProps;
+  };
+
+  // Get the grouped properties
+  const groupedProps = groupProperties();
 
   return (
     <div className="product-details-content ml-70">
       <h2>{product.titre}</h2>
       <div className="product-details-price">
         {discountedPrice !== null ? (
-          <Fragment>
+          <>
             <span>{currency.currencySymbol + product.prix_vente}</span>{" "}
             <span className="old">
               {currency.currencySymbol + product.price}
             </span>
-          </Fragment>
+          </>
         ) : (
           <span>{currency.currencySymbol + product.price} </span>
         )}
@@ -64,76 +118,31 @@ const ProductDescriptionInfo = ({
       <div className="pro-details-list">
         <p>{product.description}</p>
       </div>
-
-      {product.variation ? (
-        <div className="pro-details-size-color">
-          <div className="pro-details-color-wrap">
-            <span>Color</span>
-            <div className="pro-details-color-content">
-              {product.variation.map((single, key) => {
-                return (
-                  <label
-                    className={`pro-details-color-content--single ${single.color}`}
-                    key={key}
-                  >
-                    <input
-                      type="radio"
-                      value={single.color}
-                      name="product-color"
-                      checked={
-                        single.color === selectedProductColor ? "checked" : ""
-                      }
-                      onChange={() => {
-                        setSelectedProductColor(single.color);
-                        setSelectedProductSize(single.size[0].name);
-                        setProductStock(single.size[0].stock);
-                        setQuantityCount(1);
-                      }}
-                    />
-                    <span className="checkmark"></span>
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-          <div className="pro-details-size">
-            <span>Size</span>
-            <div className="pro-details-size-content">
-              {product.variation &&
-                product.variation.map(single => {
-                  return single.color === selectedProductColor
-                    ? single.size.map((singleSize, key) => {
-                        return (
-                          <label
-                            className={`pro-details-size-content--single`}
-                            key={key}
-                          >
-                            <input
-                              type="radio"
-                              value={singleSize.name}
-                              checked={
-                                singleSize.name === selectedProductSize
-                                  ? "checked"
-                                  : ""
-                              }
-                              onChange={() => {
-                                setSelectedProductSize(singleSize.name);
-                                setProductStock(singleSize.stock);
-                                setQuantityCount(1);
-                              }}
-                            />
-                            <span className="size-name">{singleSize.name}</span>
-                          </label>
-                        );
-                      })
-                    : "";
-                })}
-            </div>
-          </div>
+      {product.categorie ? (
+        <div className="pro-details-meta">
+          <span>Categories :</span>
+          <ul>
+            {/* Render a single category */}
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
+                {product.categorie}
+              </Link>
+            </li>
+          </ul>
         </div>
       ) : (
         ""
       )}
+
+      <div className="product-properties"> {/* Add the CSS class */}
+        {/* Render product properties */}
+        {Object.entries(groupedProps).map(([key, values]) => (
+          <div key={key} className="pro-details-meta">
+            <span>{key}:</span> {values.join(", ")}
+          </div>
+        ))}
+      </div>
+
       {product.affiliateLink ? (
         <div className="pro-details-quality">
           <div className="pro-details-cart btn-hover ml-0">
@@ -178,20 +187,20 @@ const ProductDescriptionInfo = ({
           </div>
           <div className="pro-details-cart btn-hover">
             {productStock && productStock > 0 ? (
-              <button
-                onClick={() =>
-                  dispatch(addToCart({
-                    ...product,
-                    quantity: quantityCount,
-                    selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
-                    selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null
-                  }))
-                }
-                disabled={productCartQty >= productStock}
-              >
-                {" "}
-                Add To Cart{" "}
-              </button>
+            <button
+              onClick={() =>
+                dispatch(addToCart({
+                  ...product,
+                  quantity: quantityCount,
+                  selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
+                  selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
+                }))
+              }
+              disabled={productCartQty >= productStock}
+            >
+              {" "}
+              Add To Cart{" "}
+            </button>
             ) : (
               <button disabled>Out of Stock</button>
             )}
@@ -226,20 +235,6 @@ const ProductDescriptionInfo = ({
           </div>
         </div>
       )}
-          {product.categorie ? (
-            <div className="pro-details-meta">
-              <span>Category :</span>
-              <ul>
-                <li key={product.categorie.id}>
-                  <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
-                    {product.categorie}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          ) : (
-            ""
-          )}
       {product.tag ? (
         <div className="pro-details-meta">
           <span>Tags :</span>
