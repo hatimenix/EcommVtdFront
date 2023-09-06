@@ -18,7 +18,12 @@ import { Image } from "react-bootstrap";
 import { Dropdown } from 'react-bootstrap';
 import { useStateContext } from "../../../context/ContextProvider";
 
-
+const styles = `
+.my-modal {
+    max-width: 500px; /* Adjust this value to your preference */
+    padding: 10px;
+}
+`;
 const IconGroup = ({ iconWhiteClass }) => {
   const handleClick = e => {
     e.currentTarget.nextSibling.classList.toggle("active");
@@ -55,14 +60,14 @@ const IconGroup = ({ iconWhiteClass }) => {
     localStorage.removeItem("REFRESH_TOKEN");
     navigate('/')
   };
-  
+
   const { compareItems } = useSelector((state) => state.compare);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useStateContext();
   const [image, setImage] = useState()
 
-  
+
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
@@ -89,7 +94,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         </> :
         <>
           <div className="d-flex align-items-center mt-2" style={{ marginRight: "6%" }}>
-          <div className="same-style header-compare d-none d-lg-block d-md-block">
+            <div className="same-style header-compare d-none d-lg-block d-md-block">
               <Link to={process.env.PUBLIC_URL + "/compare"}>
                 <i className="pe-7s-chat" />
                 <span className="count-style">
@@ -154,12 +159,12 @@ const IconGroup = ({ iconWhiteClass }) => {
                     Mes paramètres
                   </Link>
                 </Dropdown.Item >
-                
+
                 <Link onClick={onLogout}>
-                <Dropdown.Item style={{ backgroundColor: "transparent" ,color:'red'}}>
+                  <Dropdown.Item style={{ backgroundColor: "transparent", color: 'red' }}>
                     Se déconnecter
-                  
-                </Dropdown.Item>
+
+                  </Dropdown.Item>
                 </Link>
               </Dropdown.Menu>
             </Dropdown>
@@ -184,8 +189,8 @@ const IconGroup = ({ iconWhiteClass }) => {
           </ul>
         </div> */}
           </div>
-          <div  className="row d-flex align-items-center d-none d-lg-block d-md-block"  style={{ width: "100%%" }}>
-            <Button className="col-6 " style={{ fontSize: "12px", width: "70px", height:"fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" >sell now</Button>
+          <div className="row d-flex align-items-center d-none d-lg-block d-md-block" style={{ width: "100%%" }}>
+            <Button className="col-6 " style={{ fontSize: "12px", width: "70px", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" >sell now</Button>
           </div>
           <div className="same-style header-compare  d-flex align-items-center d-none d-lg-block d-md-block " style={{ marginLeft: "6%" }}><FiHelpCircle style={{ fontSize: "20px", color: "gray" }} /></div>
         </>
@@ -208,8 +213,10 @@ const IconGroup = ({ iconWhiteClass }) => {
         getActiveState={getActiveState}
       />
 
+      <style>{styles}</style>
 
-      <Modal size="md" show={show} onHide={handleClose}>
+      <Modal dialogClassName="my-modal"
+        size="md" show={show} onHide={handleClose}>
 
         <Modal.Body  >
           <Modal.Header style={{ border: 'none' }} closeButton />

@@ -178,7 +178,6 @@ const Login = () => {
         >
         </div> */}
         <div className="login-register-area ">
-          <div className="container">
             <div className="row">
               <div className="col-lg-12 col-md-12 ms-auto me-auto">
                 <div className="login-register-wrapper">
@@ -382,7 +381,6 @@ const Login = () => {
               </div>
             </div>
           </div>
-        </div>
       </div>
     </Fragment >
   );

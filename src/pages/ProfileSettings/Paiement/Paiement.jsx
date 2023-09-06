@@ -8,13 +8,14 @@ import { useStateContext } from '../../../context/ContextProvider';
 import { FaCcMastercard } from 'react-icons/fa';
 import { RiVisaFill } from 'react-icons/ri';
 import { BsFillCreditCard2BackFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 function Paiement() {
     const [show, setShow] = useState(false);
     const { user } = useStateContext();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
+    const navigate =useNavigate()
     function formatMonthYear(e) {
         const input = e.target;
         let value = input.value;
@@ -109,7 +110,7 @@ function Paiement() {
                 <div className="card-body">
                     <p class="h4" className="mb-0">Méthodes de versement</p>
                 </div>
-                <div className="card-body" style={{ cursor: 'pointer' }}>
+                <div className="card-body" onClick={()=>{ navigate('/wallet')}} style={{ cursor: 'pointer' }}>
                     <div className='row'>
                         <div className="col-sm-10">
                             <p class="h4" className="mb-0">Ajouter compte bancaire</p>
