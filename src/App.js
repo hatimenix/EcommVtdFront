@@ -9,6 +9,7 @@ import Profile from "./pages/ProfileSettings/Profile";
 import ArticleGridDs from "./components/article-archetype/ArticleGridDs";
 import persistanceThroughObjects from "./services/persistFetch";
 import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming this is where your individual Article component is located
+import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -78,6 +79,12 @@ const App = () => {
               path={process.env.PUBLIC_URL + "/category/:categoryId"} // Updated route path
               element={
                 <Home />
+              }
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "wallet"} 
+              element={
+                <Wallet />
               }
             />
 
