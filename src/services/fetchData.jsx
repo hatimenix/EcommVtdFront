@@ -68,6 +68,7 @@ export const fetchReviews = async () => {
 };
 
 
+
 export const fetchCategories = async () => {
     const response = await axios.get(`${BASE_URL}categories/`, {
         withCredentials: true,
@@ -103,7 +104,6 @@ export const fetchPanier = async (id_user) => {
     const response = await axios.get(`${BASE_URL}panier/?search=${id_user}`, {
         withCredentials: true,
     });
-    // console.log("le panier: ", response.data);
     return response.data;
 };
 

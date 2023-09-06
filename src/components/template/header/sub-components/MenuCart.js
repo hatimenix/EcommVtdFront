@@ -10,7 +10,7 @@ const MenuCart = () => {
   const { cartItems } = useSelector((state) => state.cart);
   let cartTotalPrice = 0;
 
-    // console.log('image: ', cartItems);
+    // console.log('le cart item: ', cartItems);
 
 
   return (
@@ -39,7 +39,7 @@ const MenuCart = () => {
                   <div className="shopping-cart-img">
                     <Link to={process.env.PUBLIC_URL + "/product/" + item.id}>
                       <img
-                        alt=""
+                        alt="image non disponible"
                         src={'http://localhost:8000' + item.image[0]}
                         className="img-fluid"
                       />

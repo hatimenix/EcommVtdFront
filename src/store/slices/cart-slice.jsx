@@ -1,16 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import cogoToast from 'cogo-toast';
-import { fetchPanier } from '../../services/fetchData';
+import { fetchPanier, fetchPanierAsync } from '../../services/fetchData';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-
-
-const { createSlice } = require('@reduxjs/toolkit');
-
-const panier = await fetchPanier(1);
-const BASE_URL = 'http://127.0.0.1:8000/';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const id_user = 1
+const panier = await fetchPanier(id_user);
+// console.log("le panier du slice: ", panier);
+const BASE_URL = 'http://127.0.0.1:8000/';
 
 const addPanier = async (dataForm) => {
     try {
@@ -24,20 +21,42 @@ const addPanier = async (dataForm) => {
 
 
 //update le panier
-const updatePanier = async (id_pan, dataForm) => {
+const updatePanier = (id_pan, dataForm) => {
     try {
-        const response = await axios.patch(`${BASE_URL}panier/${id_pan}/`, dataForm);
-        // console.log('updating..............', dataForm);
+        const response = axios.patch(`${BASE_URL}panier/${id_pan}/`, dataForm);
+        console.log('updating..............', response.data);
         return response.data;
     } catch (error) {
         console.error('Error fetching categories:', error);
     }
 };
 
-const retrievePanier = async (id_user) => {
+const retrievePanier = (id_user) => {
     // recuperation du panier
     try {
-        const panier = await fetchPanier(id_user);
+        const panier = fetchPanier(id_user);
+        return panier
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+}
+
+
+
+const deleteCart = async (id_pan) => {
+    // recuperation du panier
+    try {
+        const panier = await axios.delete(`${BASE_URL}panier/${id_pan}/`);
+        return panier
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+    }
+}
+
+const deleteAllCart = async (id_user) => {
+    // recuperation du panier
+    try {
+        const panier = await axios.get(`${BASE_URL}panier/deleteAllCart/?customer=${id_user}`);
         return panier
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -50,7 +69,7 @@ let dataForm = {}
 const cartSlice = createSlice({
     name: 'cart',
     initialState: {
-        cartItems: panier, // Ensure this property is defined
+        cartItems: [], // Ensure this property is defined
     },
     reducers: {
         addToCart(state, action) {
@@ -69,19 +88,18 @@ const cartSlice = createSlice({
 
                     // ajouter le panier
                     addPanier(dataForm)
-                    state.cartItems = retrievePanier(1)
 
                     // console.log("Ajout de l'article: ", state.cartItems)
 
-                    // state.cartItems.push({
-                    //     ...product,
-                    //     quantity: product.quantity ? product.quantity : 1,
-                    //     cartItemId: uuidv4()
-                    // });
+                    state.cartItems.push({
+                        ...product,
+                        quantity: product.quantity ? product.quantity : 1
+                        // cartItemId: uuidv4()
+                    });
 
                 } else {
-                    state.cartItems.map(item => {
-                        if (item.cartItemId === cartItem.cartItemId) {
+                    state.cartItems = state.cartItems.map(item => {
+                        if (item.id_pan === cartItem.id_pan) {
 
                             dataForm = {
                                 "article": product.id_art,
@@ -89,12 +107,16 @@ const cartSlice = createSlice({
                                 "Customer": id_user
                             }
                             console.log("mise à jour de l'article: ", item.id_pan)
+
                             //mettre à jour le panier
                             updatePanier(item.id_pan, dataForm)
-                            state.cartItems = retrievePanier(1)
-
-
+                            return {
+                                ...item,
+                                quantity: product.quantity ? item.quantity + product.quantity : item.quantity + 1
+                            }
                         }
+                        return item;
+
                     })
                 }
 
@@ -120,7 +142,7 @@ const cartSlice = createSlice({
 
             //         // ajout au panier
             //         addPanier(dataForm)
-            //         state.cartItems = retrievePanier(1)
+            // state.cartItems = retrievePanier(1)
 
             //         // state.cartItems.push({
             //         //     ...product,
@@ -138,7 +160,7 @@ const cartSlice = createSlice({
 
             //         // ajout au panier
             //         addPanier(dataForm)
-            //         state.cartItems = retrievePanier(1)
+            // state.cartItems = retrievePanier(1)
 
             //         // state.cartItems = [
             //         //     ...state.cartItems,
@@ -174,17 +196,38 @@ const cartSlice = createSlice({
             cogoToast.success("Added To Cart", { position: "bottom-left" });
         },
         deleteFromCart(state, action) {
-            state.cartItems = state.cartItems.filter(item => item.cartItemId !== action.payload);
+            deleteCart(action.payload)
+            state.cartItems = state.cartItems.filter(item => item.id_pan !== action.payload);
             cogoToast.error("Removed From Cart", { position: "bottom-left" });
         },
         decreaseQuantity(state, action) {
             const product = action.payload;
             if (product.quantity === 1) {
+                //suppression de l'article du panier
+                deleteCart(action.payload.id_pan)
                 state.cartItems = state.cartItems.filter(item => item.cartItemId !== product.cartItemId);
                 cogoToast.error("Removed From Cart", { position: "bottom-left" });
             } else {
+
+                dataForm = {
+                    "article": product.id_art,
+                    "quantity": product.quantity - 1,
+                    "Customer": id_user
+                }
+
+                //mettre à jour le panier
+                updatePanier(product.id_pan, dataForm)
+
+                // retrievePanier(id_user).then(cartData => {
+                //     console.log("ca marche: ", cartData);
+                //     data = cartData
+                //     state.cartItems = cartData;
+                // });
+
+                // console.log("le log data: ", data);
+
                 state.cartItems = state.cartItems.map(item =>
-                    item.cartItemId === product.cartItemId
+                    item.id_pan === product.id_pan
                         ? { ...item, quantity: item.quantity - 1 }
                         : item
                 );
@@ -192,6 +235,7 @@ const cartSlice = createSlice({
             }
         },
         deleteAllFromCart(state) {
+            deleteAllCart(id_user)
             state.cartItems = []
         },
 
@@ -199,6 +243,26 @@ const cartSlice = createSlice({
             state.cartItems = action.payload
         }
     },
+    // extraReducers: (builder) => {
+    //     builder
+    //         .addCase(fetchPanierAsync.fulfilled, (state, action) => {
+    //             state.cartItems = action.payload;
+    //         })
+    //         .addMatcher(
+    //             (action) =>
+    //                 action.type.endsWith('/fulfilled') && action.type.includes('cart/'),
+    //             (state, action) => {
+    //                 // This code block will execute when a successful cart-related action is dispatched
+    //                 // You can put any logic you need here
+    //                 console.log('Cart-related action dispatched:', action);
+    //                 // Dispatch fetchPanierAsync after any successful cart-related action
+    //                 const dispatch = useDispatch(); // Make sure you have access to s
+    //                 );
+    //             }
+    //         );
+    // }
+
+
 });
 
 export const { addToCart, deleteFromCart, decreaseQuantity, deleteAllFromCart, initCart } = cartSlice.actions;
