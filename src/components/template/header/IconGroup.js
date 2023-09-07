@@ -59,6 +59,7 @@ const IconGroup = ({ iconWhiteClass }) => {
     ev.preventDefault();
     localStorage.removeItem("ACCESS_TOKEN");
     localStorage.removeItem("REFRESH_TOKEN");
+    localStorage.removeItem ("cu")
     navigate('/')
   };
 

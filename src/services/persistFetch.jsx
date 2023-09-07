@@ -1,13 +1,21 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
+import { initFavoris } from '../store/slices/wishlist-slice';
+import { useCurrentUserSelector } from '../store/selectors/selectors';
+import { userChanged } from '../store/slices/userSlice';
+// import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
     const dispatch = useDispatch();
+    // const user = useSelector((state) => state.user.userData);
+    // console.log("user..............", user);
+
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,13 +33,21 @@ const usePersistData = () => {
                 console.error('Error fetching categories:', error);
             }
 
-            // recuperation du panier
-            try {
-                const panier = await fetchPanier(1);
-                dispatch(initCart(panier));
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            }
+            // // recuperation du panier
+            // try {
+            //     const panier = await fetchPanier(2);
+            //     dispatch(initCart(panier));
+            // } catch (error) {
+            //     console.error('Error fetching categories:', error);
+            // }
+
+            // // recuperation du favoris
+            // try {
+            //     const favori = await fetchFavori(2);
+            //     dispatch(initFavoris(favori));
+            // } catch (error) {
+            //     console.error('Error fetching categories:', error);
+            // }
 
 
             try {
@@ -40,10 +56,32 @@ const usePersistData = () => {
             } catch (error) {
                 console.error('Error fetching recs:', error);
             }
+
+
+            // fetch user and initialise card and fav
+            try {
+                const recs = await fetchUser();
+                dispatch(userChanged(recs));
+                localStorage.setItem("cu", recs.id)
+                console.log("user identifff..............", recs.id);
+
+                // fetch panier
+                const panier = await fetchPanier(recs.id);
+                dispatch(initCart(panier));
+
+
+                // fetch favoris
+                const favori = await fetchFavori(recs.id);
+                dispatch(initFavoris(favori));
+
+            } catch (error) {
+                console.error('Error fetching recs:', error);
+            }
         };
 
         fetchData();
     }, [dispatch]);
+
 };
 
 export default usePersistData;

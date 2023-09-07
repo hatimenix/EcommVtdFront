@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductCartQuantity } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import { addToCart } from "../../store/slices/cart-slice";
-import { addToWishlist } from "../../store/slices/wishlist-slice";
+import { addToWishlist, initFavoris } from "../../store/slices/wishlist-slice";
 import { addToCompare } from "../../store/slices/compare-slice";
 import { setProperties } from "../../store/slices/propertiesSlice";
-import { fetchProperties } from "../../services/fetchData";
+import { fetchFavori, fetchProperties } from "../../services/fetchData";
 import { Link } from "react-router-dom"; // Add this import
 
 const ProductDescriptionInfo = ({
@@ -36,6 +36,7 @@ const ProductDescriptionInfo = ({
         console.error("Error fetching properties:", error);
       });
   }, [dispatch]);
+
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [productStock, setProductStock] = useState(product.stock);
@@ -189,12 +190,16 @@ const ProductDescriptionInfo = ({
             {productStock && productStock > 0 ? (
             <button
               onClick={() =>
-                dispatch(addToCart({
+                {dispatch(addToCart({
                   ...product,
                   quantity: quantityCount,
                   selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
                   selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
                 }))
+
+              //reloading page
+    window.location.reload();
+              }
               }
               disabled={productCartQty >= productStock}
             >
@@ -214,7 +219,10 @@ const ProductDescriptionInfo = ({
                   ? "Added to wishlist"
                   : "Add to wishlist"
               }
-              onClick={() => dispatch(addToWishlist(product))}
+              onClick={() =>{ dispatch(addToWishlist(product))
+                               //reloading page
+    window.location.reload();
+              }}
             >
               <i className="pe-7s-like" />
             </button>
