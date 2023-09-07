@@ -35,8 +35,9 @@ if (selectedCategory) {
 ReactDOM.render(
   <Provider store={store__}>
     <ContextProvider>
-      <App />
+    <App />
     </ContextProvider>
+    
   </Provider>,
   document.getElementById('root')
 );

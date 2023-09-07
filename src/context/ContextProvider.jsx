@@ -6,8 +6,7 @@ const StateContext = createContext({
   token: null,
   setUser: () => {},
   setToken: () => {},
-  setNotification: () => {},
-  setIsLoading: () => {},
+ 
 });
 
 export const ContextProvider = ({ children }) => {
@@ -16,6 +15,15 @@ export const ContextProvider = ({ children }) => {
   const [refresh, _setRefresh] = useState(
     localStorage.getItem("REFRESH_TOKEN")
   );
+
+  const setToken = (token) => {
+    _setToken(token);
+    if (token) {
+      localStorage.setItem("ACCESS_TOKEN", token);
+    } else {
+      localStorage.removeItem("ACCESS_TOKEN");
+    }
+  }; 
 
   useEffect(() => {
     if (token) {
@@ -29,15 +37,6 @@ export const ContextProvider = ({ children }) => {
         });
     }
   }, [token]);
-
-  const setToken = (token) => {
-    _setToken(token);
-    if (token) {
-      localStorage.setItem("ACCESS_TOKEN", token);
-    } else {
-      localStorage.removeItem("ACCESS_TOKEN");
-    }
-  };
 
 
   const setRefresh = (refresh) => {
@@ -58,6 +57,7 @@ export const ContextProvider = ({ children }) => {
         setToken,
         refresh,
         setRefresh,
+        
       }}
     >
       {children}

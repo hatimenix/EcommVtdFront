@@ -1,0 +1,23 @@
+.centered-floating-list {
+    position: fixed;
+    top: 32%;
+    left: 66%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.centered-floating-list-nf {
+    position: fixed;
+    top: 11%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+}
+
+.scrollable-list {
+    max-height: 400px;
+    /* Adjust the maximum height as needed */
+    overflow-y: auto;
+    /* Enable vertical scrolling when necessary */
+    /* You can add more styles as needed for spacing and appearance */
+}

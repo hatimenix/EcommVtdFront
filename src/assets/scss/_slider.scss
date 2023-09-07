@@ -321,8 +321,8 @@
     display: inline-block;
     visibility: hidden;
 
-    width: 80px;
-    height: 80px;
+    width: 140px;
+    height: 140px;
     padding: 0;
 
     transition: all 0.3s ease 0s;
@@ -330,7 +330,7 @@
     text-align: center;
 
     opacity: 0;
-    color: #999;
+    color: #ffffff;
     border: none;
     background: none;
 
@@ -918,6 +918,8 @@
 
 .slider-content-3 {
   h3 {
+
+    color: #ffffff;
     font-size: 24px;
     font-weight: 500;
 
@@ -937,7 +939,7 @@
 
       content: "";
 
-      background-color: #000000;
+      background-color: #ffffff;
     }
 
     &::after {
@@ -950,7 +952,7 @@
 
       content: "";
 
-      background-color: #000000;
+      background-color: #ffffff;
     }
   }
 
@@ -983,7 +985,7 @@
 
     margin: 0 0 44px;
 
-    color: #010101;
+    color: #ffffff;
   }
 
   .slider-btn {
@@ -997,8 +999,8 @@
 
       text-transform: uppercase;
 
-      color: #010101;
-      border: 1px solid #333;
+      color: #ffffff;
+      border: 1px solid #ffffff;
 
       &:hover {
         color: #fff;

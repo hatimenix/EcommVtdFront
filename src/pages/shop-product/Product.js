@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react"; 
+import React, { Fragment, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 import { fetchArticleById, fetchArticlesdetails } from "../../services/fetchData";
@@ -14,14 +14,14 @@ const Articledetails = () => {
   let { pathname } = useLocation();
   const [detailsarticle, setDetailsArticle] = useState(null); // Initialize as null
   const dispatch = useDispatch();
-  const  articles  = useSelector((state) => state.article.articleDetail);
-  const  categories  = useSelector((state)=> state.article.categorie);
+  const articles = useSelector((state) => state.article.articleDetail);
+  const categories = useSelector((state) => state.article.categorie);
 
-    
-useEffect(() => {
-        dispatch(fetchArticleById(articleId));
-    }, [dispatch, articleId]);
-    
+
+  useEffect(() => {
+    dispatch(fetchArticleById(articleId));
+  }, [dispatch, articleId]);
+
 
   // useEffect(() => {
   //   // Fetch data and update the state
@@ -48,31 +48,31 @@ useEffect(() => {
 
           <LayoutOne headerTop="visible">
             {/* breadcrumb */}
-            <Breadcrumb 
+            <Breadcrumb
               pages={[
-                {label: "Home", path: process.env.PUBLIC_URL + "/" },
-                {label: "Shop Product", path: process.env.PUBLIC_URL + pathname }
-              ]} 
+                { label: "Home", path: process.env.PUBLIC_URL + "/" },
+                { label: "Shop Product", path: process.env.PUBLIC_URL + pathname }
+              ]}
             />
-        {/* product description with image */}
-        <ProductImageDescription
-          spaceTopClass="pt-100"
-          spaceBottomClass="pb-100"
-          product={articles}
-        />
-        {/* product description tab */}
-        <ProductDescriptionTab
-          spaceBottomClass="pb-90"
-          productFullDesc={articles.description}
-        />
+            {/* product description with image */}
+            <ProductImageDescription
+              spaceTopClass="pt-100"
+              spaceBottomClass="pb-100"
+              product={articles}
+            />
+            {/* product description tab */}
+            <ProductDescriptionTab
+              spaceBottomClass="pb-90"
+              productFullDesc={articles.description}
+            />
 
-        {/* related product slider */}
-        {/* <RelatedProductSlider
+            {/* related product slider */}
+            {/* <RelatedProductSlider
           spaceBottomClass="pb-95"
           category={articles.categorie}
         />         */}
 
-          </LayoutOne>    
+          </LayoutOne>
         </Fragment>
       ) : (
         <p>Loading...</p>
