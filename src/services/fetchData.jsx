@@ -149,3 +149,11 @@ export const fetchUser = async () => {
     const response = await axiosClient.get('/auth/user/');
     return response.data;
 };
+
+
+export const fetchPackages = async () => {
+    const response = await axios.get(`${BASE_URL}reduction/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};

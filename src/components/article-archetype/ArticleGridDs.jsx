@@ -10,11 +10,25 @@ import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIconTwo";
 import ArticleGridDsTwo from "./ArticleGridDsTwo";
 import HeroSliderTen from "../../wrappers/hero-slider/HeroSliderTen";
 import { useLocation } from "react-router-dom";
-import { fetchUser } from "../../store/slices/userSlice";
-import { useArticleSelector, useCategorySelector, useCurrentUserSelector, useRecSelector } from "../../store/selectors/selectors";
+import { fetchUser, setUser } from "../../store/slices/userSlice";
+import { useArticleSelector, useCategorySelector, useCurrentUserSelector, usePropsSelectore, useRecSelector } from "../../store/selectors/selectors";
+import ArticleMarqueGrid from "./articles-marque/ArticleMarqueGrid";
 
 const ArticleGridDs = ({ limit }) => {
+
+
+
+
+
+
     const dispatch = useDispatch();
+
+
+
+
+
+
+
     const categories = useSelector((state) => state.categorie.categories);
     const selectedCategory = useSelector((state) => state.categorie.selectedCategory);
     const articles = useSelector((state) => state.article.articles);
@@ -25,26 +39,59 @@ const ArticleGridDs = ({ limit }) => {
     // const __categoriesRec = useCategorySelector();
 
     const __recs = useRecSelector()
-    let targetedArticles = []; // Declare it as an empty array
+
+
+    const __props = usePropsSelectore()
+
+    console.log("props", __props);
+
+    const uniqueArticles = new Set(); // Create a Set to store unique articles
+    const targetedCategories = new Set(); // Create a Set to store unique targeted categories
 
     // If __recs is an array
     if (Array.isArray(__recs)) {
         __recs.forEach(rec => {
-            const correspondingArticle = __articlesRec.find(article => article.id_art === rec.article);
+            __props.forEach(prop => {
 
-            if (correspondingArticle) {
-                targetedArticles.push(correspondingArticle); // Add matching articles to targetedArticles
-            }
-        });
+                const correspondingArticle = __articlesRec.find(article => (article.id_art === rec.article) || (article.id_art === prop.article));
+
+                if (correspondingArticle) {
+                    // Add the article's id or a unique identifier to the Set
+                    uniqueArticles.add(correspondingArticle.id_art);
+                    // Add the article's category to the targetedCategories Set
+                    targetedCategories.add(correspondingArticle.categorie_id);
+                }
+            });
+        })
     } else {
         console.log('Invalid __recs data.');
     }
 
+
+    // Convert the Set back to an array of unique articles
+    const targetedArticles = Array.from(uniqueArticles).map(id_art => {
+        return __articlesRec.find(article => article.id_art === id_art);
+    });
+
+    // Now, you can filter articles from __articlesRec based on the targetedCategories
+    const articlesWithSameCategory = __articlesRec.filter(article => {
+        return targetedCategories.has(article.categorie_id);
+    });
+
+
+    console.log("articlesWithSameCategory", articlesWithSameCategory);
+
     // const correspondingArticle = __articlesRec.find(article => article.id_art === __recs.article);
 
     // console.log('art', correspondingArticle);
+    const currentuser = useSelector((state) => state.user);
 
+    useEffect(() => {
+        dispatch(fetchUser());
+    }, [dispatch]);
 
+    const userHasTargetedArticles = targetedArticles.length > 0;
+    const userHasClickedOnArticle = Array.isArray(__recs) && __recs.some(rec => rec.Customer === currentuser.id);
 
 
 
@@ -118,11 +165,7 @@ const ArticleGridDs = ({ limit }) => {
     console.log(catTitle);
 
 
-    const currentuser = useSelector((state) => state.user);
 
-    useEffect(() => {
-        dispatch(fetchUser());
-    }, [dispatch]);
 
     // console.log('cuser', userData);
 
@@ -131,6 +174,18 @@ const ArticleGridDs = ({ limit }) => {
 
 
     console.log('TargetedARticles ', targetedArticles);
+
+
+
+    const yourProp = currentuser.first_name; // Replace with your actual prop value
+    const yourPayload = [/* Your payload data here */]; // Replace with your payload
+
+    dispatch(setUser(yourProp, yourPayload));
+
+
+
+    localStorage.getItem("number")
+
 
     return (
         <div className="product-area pb-60 section-padding-1">
@@ -146,23 +201,26 @@ const ArticleGridDs = ({ limit }) => {
 
 
                     <>
+                        {userHasTargetedArticles && userHasClickedOnArticle && (
+                            <>
+                                <SectionTitle
+                                    titleText="Recommandé pour toi"
+                                    // subTitleText="Latest arrivals & offers "
+                                    // positionClass="text-center"
+                                    spaceClass="mb-20 mt-80"
+                                />
+                                <div className="row five-column">
+                                    <ArticleGridDsTwo
+                                        articles={articlesWithSameCategory}
+                                        // categories={iCategories}
+                                        csts={csts}
+                                        limit={limit}
+                                        spaceBottomClass="mb-25"
+                                    />
+                                </div>
 
-                        <SectionTitle
-                            titleText="Recommandé pour toi"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-20 mt-80"
-                        />
-                        <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={targetedArticles}
-                                // categories={iCategories}
-                                csts={csts}
-                                limit={limit}
-                                spaceBottomClass="mb-25"
-                            />
-                        </div>
-
+                            </>
+                        )}
 
                         {cRoad !== '/' ?
                             <>
@@ -170,7 +228,7 @@ const ArticleGridDs = ({ limit }) => {
                                     titleText={catTitle}
                                     // subTitleText="Latest arrivals & offers "
                                     // positionClass="text-center"
-                                    spaceClass="mb-20"
+                                    spaceClass="mb-20 mt-40"
                                 />
                                 <div className="row five-column">
                                     <ArticleGridDsTwo
@@ -190,10 +248,22 @@ const ArticleGridDs = ({ limit }) => {
 
 
                         <SectionTitle
+                            titleText="Recherche par marque"
+                            // subTitleText="Latest arrivals & offers "
+                            // positionClass="text-center"
+                            spaceClass="mb-50 mt-30"
+                        />
+
+                        <div className="row five-column">
+                            <ArticleMarqueGrid />
+                        </div>
+
+
+                        <SectionTitle
                             titleText="Fil d'actu"
                             // subTitleText="Latest arrivals & offers "
                             // positionClass="text-center"
-                            spaceClass="mb-20"
+                            spaceClass="mb-50 mt-30"
                         />
 
                         <div className="row five-column">
@@ -202,7 +272,7 @@ const ArticleGridDs = ({ limit }) => {
                                 categories={iCategories}
                                 csts={csts}
                                 limit={limit}
-                                spaceBottomClass="mb-25"
+                                spaceBottomClass="mb-25 "
                             />
                         </div>
 

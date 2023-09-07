@@ -324,6 +324,7 @@ const ArticleGridDsSingleTwo = ({
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 article={article}
+                product={article}
 
             />
         </Fragment>

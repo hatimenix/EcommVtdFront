@@ -14,10 +14,16 @@ const initialState = {
 
 const userSlice = createSlice({
     name: 'user',
-    initialState,
+    initialState: {
+        users: [],
+    },
     reducers: {
         userChanged: (state, action) => {
             state.userData = action.payload;
+        },
+
+        setUser: (state, action) => {
+            state.users = action.payload;
         },
 
     },
@@ -25,10 +31,12 @@ const userSlice = createSlice({
         builder.addCase(fetchUser.fulfilled, (state, action) => {
             return action.payload;
         });
+
+        localStorage.setItem("number", 12565555)
     },
 });
 
-export const {userChanged } = userSlice.actions;
+export const { userChanged, setUser } = userSlice.actions;
 
 
 export default userSlice.reducer;

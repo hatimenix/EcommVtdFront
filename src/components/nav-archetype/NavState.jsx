@@ -39,6 +39,8 @@ const NestedNav = () => {
             navigate(`/category/${categoryId}`);
             window.location.reload()
 
+            console.log("");
+
         }
     };
 

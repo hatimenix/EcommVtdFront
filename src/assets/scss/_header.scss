@@ -571,9 +571,9 @@
   .same-style.cart-wrap,
   .same-style.header-wishlist,
   .same-style.header-compare {
-    margin-left: 18px;
+    margin-left: 15px;
     @media #{$lg-layout} {
-      margin-left: 18px;
+      margin-left: 15px;
     }
     @media #{$md-layout} {
       margin-left: 20px;
@@ -595,17 +595,17 @@
       border: none;
       background: transparent;
       span.count-style {
-        font-size: 10px;
-        line-height: 20px;
+        font-size: 12px;
+        line-height: 21px;
 
         position: absolute;
         top: -9px;
-        right: -8px;
+        right: -14px;
 
         display: inline-block;
 
-        width: 18px;
-        height: 18px;
+        width: 21px;
+        height: 21px;
 
         text-align: center;
 
