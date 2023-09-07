@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import { EffectFade, Thumbs } from 'swiper';
-import { Modal } from "react-bootstrap";
+import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "../article-features/ArticleRating";
 import Swiper, { SwiperSlide } from "../../../components/swiper";
@@ -9,7 +9,7 @@ import Swiper, { SwiperSlide } from "../../../components/swiper";
 // import { addToCart } from "../../store/slices/cart-slice";
 // import { addToWishlist } from "../../store/slices/wishlist-slice";
 // import { addToCompare } from "../../store/slices/compare-slice";
-import './styleModal.scss'
+// import './styleModal.scss'
 function ArticleModal({ product, article, currency, discountedPrice, finalProductPrice, finalDiscountedPrice, show, onHide, wishlistItem, compareItem }) {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const dispatch = useDispatch();
@@ -60,6 +60,26 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
         onHide()
     }
 
+
+    const maxLength = 160; // Set your desired maximum length
+
+    const text = article.description;
+    const shouldShowTooltip = text.length > maxLength;
+
+    const desc = shouldShowTooltip ? `${text.slice(0, maxLength)}...` : text;
+
+
+
+
+    const tooltipContent = shouldShowTooltip ? (
+        <Tooltip >
+            {text}
+        </Tooltip>
+    ) : null;
+
+
+
+
     return (
         <Modal show={show} onHide={onCloseModal} className="product-quickview-modal-wrapper">
             <Modal.Header closeButton></Modal.Header>
@@ -81,6 +101,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                                         src={image.image}
                                                         className="img-fluid"
                                                         alt="Product"
+                                                        style={{ maxHeight: '400px' }}
                                                     />
                                                 </div>
                                             </SwiperSlide>
@@ -132,7 +153,14 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                             </div>
 
                             <div className="pro-details-list">
-                                <p>{article.description}</p>
+
+                                {shouldShowTooltip ? (
+                                    <OverlayTrigger placement="top" overlay={tooltipContent}>
+                                        <span>{desc}</span>
+                                    </OverlayTrigger>
+                                ) : (
+                                    <span>{text}</span>
+                                )}
                             </div>
 
                             {true ? (

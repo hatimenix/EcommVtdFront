@@ -131,3 +131,11 @@ export const fetchPanier = async (id_user) => {
     // console.log("le panier: ", response.data);
     return response.data;
 };
+
+
+export const fetchPackages = async () => {
+    const response = await axios.get(`${BASE_URL}reduction/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};

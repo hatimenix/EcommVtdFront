@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPackages, fetchPanier, fetchProperties } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
+import { setProperties } from '../store/slices/propertiesSlice';
+import { setPackages } from '../store/slices/pkgSlice__';
 
 const usePersistData = () => {
     const dispatch = useDispatch();
@@ -39,6 +41,21 @@ const usePersistData = () => {
                 dispatch(setArticleRec(recs));
             } catch (error) {
                 console.error('Error fetching recs:', error);
+            }
+
+            try {
+                const prp = await fetchProperties();
+                dispatch(setProperties(prp));
+            } catch (error) {
+                console.error('Error fetching props:', error);
+            }
+
+
+            try {
+                const pkg = await fetchPackages();
+                dispatch(setPackages(pkg));
+            } catch (error) {
+                console.error('Error fetching packages:', error);
             }
         };
 

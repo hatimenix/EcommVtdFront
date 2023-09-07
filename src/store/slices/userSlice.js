@@ -9,15 +9,22 @@ export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
 
 const initialState = {
     first_name: '',
+
     // other user properties...
 };
 
 const userSlice = createSlice({
     name: 'user',
-    initialState,
+    initialState: {
+        users: [],
+    },
     reducers: {
         firstNameChanged: (state, action) => {
             state.first_name = action.payload;
+        },
+
+        setUser: (state, action) => {
+            state.users = action.payload;
         },
 
     },
@@ -25,10 +32,25 @@ const userSlice = createSlice({
         builder.addCase(fetchUser.fulfilled, (state, action) => {
             return action.payload;
         });
+
+        localStorage.setItem("number", 12565555)
     },
 });
 
-export const { firstNameChanged } = userSlice.actions;
+
+
+export const setUsersWithProp = (prop, payload) => (dispatch, getState) => {
+    // You can perform any logic with the prop here if needed
+    const modifiedPayload = {
+        prop,
+        users: payload,
+    };
+
+    dispatch(setUser(modifiedPayload));
+};
+
+
+export const { firstNameChanged, setUser } = userSlice.actions;
 
 
 export default userSlice.reducer;

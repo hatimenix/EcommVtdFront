@@ -9,6 +9,7 @@ import Profile from "./pages/ProfileSettings/Profile";
 import ArticleGridDs from "./components/article-archetype/ArticleGridDs";
 import persistanceThroughObjects from "./services/persistFetch";
 import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming this is where your individual Article component is located
+import ArticlePkg__ from "./components/article-archetype/ArticlePkg__";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -81,6 +82,11 @@ const App = () => {
               }
             />
 
+
+            <Route
+              path={process.env.PUBLIC_URL + "/bundles/:articleId"}
+              element={<ArticlePkg__ />}
+            />
 
 
 
