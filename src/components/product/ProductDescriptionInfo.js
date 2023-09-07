@@ -201,7 +201,7 @@ const ProductDescriptionInfo = ({
                   window.location.reload();
                 }
                 }
-                disabled={productCartQty >= productStock}
+                disabled={productCartQty >= productStock || !localStorage.getItem("cu")}
               >
                 {" "}
                 Add To Cart{" "}
@@ -213,7 +213,7 @@ const ProductDescriptionInfo = ({
           <div className="pro-details-wishlist">
             <button
               className={wishlistItem !== undefined ? "active" : ""}
-              disabled={wishlistItem !== undefined}
+              disabled={wishlistItem !== undefined || !localStorage.getItem("cu")}
               title={
                 wishlistItem !== undefined
                   ? "Added to wishlist"
