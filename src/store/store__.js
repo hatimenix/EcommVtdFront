@@ -33,7 +33,7 @@ const store = configureStore({
 
 
     },
-    middleware: [...getDefaultMiddleware(), firstNameMiddleware],
+    // middleware: [...getDefaultMiddleware(), firstNameMiddleware],
 
 });
 
