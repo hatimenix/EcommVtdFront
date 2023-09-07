@@ -11,7 +11,7 @@ import { BsApple } from "react-icons/bs";
 import axios from "axios";
 import GoogleLogin from "react-google-login";
 
-const Login = () => {
+const Login = ({ isSeller }) => {
 
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +43,9 @@ const Login = () => {
         setRefresh(data.refresh)
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
-        navigate('/')
+
+        isSeller ? navigate('/nouveau-article') : window.location.reload()
+
       })
       .catch((err) => {
         const response = err.response;
@@ -178,146 +180,145 @@ const Login = () => {
         >
         </div> */}
         <div className="login-register-area ">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12 col-md-12 ms-auto me-auto">
-                <div className="login-register-wrapper">
-                  <Tab.Container defaultActiveKey="login">
-                    <Nav variant="pills" className="login-register-tab-list">
-                      <Nav.Item>
-                        <Nav.Link eventKey="login">
-                          <motion.h4 initial={{
-                            opacity: 0,
-                            scale: 0.2
-                          }}
-                            animate={{
-                              opacity: 1,
-                              scale: 1
-                            }}>Login</motion.h4>
-                        </Nav.Link>
-                      </Nav.Item>
-                      <Nav.Item>
-                        <Nav.Link eventKey="register">
-                          <motion.h4 initial={{
-                            opacity: 0,
-                            scale: 0.2
-                          }}
-                            animate={{
-                              opacity: 1,
-                              scale: 1
-                            }}>Register</motion.h4>
-                        </Nav.Link>
-                      </Nav.Item>
-                    </Nav>
-                    <Tab.Content>
-                      <Tab.Pane eventKey="login">
-                        <div className="login-form-container" >
-                          {message &&
-                            <div class="alert alert-danger py-2">
-                              <strong className="">Erreur!</strong>{message}
-                            </div>}
-                          <div className="login-register-form">
-                            <form>
-                              <input
-                                className="rounded-3"
-                                name="email"
-                                style={{
-                                  background: '#f8f9fa'
-                                }}
-                                onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Tapez votre adresse email'
-                              />
-                              <input
-                                className="rounded-3"
-                                name="password"
-                                style={{
-                                  background: '#f8f9fa'
-                                }}
-                                onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} placeholder='Tapez votre mot de passe'
-                              />
-                              <div className="button-box">
-                                <div className="login-toggle-btn">
-                                  <input type="checkbox" />
-                                  <label className="ml-10">Remember me</label>
-                                  <Link to={process.env.PUBLIC_URL + "/"}>
-                                    Forgot Password?
-                                  </Link>
-                                </div>
-                                <button onClick={onSubmit} type="submit" className="rounded-3">
-                                  <span>Login</span>
-                                </button>
+          <div className="row">
+            <div className="col-lg-12 col-md-12 ms-auto me-auto">
+              <div className="login-register-wrapper">
+                <Tab.Container defaultActiveKey="login">
+                  <Nav variant="pills" className="login-register-tab-list">
+                    <Nav.Item>
+                      <Nav.Link eventKey="login">
+                        <motion.h4 initial={{
+                          opacity: 0,
+                          scale: 0.2
+                        }}
+                          animate={{
+                            opacity: 1,
+                            scale: 1
+                          }}>Login</motion.h4>
+                      </Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                      <Nav.Link eventKey="register">
+                        <motion.h4 initial={{
+                          opacity: 0,
+                          scale: 0.2
+                        }}
+                          animate={{
+                            opacity: 1,
+                            scale: 1
+                          }}>Register</motion.h4>
+                      </Nav.Link>
+                    </Nav.Item>
+                  </Nav>
+                  <Tab.Content>
+                    <Tab.Pane eventKey="login">
+                      <div className="login-form-container" >
+                        {message &&
+                          <div class="alert alert-danger py-2">
+                            <strong className="">Erreur!</strong>{message}
+                          </div>}
+                        <div className="login-register-form">
+                          <form>
+                            <input
+                              className="rounded-3"
+                              name="email"
+                              style={{
+                                background: '#f8f9fa'
+                              }}
+                              onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Tapez votre adresse email'
+                            />
+                            <input
+                              className="rounded-3"
+                              name="password"
+                              style={{
+                                background: '#f8f9fa'
+                              }}
+                              onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} placeholder='Tapez votre mot de passe'
+                            />
+                            <div className="button-box">
+                              <div className="login-toggle-btn">
+                                <input type="checkbox" />
+                                <label className="ml-10">Remember me</label>
+                                <Link to={process.env.PUBLIC_URL + "/"}>
+                                  Forgot Password?
+                                </Link>
                               </div>
-                              <hr style={{ color: 'lightgray' }} />
-                              <div className="text-center mb-2">
-                                <span>Or log in with</span>
-                              </div>
+                              <button onClick={onSubmit} type="submit" className="rounded-3">
+                                <span>Login</span>
+                              </button>
+                            </div>
+                            <hr style={{ color: 'lightgray' }} />
+                            <div className="text-center mb-2">
+                              <span>Or log in with</span>
+                            </div>
 
-                              <div className="row justify-content-center">
-                                <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    <div className="form-group">
-                                      <FcGoogle style={{ fontSize: 25 }} />
-                                    </div>
-                                    <div className="form-group" style={{ marginLeft: 5 }}>
-                                      <span>Google</span>
-                                    </div>
+                            <div className="row justify-content-center">
+                              <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  <div className="form-group">
+                                    <FcGoogle style={{ fontSize: 25 }} />
                                   </div>
-                                </div>
-                                <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    <div className="form-group">
-                                      <BsApple style={{ fontSize: 25 }} />
-                                    </div>
-                                    <div className="form-group " style={{ marginLeft: 5 }}>
-                                      <span>Apple</span>
-                                    </div>
+                                  <div className="form-group" style={{ marginLeft: 5 }}>
+                                    <span>Google</span>
                                   </div>
                                 </div>
                               </div>
+                              <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  <div className="form-group">
+                                    <BsApple style={{ fontSize: 25 }} />
+                                  </div>
+                                  <div className="form-group " style={{ marginLeft: 5 }}>
+                                    <span>Apple</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
 
-                            </form>
-                          </div>
+                          </form>
                         </div>
-                      </Tab.Pane>
-                      <Tab.Pane eventKey="register">
-                        <div className="login-form-container" >
+                      </div>
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="register">
+                      <div className="login-form-container" >
 
-                          {messageRegister &&
-                            <div class="alert alert-danger py-2">
-                              <strong className="">Erreur!</strong>{messageRegister}
-                            </div>}
-                          <div className="login-register-form">
-                            <form>
-                              <div className="row">
-                                <div className="form-group col-6">
-                                  <input type="text" className="form-control" id="last_name" placeholder="Nom" onChange={(e) => setLastName(e.target.value)} maxLength={20} style={{ background: '#f8f9fa' }} />
-                                </div>
-                                <div className="form-group col-6">
-                                  <input type="text" className="form-control" id="first_name" placeholder="Prenom" onChange={(e) => setFirstName(e.target.value)} maxLength={20} style={{ background: '#f8f9fa' }} />
-                                </div>
+                        {messageRegister &&
+                          <div class="alert alert-danger py-2">
+                            <strong className="">Erreur!</strong>{messageRegister}
+                          </div>}
+                        <div className="login-register-form">
+                          <form>
+                            <div className="row">
+                              <div className="form-group col-6">
+                                <input type="text" className="form-control" id="last_name" placeholder="Nom" onChange={(e) => setLastName(e.target.value)} maxLength={20} style={{ background: '#f8f9fa' }} />
                               </div>
-
-                              <input
-                                className="rounded-3"
-                                type="email"
-                                name="emailRegister"
-                                placeholder="Email"
-                                onChange={(e) => setEmailRegister(e.target.value)}
-                                maxLength={50}
-                                style={{
-                                  background: '#f8f9fa'
-                                }}
-                              />
-                              <div className="row">
-                                <div className="form-group col-6">
-                                  <input type="password" className="form-control" id="password" placeholder="Mot de passe" onChange={(e) => setPasswordRegister(e.target.value)} style={{ background: '#f8f9fa' }} />
-                                </div>
-                                <div className="form-group col-6">
-                                  <input type="password" className="form-control" id="confirmpxd" placeholder="Confirmation" onChange={(e) => setConfirmPwd(e.target.value)} style={{ background: '#f8f9fa' }} />
-                                </div>
+                              <div className="form-group col-6">
+                                <input type="text" className="form-control" id="first_name" placeholder="Prenom" onChange={(e) => setFirstName(e.target.value)} maxLength={20} style={{ background: '#f8f9fa' }} />
                               </div>
+                            </div>
 
-                              {/* <div className="">
+                            <input
+                              className="rounded-3"
+                              type="email"
+                              name="emailRegister"
+                              placeholder="Email"
+                              onChange={(e) => setEmailRegister(e.target.value)}
+                              maxLength={50}
+                              style={{
+                                background: '#f8f9fa'
+                              }}
+                            />
+                            <div className="row">
+                              <div className="form-group col-6">
+                                <input type="password" className="form-control" id="password" placeholder="Mot de passe" onChange={(e) => setPasswordRegister(e.target.value)} style={{ background: '#f8f9fa' }} />
+                              </div>
+                              <div className="form-group col-6">
+                                <input type="password" className="form-control" id="confirmpxd" placeholder="Confirmation" onChange={(e) => setConfirmPwd(e.target.value)} style={{ background: '#f8f9fa' }} />
+                              </div>
+                            </div>
+
+                            {/* <div className="">
                                 <input
                                   className="rounded-3"
                                   type="text"
@@ -330,55 +331,54 @@ const Login = () => {
                                 />
                               </div> */}
 
-                              <div className="row mb-4">
-                                <div className="form-group col-md-6">
-                                  <select style={{ background: '#f8f9fa', fontSize: "14px" }} className="custom-select form-control p-2" onChange={(e) => setGender(e.target.value)} id="inputGroupSelect04">
-                                    <option selected value="">Choisir le genre...</option>
-                                    <option value="Femme">Femme</option>
-                                    <option value="Homme">Homme</option>
-                                  </select>
-                                </div>
+                            <div className="row mb-4">
+                              <div className="form-group col-md-6">
+                                <select style={{ background: '#f8f9fa', fontSize: "14px" }} className="custom-select form-control p-2" onChange={(e) => setGender(e.target.value)} id="inputGroupSelect04">
+                                  <option selected value="">Choisir le genre...</option>
+                                  <option value="Femme">Femme</option>
+                                  <option value="Homme">Homme</option>
+                                </select>
                               </div>
+                            </div>
 
-                              <div className="button-box">
-                                <button type="button" className="rounded-3" onClick={onRegister}>
-                                  <span>Register</span>
-                                </button>
-                              </div>
-                              <hr style={{ color: 'lightgray' }} />
-                              <div className="text-center mb-2">
-                                <span>Or sign up with</span>
-                              </div>
+                            <div className="button-box">
+                              <button type="button" className="rounded-3" onClick={onRegister}>
+                                <span>Register</span>
+                              </button>
+                            </div>
+                            <hr style={{ color: 'lightgray' }} />
+                            <div className="text-center mb-2">
+                              <span>Or sign up with</span>
+                            </div>
 
-                              <div className="row justify-content-center">
-                                <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    <div className="form-group">
-                                      <FcGoogle style={{ fontSize: 25 }} />
-                                    </div>
-                                    <div className="form-group" style={{ marginLeft: 5 }}>
-                                      <span>Google</span>
-                                    </div>
+                            <div className="row justify-content-center">
+                              <div className="col-5 py-1 mx-2" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  <div className="form-group">
+                                    <FcGoogle style={{ fontSize: 25 }} />
                                   </div>
-                                </div>
-                                <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
-                                  <div className="d-flex align-items-center justify-content-center">
-                                    <div className="form-group">
-                                      <BsApple style={{ fontSize: 25 }} />
-                                    </div>
-                                    <div className="form-group " style={{ marginLeft: 5 }}>
-                                      <span>Apple</span>
-                                    </div>
+                                  <div className="form-group" style={{ marginLeft: 5 }}>
+                                    <span>Google</span>
                                   </div>
                                 </div>
                               </div>
-                            </form>
-                          </div>
+                              <div className="col-5 py-1" style={{ border: '1px solid lightgray', borderRadius: '5px' }}>
+                                <div className="d-flex align-items-center justify-content-center">
+                                  <div className="form-group">
+                                    <BsApple style={{ fontSize: 25 }} />
+                                  </div>
+                                  <div className="form-group " style={{ marginLeft: 5 }}>
+                                    <span>Apple</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </form>
                         </div>
-                      </Tab.Pane>
-                    </Tab.Content>
-                  </Tab.Container>
-                </div>
+                      </div>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
               </div>
             </div>
           </div>

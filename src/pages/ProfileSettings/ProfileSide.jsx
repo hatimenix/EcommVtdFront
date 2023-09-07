@@ -10,8 +10,8 @@ import { MdPayment } from "react-icons/md"
 import { Navigate, useNavigate, useHistory } from 'react-router-dom';
 import SecurityProfile from './SecurityProfile';
 import Reduction from './Reduction';
-import Paiement from './Paiement';
 import { useStateContext } from '../../context/ContextProvider';
+import Paiement from './Paiement/Paiement';
 
 
 const LinkItems = [

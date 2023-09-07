@@ -2,13 +2,20 @@ import { Suspense, lazy, useEffect } from "react";
 import ScrollToTop from "./helpers/scroll-top";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
+import Login from "./pages/Authentication/Login";
 import ListeArticles from "./pages/EspaceVendeur/GestionArticles/ListeArticles";
+import NewArticle from "./pages/EspaceVendeur/GestionArticles/NewArticle";
 import Dash from "./pages/EspaceVendeur/Dashboard/Dash";
+import DetailsArticle from "./pages/EspaceVendeur/GestionArticles/DetailsArticle";
+import EditArticle from "./pages/EspaceVendeur/GestionArticles/EditArticle";
+
+
 import ProfileSide from "./pages/ProfileSettings/ProfileSide";
 import Profile from "./pages/ProfileSettings/Profile";
 import ArticleGridDs from "./components/article-archetype/ArticleGridDs";
 import persistanceThroughObjects from "./services/persistFetch";
 import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming this is where your individual Article component is located
+import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -73,11 +80,38 @@ const App = () => {
               element={<Checkout />}
             />
 
+            <Route
+              path={process.env.PUBLIC_URL + "/art"}
+              element={<ArticleGridDs />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/gestion-articles"}
+              element={<ListeArticles />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/nouveau-article"}
+              element={<NewArticle />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/details-article"}
+              element={<DetailsArticle />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/edit-article"}
+              element={<EditArticle />}
+            />
+          
 
             <Route
               path={process.env.PUBLIC_URL + "/category/:categoryId"} // Updated route path
               element={
                 <Home />
+              }
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "wallet"} 
+              element={
+                <Wallet />
               }
             />
 
