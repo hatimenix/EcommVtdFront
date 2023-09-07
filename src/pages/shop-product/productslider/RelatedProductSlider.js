@@ -181,7 +181,7 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
                   <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <CardActions>
                       <Button onClick={() => nav(`/bundles/${firstMatchingPackage.id_red}`)} style={{ color: 'white', backgroundColor: "#008080" }} size="small">Acheter</Button>
-                      <Link to={process.env.PUBLIC_URL + '/bundles/' + firstMatchingPackage.id_red}>test</Link>
+                      {/* <Link to={process.env.PUBLIC_URL + '/bundles/' + firstMatchingPackage.id_red}>test</Link> */}
                     </CardActions>
                   </div>
                 </Card>

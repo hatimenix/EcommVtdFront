@@ -39,11 +39,7 @@ const store = configureStore({
 
 
     },
-<<<<<<< HEAD
-    middleware: [...getDefaultMiddleware(), firstNameMiddleware, recsMiddleware],
-=======
     // middleware: [...getDefaultMiddleware(), firstNameMiddleware],
->>>>>>> b12f9bf005ebf4d61932ad8a04320758cb2f4b6a
 
 });
 

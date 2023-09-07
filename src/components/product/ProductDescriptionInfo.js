@@ -188,24 +188,24 @@ const ProductDescriptionInfo = ({
           </div>
           <div className="pro-details-cart btn-hover">
             {productStock && productStock > 0 ? (
-            <button
-              onClick={() =>
-                {dispatch(addToCart({
-                  ...product,
-                  quantity: quantityCount,
-                  selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
-                  selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
-                }))
+              <button
+                onClick={() => {
+                  dispatch(addToCart({
+                    ...product,
+                    quantity: quantityCount,
+                    selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
+                    selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
+                  }))
 
-              //reloading page
-    window.location.reload();
-              }
-              }
-              disabled={productCartQty >= productStock}
-            >
-              {" "}
-              Add To Cart{" "}
-            </button>
+                  //reloading page
+                  window.location.reload();
+                }
+                }
+                disabled={productCartQty >= productStock}
+              >
+                {" "}
+                Add To Cart{" "}
+              </button>
             ) : (
               <button disabled>Out of Stock</button>
             )}
@@ -219,9 +219,10 @@ const ProductDescriptionInfo = ({
                   ? "Added to wishlist"
                   : "Add to wishlist"
               }
-              onClick={() =>{ dispatch(addToWishlist(product))
-                               //reloading page
-    window.location.reload();
+              onClick={() => {
+                dispatch(addToWishlist(product))
+                //reloading page
+                window.location.reload();
               }}
             >
               <i className="pe-7s-like" />

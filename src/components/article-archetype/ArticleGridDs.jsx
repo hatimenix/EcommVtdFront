@@ -12,6 +12,7 @@ import HeroSliderTen from "../../wrappers/hero-slider/HeroSliderTen";
 import { useLocation } from "react-router-dom";
 import { fetchUser, setUser } from "../../store/slices/userSlice";
 import { useArticleSelector, useCategorySelector, useCurrentUserSelector, usePropsSelectore, useRecSelector } from "../../store/selectors/selectors";
+import ArticleMarqueGrid from "./articles-marque/ArticleMarqueGrid";
 
 const ArticleGridDs = ({ limit }) => {
 
@@ -244,6 +245,18 @@ const ArticleGridDs = ({ limit }) => {
                             : <></>
 
                         }
+
+
+                        <SectionTitle
+                            titleText="Recherche par marque"
+                            // subTitleText="Latest arrivals & offers "
+                            // positionClass="text-center"
+                            spaceClass="mb-50 mt-30"
+                        />
+
+                        <div className="row five-column">
+                            <ArticleMarqueGrid />
+                        </div>
 
 
                         <SectionTitle

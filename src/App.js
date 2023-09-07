@@ -15,11 +15,8 @@ import Profile from "./pages/ProfileSettings/Profile";
 import ArticleGridDs from "./components/article-archetype/ArticleGridDs";
 import persistanceThroughObjects from "./services/persistFetch";
 import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming this is where your individual Article component is located
-<<<<<<< HEAD
 import ArticlePkg__ from "./components/article-archetype/ArticlePkg__";
-=======
 import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
->>>>>>> b12f9bf005ebf4d61932ad8a04320758cb2f4b6a
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
