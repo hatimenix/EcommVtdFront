@@ -29,6 +29,7 @@ const IconGroup = ({ iconWhiteClass }) => {
     e.currentTarget.nextSibling.classList.toggle("active");
   };
   const [show, setShow] = useState(false);
+  const [isSeller, setIsSeller] = useState(false)
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -88,7 +89,10 @@ const IconGroup = ({ iconWhiteClass }) => {
         <>
           <div className="row " style={{ width: "100%%" }}>
             <Button onClick={handleShow} className="col-6" style={{ fontSize: "12px", width: "fit-content", color: "teal", borderColor: "teal", backgroundColor: "transparent" }} size="sm" >SignUp | Login</Button>
-            <Button className="col-6 " style={{ fontSize: "12px", width: "fit-content", marginLeft: 5, backgroundColor: "teal", border: "none" }} size="sm" >sell now</Button>
+            <Button className="col-6 " style={{ fontSize: "12px", width: "fit-content", marginLeft: 5, backgroundColor: "teal", border: "none" }} size="sm" onClick={()=>{
+              setIsSeller(true)
+              handleShow()
+            }}>sell now</Button>
           </div>
           <div className="same-style header-compare " style={{ marginLeft: "6%" }}><FiHelpCircle style={{ fontSize: "20px", color: "gray" }} /></div>
         </> :
@@ -190,7 +194,9 @@ const IconGroup = ({ iconWhiteClass }) => {
         </div> */}
           </div>
           <div className="row d-flex align-items-center d-none d-lg-block d-md-block" style={{ width: "100%%" }}>
-            <Button className="col-6 " style={{ fontSize: "12px", width: "70px", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" >sell now</Button>
+            <Button className="col-6 " style={{ fontSize: "12px", width: "70px", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" onClick={()=>{
+              navigate('/nouveau-article')
+            }}>sell now</Button>
           </div>
           <div className="same-style header-compare  d-flex align-items-center d-none d-lg-block d-md-block " style={{ marginLeft: "6%" }}><FiHelpCircle style={{ fontSize: "20px", color: "gray" }} /></div>
         </>
@@ -220,7 +226,7 @@ const IconGroup = ({ iconWhiteClass }) => {
 
         <Modal.Body  >
           <Modal.Header style={{ border: 'none' }} closeButton />
-          <Login />
+          <Login isSeller={isSeller}/>
         </Modal.Body>
       </Modal>
     </div>
