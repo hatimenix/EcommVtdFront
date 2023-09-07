@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Dropdown, DropdownButton, Form } from 'react-bootstrap'
 import axiosClient from '../../axios-client';
+import { useStateContext } from '../../context/ContextProvider';
 
 function Reduction() {
     const [showSecondCard, setShowSecondCard] = useState(false);
     const [listReduction, setListReduction] = useState([])
     const [reductionAtribute, setReductionAtribute] = useState([])
-    const [User, setUser] = useState([]);
+    const { user } = useStateContext();
     const [etatReduction, setEtatReduction] = useState();
     const [reductionId, setReductionId] = useState(null);
     const [reduction2, setReduction2] = useState();
@@ -16,33 +17,29 @@ function Reduction() {
  
     useEffect(() => {
         async function fetchData() {
-            try {
-                const res = await axiosClient.get(`/reduction/?search=${User.id}`);
+            
+                const res = await axiosClient.get(`/reduction/?search=${user.id}`);
                 if (res.data.length > 0) {
                     const reductionData = res.data[0];
                     setListReduction(reductionData);
                     setEtatReduction(reductionData.etat);
-                    setReductionId(reductionData.id);
+                    setReductionId(reductionData.id_red);
                     setReductionAtribute(reductionData.reduction);
                     setReduction2(reductionData.reduction[0].pourcentage);
                     setReduction3(reductionData.reduction[1].pourcentage);
                     setReduction5(reductionData.reduction[2].pourcentage);
+                    
                 } else {
                     setEtatReduction(false);
                 }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
         }
         fetchData();
-        axiosClient.get('/auth/user/').then(({ data }) => {
-            setUser(data);
-        });
-    }, []);
+        
+    }, [reductionId]);
 
     const update = async () => {
         try {
-            const res = await axiosClient.get(`/reduction/?search=${User.id}`);
+            const res = await axiosClient.get(`/reduction/?search=${user.id}`);
             if (res.data.length > 0) {
                 const reductionData = res.data[0];
                 setListReduction(reductionData);
@@ -64,7 +61,7 @@ function Reduction() {
 
             if (listReduction.length === 0) {
                 // If no existing reduction, create a new one
-                formData.append('seller', User.id);
+                formData.append('seller', user.id);
                 formData.append('reduction', JSON.stringify([
                     {
                         "nbr_article": 2,
@@ -81,7 +78,8 @@ function Reduction() {
                 ]));                
                 await axiosClient.post('/reduction/', formData);
             } else {
-                await axiosClient.patch(`/reduction/49/`, formData);
+                console.log(user.id)
+                await axiosClient.patch(`/reduction/${reductionId}/`, formData);
             }
 
             // Update the state after the request is successful
@@ -104,7 +102,7 @@ function Reduction() {
         try {
             const formData = new FormData();
             formData.append('reduction', JSON.stringify(newReduction));
-            await axiosClient.patch(`/reduction/49/`, formData);
+            await axiosClient.patch(`/reduction/${reductionId}/`, formData);
             update();
         } catch (error) {
             console.error('Error updating reduction:', error);
@@ -127,7 +125,7 @@ function Reduction() {
         try {
             const formData = new FormData();
             formData.append('reduction', JSON.stringify(newReduction));
-            await axiosClient.patch(`/reduction/49/`, formData);
+            await axiosClient.patch(`/reduction/${reductionId}/`, formData);
             update();
         } catch (error) {
             console.error('Error updating reduction:', error);
@@ -150,7 +148,7 @@ function Reduction() {
         try {
             const formData = new FormData();
             formData.append('reduction', JSON.stringify(newReduction));
-            await axiosClient.patch(`/reduction/49/`, formData);
+            await axiosClient.patch(`/reduction/${reductionId}/`, formData);
             update();
         } catch (error) {
             console.error('Error updating reduction:', error);

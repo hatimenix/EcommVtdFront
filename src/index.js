@@ -15,6 +15,7 @@ import ReactDOM from 'react-dom';
 
 import store__ from './store/store__';
 import { selectCategory } from "./store/slices/categoriesSlice";
+import { ContextProvider } from "./context/ContextProvider";
 
 
 const selectedCategory = JSON.parse(localStorage.getItem('selectedCategory'));
@@ -24,7 +25,7 @@ if (selectedCategory) {
 // const container = document.getElementById('root');
 // const root = createRoot(container);
 // root.render(
-  
+
 //     <Provider store={store}>
 //       <PersistProvider>
 //         <App />
@@ -33,7 +34,10 @@ if (selectedCategory) {
 
 ReactDOM.render(
   <Provider store={store__}>
+    <ContextProvider>
     <App />
+    </ContextProvider>
+    
   </Provider>,
   document.getElementById('root')
 );
