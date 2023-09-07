@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import LayoutOne from "../../../layouts/LayoutOne";
 import django from "../GestionArticles/django.png";
-import { AiFillCloseCircle, AiOutlinePlus } from "react-icons/ai";
+import { AiFillCloseCircle, AiOutlineExclamationCircle, AiOutlinePlus } from "react-icons/ai";
 import { FaTimes } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { LiaTimesSolid } from "react-icons/lia";
@@ -201,8 +201,14 @@ function NewArticle() {
           {/* Ajout des images */}
           <div className="bg-gray p-4 m-3 rounded">
             <div className="mb-5 font-mono">
-              <span style={{ fontFamily: "cursive", color: "gray" }}>
-                Ajoutez jusqu'à 6 images
+              <span style={{ fontFamily: "cursive", color: "gray",display:'flex',alignItems:'center' }}>
+                Ajoutez jusqu'à 6 images <AiOutlineExclamationCircle style={{
+                  marginLeft:5,
+                    fontSize: 18,
+                    color: '#80808085',
+                    display : [selectedImageList.length === 0 ? 'block' : 'none']
+                  }} />
+                  
               </span>
             </div>
             {/* {images.map((val, key) => {
@@ -596,6 +602,14 @@ function NewArticle() {
                 <div className="input col-md-6" style={{
                   position: 'relative'
                 }}>
+                  <AiOutlineExclamationCircle style={{
+                    position: 'absolute',
+                    fontSize: 18,
+                    color: '#80808085',
+                    top: '14px',
+                    left: '16px',
+                    display : [!titre_Article ? 'block' : 'none']
+                  }} />
                   <input
                     type="text"
                     className="input-lg"
@@ -606,6 +620,7 @@ function NewArticle() {
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
                       paddingRight: 52,
+                      paddingLeft: [!titre_Article ? '25px' : '5px']
                     }}
                     onChange={(e) => setTitre_Article(e.target.value)}
                     maxlength="50"
@@ -627,6 +642,14 @@ function NewArticle() {
                 <div className="input col-md-6" style={{
                   position: 'relative'
                 }}>
+                  <AiOutlineExclamationCircle style={{
+                    position: 'absolute',
+                    fontSize: 18,
+                    color: '#80808085',
+                    top: '14px',
+                    left: '16px',
+                    display : [!description ? 'block' : 'none']
+                  }} />
                   <textarea
                     class="input"
                     id="exampleFormControlTextarea1"
@@ -636,6 +659,7 @@ function NewArticle() {
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
                       paddingRight: 52,
+                      paddingLeft: [!description ? '25px' : '5px']
                     }}
                     onChange={(e) => setDescription(e.target.value)}
                     maxLength={100}
@@ -675,6 +699,14 @@ function NewArticle() {
                   className="input col-md-6 "
                   style={{ position: "relative" }}
                 >
+                <AiOutlineExclamationCircle style={{
+                  position: 'absolute',
+                  fontSize: 18,
+                  color: '#80808085',
+                  top: '14px',
+                  left: '16px',
+                  display : [!titleCat ? 'block' : 'none']
+                }} />
                   <input
                     type="text"
                     className="input-lg"
@@ -686,6 +718,7 @@ function NewArticle() {
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
                       cursor: "pointer",
+                      paddingLeft: [!titleCat ? '25px' : '5px']
                     }}
                     onClick={() => {
                       setOpenCategories(!openCategories);
@@ -820,9 +853,16 @@ function NewArticle() {
                 <div className="titre col-md-6 d-none d-md-block">
                   <h5>Stock</h5>
                 </div>
-                <div className="input col-md-6" style={{
-                  position:'relative'
-                }}>
+                <div className="input col-md-6"
+                  style={{ position: "relative" }}>
+                <AiOutlineExclamationCircle style={{
+                  position: 'absolute',
+                  fontSize: 18,
+                  color: '#80808085',
+                  top: '14px',
+                  left: '16px',
+                  display : [!stock ? 'block' : 'none']
+                }} />
                   <input
                     type="number"
                     min={0}
@@ -833,9 +873,10 @@ function NewArticle() {
                     style={{
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
+                      paddingLeft: [!stock ? '25px' : '5px']
                     }}
                     onChange={(e) => setStock(e.target.value)}
-                    // maxLength={5}
+                  // maxLength={5}
                   />
                 </div>
               </div>
@@ -849,7 +890,17 @@ function NewArticle() {
                 <div className="titre col-md-6 d-none d-md-block">
                   <h5>Prix de vente</h5>
                 </div>
-                <div className="input col-md-6">
+                <div className="input col-md-6" style={{
+                  position:'relative'
+                }}>
+                  <AiOutlineExclamationCircle style={{
+                    position: 'absolute',
+                    fontSize: 18,
+                    color: '#80808085',
+                    top: '14px',
+                    left: '16px',
+                    display : [!prix_Vente? 'block' : 'none']
+                  }} />
                   <input
                     type="number"
                     min={0}
@@ -860,6 +911,7 @@ function NewArticle() {
                     style={{
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
+                      paddingLeft: [!prix_Vente ? '25px' : '5px']
                     }}
                     onChange={(e) => setPrix_Vente(e.target.value)}
                   />
@@ -871,8 +923,13 @@ function NewArticle() {
           {/* Colis */}
           <div className="bg-gray p-4 m-3 rounded">
             <div className="mb-3 font-mono">
-              <span style={{ fontFamily: "cursive", color: "gray" }}>
-                Sélectionnez la taille de votre colis
+              <span style={{ fontFamily: "cursive", color: "gray",display:'flex',alignItems:'center' }}>
+                Sélectionnez la taille de votre colis <AiOutlineExclamationCircle style={{
+                  marginLeft:5,
+                    fontSize: 18,
+                    color: '#80808085',
+                    display : [!colis ? 'block' : 'none']
+                  }} />
               </span>
             </div>
             <div className="container">
@@ -1051,9 +1108,15 @@ function NewArticle() {
             display: 'flex',
             justifyContent: 'right',
           }}>
-            <button className="btn-add" onClick={AddArticle}>
-              Ajouter
-            </button>
+            {(selectedImageList.length === 0 || !titre_Article || !description || !titleCat || !stock || !prix_Vente || !colis)
+              ?
+              <button className="btn-add" title={`Veuillez remplir les champs obligatoires !`} disabled>
+                Ajouter
+              </button>
+              :
+              <button className="btn-add" onClick={AddArticle}>
+                Ajouter
+              </button>}
           </div>
         </div>
       </LayoutOne>

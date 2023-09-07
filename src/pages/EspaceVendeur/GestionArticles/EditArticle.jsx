@@ -64,12 +64,12 @@ function NewArticle() {
         setListArticles(res.data);
         setColis(res.data.forme_colis);
         setBoosters(res.data?.is_booster)
+        setLoadingInputs(false)
 
       });
       setBooster(boosters)
-      setLoadingInputs(false)
     }
-  }, [boosters]);
+  }, [boosters, user.id]);
 
   useEffect(() => {
     const list = [];
@@ -133,7 +133,7 @@ function NewArticle() {
     if (booster?.toString()) {
       formData.append("is_booster", booster);
     }
-    formData.append("customer_id", 1);
+    formData.append("customer_id", user.id);
 
     axiosClient.patch(`/articles/${location.state.id_art}/`, formData);
 
@@ -299,7 +299,7 @@ function NewArticle() {
     <Fragment>
       <LayoutOne onClick={() => setOpenCategories(!openCategories)}>
         <div className="container">
-          <h3>Vendre un article</h3>
+          <h3>Modifier l'article</h3>
           {/* Ajout des images */}
           <div className="bg-gray p-4 m-3 rounded">
             <div className="mb-5 font-mono">
@@ -1235,9 +1235,15 @@ function NewArticle() {
             display: 'flex',
             justifyContent: 'right',
           }}>
-            <button className="btn-add" onClick={changeImageArticl}>
-              Modifier
-            </button>
+            {(selectedImageList.length === 0)
+              ?
+              <button className="btn-add" disabled>
+                Modifier
+              </button>
+              :
+              <button className="btn-add" onClick={changeImageArticl}>
+                Modifier
+              </button>}
           </div>
         </div>
       </LayoutOne>

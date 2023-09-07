@@ -25,15 +25,17 @@ function ListeArticles() {
   const [listArticle, setListArticle] = useState([]);
   const [emptyListMessage, setEmptyListMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState('encours')
 
   useEffect(() => {
     axiosClient.get("/articles/").then((res) => {
-      setListArticle(res.data.filter((e) => e.customer_id === 1).sort().reverse());
-      if (res.data.filter((e) => e.customer_id === 1).length < 1) {
-        setEmptyListMessage("Votre store est vide");
+      if (res.data) {
+        setListArticle(res.data.filter((e) => e.customer_id === user.id).sort().reverse());
+        setIsLoading('false')
       }
-      setIsLoading(false)
+      else {
+        setIsLoading('true')
+      }
     });
   }, [user.id]);
 
@@ -61,6 +63,7 @@ function ListeArticles() {
         row.prix_vente.toString().includes(search.toString()) ||
         row.forme_colis.toLowerCase().includes(search.toLocaleLowerCase())
       );
+
     });
   }, [listArticle, search]);
 
@@ -82,11 +85,25 @@ function ListeArticles() {
           <div className="container">
             <Fragment>
               <div
-                className="d-flex justify-content-end btn-hover"
+                className="d-flex justify-content-end"
               // style={{ display: "flex", justifyContent: "end" }}
               >
                 <button
-                  className="py-2 px-3 bg-white border-1"
+                  className="py-2 px-3"
+                  style={{
+                    borderRadius:10,
+                    color:'#17b2b0',
+                    border:'1px solid #17b2b0',    
+                    backgroundColor:'white'                
+                  }}
+                  onMouseEnter={e=>{
+                    e.target.style.color = 'white'
+                    e.target.style.backgroundColor = '#17b2b0'
+                  }}
+                  onMouseLeave={e=>{
+                    e.target.style.color = '#17b2b0'
+                    e.target.style.backgroundColor = 'white'
+                  }}
                   onClick={() => {
                     navigate("/nouveau-article");
                   }}
@@ -109,8 +126,8 @@ function ListeArticles() {
                       placeholder="Recherche"
                       style={{
                         paddingLeft: 30,
-                        borderRadius:5,
-                        width:'100%'
+                        borderRadius: 5,
+                        width: '100%'
                       }}
                       onMouseEnter={(e) => {
                         e.target.style.paddingLeft = "10px";
@@ -160,7 +177,7 @@ function ListeArticles() {
                         </thead>
                         <tbody>
 
-                          {isLoading && (
+                          {isLoading === 'encours' && (
                             <>
                               <tr>
                                 <td><Skeleton style={{
@@ -207,14 +224,14 @@ function ListeArticles() {
                                   <td>{val.forme_colis}</td>
                                   <td className="p-0">
                                     <div className="" style={{
-                                      display:'flex',
-                                      justifyContent:'space-evenly'
+                                      display: 'flex',
+                                      justifyContent: 'space-evenly'
                                     }}>
                                       <TbListDetails
                                         style={{
                                           cursor: "pointer",
                                           fontSize: 25,
-                                          color:'#6c757d9e'
+                                          color: '#6c757d9e'
                                         }}
                                         onClick={() => {
                                           navigate("/details-article", {
@@ -229,7 +246,7 @@ function ListeArticles() {
                                           cursor: "pointer",
                                           marginInline: 4,
                                           fontSize: 25,
-                                          color:'#0f720f9c'
+                                          color: '#0f720f9c'
                                         }}
                                         onClick={() => {
                                           navigate("/edit-article", {
@@ -244,7 +261,7 @@ function ListeArticles() {
                                           cursor: "pointer",
                                           marginTop: 2,
                                           fontSize: 25,
-                                          color:'#ff000078'
+                                          color: '#ff000078'
                                         }}
                                         onClick={() => {
                                           setDeleted_id(val.id_art);
@@ -258,6 +275,11 @@ function ListeArticles() {
                             );
                           })}
                         </tbody>
+                        {isLoading !== 'encours' && filtredData().length === 0 &&
+                          <tr>
+                            <td colSpan={9}>vide</td>
+                          </tr>
+                        }
                       </table>
                     )}
                   </div>
