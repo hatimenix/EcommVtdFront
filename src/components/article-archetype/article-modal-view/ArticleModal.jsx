@@ -297,7 +297,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                                     window.location.reload();
                                                 }
                                                 }
-                                            // disabled={productCartQty >= productStock}
+                                                disabled={quantityCount > productStock || !localStorage.getItem('cu')}
                                             >
                                                 {" "}
                                                 Add To Cart{" "}
@@ -309,7 +309,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                     <div className="pro-details-wishlist">
                                         <button
                                             className={wishlistItem !== undefined ? "active" : ""}
-                                            disabled={wishlistItem !== undefined}
+                                            disabled={wishlistItem !== undefined || !localStorage.getItem('cu')}
                                             title={
                                                 wishlistItem !== undefined
                                                     ? "Added to wishlist"
