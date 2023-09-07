@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import SEO from "../../components/seo";
@@ -7,6 +7,10 @@ import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { addToCart, decreaseQuantity, deleteFromCart, deleteAllFromCart } from "../../store/slices/cart-slice";
 import { cartItemStock } from "../../helpers/product";
+import { fetchPanier } from "../../services/fetchData";
+
+
+
 
 const Cart = () => {
   let cartTotalPrice = 0;
@@ -17,7 +21,8 @@ const Cart = () => {
   
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
-  // console.log('image: ', cartItems[0].image[0]);
+  console.log('image: ', cartItems);
+
 
   return (
     <Fragment>
@@ -77,8 +82,8 @@ const Cart = () => {
                                   <Link
                                     to={
                                       process.env.PUBLIC_URL +
-                                      "/product/" +
-                                      cartItem.id
+                                      "/articles/" +
+                                      cartItem.id_art
                                     }
                                   >
                                     <img
@@ -97,8 +102,8 @@ const Cart = () => {
                                   <Link
                                     to={
                                       process.env.PUBLIC_URL +
-                                      "/product/" +
-                                      cartItem.id
+                                      "/articles/" +
+                                      cartItem.id_art
                                     }
                                   >
                                     {cartItem.titre}
@@ -143,7 +148,7 @@ const Cart = () => {
                                     <button
                                       className="dec qtybutton"
                                       onClick={() =>
-                                        dispatch(decreaseQuantity(cartItem))
+                                          dispatch(decreaseQuantity(cartItem))
                                       }
                                     >
                                       -
@@ -192,7 +197,7 @@ const Cart = () => {
                                 <td className="product-remove">
                                   <button
                                     onClick={() =>
-                                      dispatch(deleteFromCart(cartItem.cartItemId))
+                                      dispatch(deleteFromCart(cartItem.id_pan))
                                     }
                                   >
                                     <i className="fa fa-times"></i>
