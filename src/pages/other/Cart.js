@@ -9,6 +9,9 @@ import { addToCart, decreaseQuantity, deleteFromCart, deleteAllFromCart } from "
 import { cartItemStock } from "../../helpers/product";
 import { fetchPanier } from "../../services/fetchData";
 
+
+
+
 const Cart = () => {
   let cartTotalPrice = 0;
 
@@ -19,6 +22,7 @@ const Cart = () => {
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
   console.log('image: ', cartItems);
+
 
   return (
     <Fragment>

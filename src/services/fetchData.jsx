@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setArticles } from '../store/slices/articlesSlice';
+import axiosClient from '../axios-client';
 
 const BASE_URL = 'http://127.0.0.1:8000/';
 
@@ -138,6 +139,13 @@ export const fetchFavori = async (id_user) => {
     const response = await axios.get(`${BASE_URL}favoris/?search=${id_user}`, {
         withCredentials: true,
     });
-    // console.log("le panier: ", response.data);
+    console.log("le panier: ", response.data);
+    return response.data;
+};
+
+
+// get user
+export const fetchUser = async () => {
+    const response = await axiosClient.get('/auth/user/');
     return response.data;
 };

@@ -2,14 +2,12 @@ import cogoToast from 'cogo-toast';
 import { fetchFavori } from '../../services/fetchData';
 import axios from 'axios';
 
+const id_user = parseInt(localStorage.getItem("cu"))
 
 const { createSlice } = require('@reduxjs/toolkit');
 
 // const favoris = await fetchFavori(1);
 const BASE_URL = 'http://127.0.0.1:8000/';
-
-const id_user = 1
-
 const addFavoris = async (dataForm) => {
     try {
         const response = await axios.post(`${BASE_URL}favoris/`, dataForm);
@@ -23,7 +21,7 @@ const addFavoris = async (dataForm) => {
 
 //delete le Favoris
 const deleteFavoris = async (id_pan) => {
-    try {
+    try     {
         const response = await axios.delete(`${BASE_URL}favoris/${id_pan}/`);
         // console.log('updating..............', dataForm);
         return response.data;
@@ -78,7 +76,7 @@ const wishlistSlice = createSlice({
 
                 // ajouter à la liste
                 addFavoris(dataForm)
-                state.wishlistItems.push(action.payload)
+                // state.wishlistItems.push(action.payload)
                 cogoToast.success("Added To wishlist", {position: "bottom-left"});
             }
             

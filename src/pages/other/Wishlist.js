@@ -16,6 +16,7 @@ const Wishlist = () => {
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
   
+  console.log("voici la wishlist");
 
   return (
     <Fragment>

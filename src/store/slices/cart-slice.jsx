@@ -4,10 +4,11 @@ import { fetchPanier, fetchPanierAsync } from '../../services/fetchData';
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const id_user = 1
-const panier = await fetchPanier(id_user);
-// console.log("le panier du slice: ", panier);
+
+
 const BASE_URL = 'http://127.0.0.1:8000/';
+
+
 
 const addPanier = async (dataForm) => {
     try {
@@ -75,9 +76,10 @@ const cartSlice = createSlice({
         addToCart(state, action) {
             const product = action.payload;
             if (product.id_art) {
-                const cartItem = state.cartItems.find(item => item.id_art === product.id_art);
-                // console.log("le produit et l'article: ", product)
+                const id_user = localStorage.getItem("cu")
+                // console.log("le log du user actuel:", id_user);
 
+                const cartItem = state.cartItems.find(item => item.id_art === product.id_art);
                 if (!cartItem) {
 
                     dataForm = {
@@ -91,11 +93,11 @@ const cartSlice = createSlice({
 
                     // console.log("Ajout de l'article: ", state.cartItems)
 
-                    state.cartItems.push({
-                        ...product,
-                        quantity: product.quantity ? product.quantity : 1
-                        // cartItemId: uuidv4()
-                    });
+                    // state.cartItems.push({
+                    //     ...product,
+                    //     quantity: product.quantity ? product.quantity : 1
+                    //     // cartItemId: uuidv4()
+                    // });
 
                 } else {
                     state.cartItems = state.cartItems.map(item => {
@@ -201,6 +203,11 @@ const cartSlice = createSlice({
             cogoToast.error("Removed From Cart", { position: "bottom-left" });
         },
         decreaseQuantity(state, action) {
+
+            const id_user = localStorage.getItem("cu")
+            console.log("le log du user actuel:", id_user);
+
+
             const product = action.payload;
             if (product.quantity === 1) {
                 //suppression de l'article du panier
@@ -235,6 +242,9 @@ const cartSlice = createSlice({
             }
         },
         deleteAllFromCart(state) {
+            const id_user = localStorage.getItem("cu")
+            // console.log("le log du user actuel:", id_user);
+
             deleteAllCart(id_user)
             state.cartItems = []
         },
