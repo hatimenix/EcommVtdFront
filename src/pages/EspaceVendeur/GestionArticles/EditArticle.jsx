@@ -13,10 +13,19 @@ import small_box from "../GestionArticles/Icons/small_box.png";
 
 import "./style_newArticle.css";
 import axiosClient from "../../../axios-client";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
+
+import ReactLoading from 'react-loading';
+import { ContextProvider, useStateContext } from "../../../context/ContextProvider";
 
 function NewArticle() {
   const location = useLocation();
+  const navigate = useNavigate()
+
+  const { user } = useStateContext()
 
   const [image, setImage] = useState();
   const [imageListe, setimageListe] = useState([]);
@@ -37,39 +46,67 @@ function NewArticle() {
   const [stock, setStock] = useState();
   const [prix_Vente, setPrix_Vente] = useState();
   const [colis, setColis] = useState("");
-  const [booster, setBooster] = useState(false);
+  const [booster, setBooster] = useState();
+  const [boosters, setBoosters] = useState();
+
+  const [isLoadingImages, setIsLoadingImages] = useState(true)
+  const [loadingInputs, setLoadingInputs] = useState(true)
+
+  useEffect(() => {
+
+    if (user.id) {
+
+      axiosClient.get("/categories/").then((res) => {
+        setListCategories(res.data);
+      });
+
+      axiosClient.get(`/articles/${location.state.id_art}/`).then((res) => {
+        setListArticles(res.data);
+        setColis(res.data.forme_colis);
+        setBoosters(res.data?.is_booster)
+
+      });
+      setBooster(boosters)
+      setLoadingInputs(false)
+    }
+  }, [boosters]);
 
   useEffect(() => {
     const list = [];
-
-    axiosClient.get("/categories/").then((res) => {
-      setListCategories(res.data);
-    });
-
-    axiosClient.get(`/articles/${location.state.id_art}/`).then((res) => {
-      setListArticles(res.data);
-      setColis(res.data.forme_colis);
-    });
     axiosClient
       .get(`/article-images/?search=${location.state.id_art}`)
       .then((res) => {
+        console.log('reeeeeeeeeeeess dataaaaaaaaaa : ', res.data);
         for (let index = 0; index < res.data.length; index++) {
           list.push(res.data[index].image);
           setSelectedImageList(list);
           setimageListe(list);
         }
+        setIsLoadingImages(false)
       });
-  }, []);
+  }, [])
 
   const handleChangeImage = (e) => {
     const image = e.target.files;
-    const selectedImage = Array.from(image);
-    const ArrayImage = selectedImage.map((file) => {
-      return URL.createObjectURL(file);
-    });
-    setimageListe([...imageListe, selectedImage]);
-    setSelectedImageList([...selectedImageList, ArrayImage]);
+    if (image) {
+      const selectedImage = Array.from(image);
+      const ArrayImage = selectedImage.map((file) => {
+        return URL.createObjectURL(file);
+      });
+      setimageListe([...imageListe, selectedImage]);
+      setSelectedImageList([...selectedImageList, ArrayImage]);
+    }
+
   };
+
+  // const handledeleteImage = (e, val) => {
+  //   const newList = [];
+  //   setSelectedImageList(selectedImageList.filter((e) => e !== val));
+  //   setimageListe(imageListe.filter((e) => e !== val));
+  //   newList.push(imageListe.filter((e) => e !== val));
+  //   // setimageListe(newList)
+  // };
+
 
   const changeImageArticl = () => {
     const formData = new FormData();
@@ -93,10 +130,10 @@ function NewArticle() {
     if (colis) {
       formData.append("forme_colis", colis);
     }
-    if (booster) {
+    if (booster?.toString()) {
       formData.append("is_booster", booster);
     }
-    formData.append("customer_id", 2);
+    formData.append("customer_id", 1);
 
     axiosClient.patch(`/articles/${location.state.id_art}/`, formData);
 
@@ -113,21 +150,28 @@ function NewArticle() {
         }
         const newImagesToAdd = []
         for (let index = 0; index < imageListe.length; index++) {
-            // const formData = new FormData()
-            // formData.append("article", location.state.id_art);
+          // const formData = new FormData()
+          // formData.append("article", location.state.id_art);
           if (typeof imageListe[index] !== "string") {
             console.log("image inside function : ", imageListe[index]);
             newImagesToAdd.push(imageListe[index])
             // axiosClient.post(`/article-images/`,formData)
           }
         }
-        console.log('newImagesToAdd : ',newImagesToAdd);
-        const formData = new FormData()
+        console.log('newImagesToAdd : ', newImagesToAdd);
+
+        const chList = []
         for (let index = 0; index < newImagesToAdd.length; index++) {
-            formData.append("article", location.state.id_art);
-            formData.append("image", newImagesToAdd[index][0]);
-            axiosClient.post(`/article-images/`,formData)            
+          const formData = new FormData()
+          formData.append("article", location.state.id_art);
+          formData.append("image", newImagesToAdd[index][0]);
+          axiosClient.post(`/article-images/`, formData)
+          chList.push(newImagesToAdd[index][0])
+          console.log('new images : ', chList);
         }
+
+        navigate('/gestion-articles')
+
         //   if (res.data.length > imageListe.length) {
         //     console.log("data kbira");
         //   }
@@ -153,34 +197,6 @@ function NewArticle() {
       });
   };
 
-  const AddArticle = () => {
-    const img = [];
-    const formData = new FormData();
-    formData.append("titre", titre_Article);
-    formData.append("code_art", "A007");
-    formData.append("description", description);
-    formData.append("categorie_id", idCat);
-    formData.append("stock", stock);
-    formData.append("prix_vente", prix_Vente);
-    formData.append("unit_prix", prix_Vente);
-    formData.append("forme_colis", colis);
-    formData.append("is_booster", booster);
-    formData.append("customer_id", 2);
-
-    for (let index = 0; index < imageListe.length; index++) {
-      img.push([imageListe[index]]);
-    }
-
-    axiosClient.post("/articles/", formData).then((res) => {
-      imageListe.map((val) => {
-        const formData = new FormData();
-        formData.append("article", res.data.id_art);
-        formData.append("image", val[0]);
-        axiosClient.post("/article-images/", formData);
-      });
-    });
-    // console.log(titre_Article, ' ', description, ' ', idCat, ' ', stock, ' ', prix_Vente, ' ', colis, ' ', booster);
-  };
 
   const checkParentId = (id) => {
     const list = listCategories.filter((e) => e.parent_id === id);
@@ -301,7 +317,17 @@ function NewArticle() {
                 border: "1px dashed gray",
               }}
             >
-              {selectedImageList.length === 0 && (
+
+
+              {isLoadingImages &&
+                <div
+                  className="d-flex justify-content-center align-items-center hidden"
+                  style={{ width: "100%" }}>
+                  <ReactLoading type="spin" color='#17b2b0' height={100} width={100} />
+                </div>
+              }
+
+              {!isLoadingImages && selectedImageList.length === 0 && (
                 <div
                   className="d-flex justify-content-center align-items-center hidden"
                   style={{ width: "100%" }}
@@ -379,10 +405,14 @@ function NewArticle() {
                           borderRadius: "50%",
                         }}
                         onClick={(e) => {
-                          const newList = imageListe;
-                          const deleteItemImageListe = newList.splice(key,1)
-                          setSelectedImageList(selectedImageList.filter((e) => e !== val));
-                          setimageListe(newList)
+                          const newImageList = imageListe
+                          const deleteItemImageListe = newImageList.splice(key, 1)
+                          setSelectedImageList(
+                            selectedImageList.filter((e) => e !== val)
+                          );
+                          console.log('new Table : ', newImageList);
+                          console.log('Splited : ', deleteItemImageListe);
+                          setimageListe(newImageList)
                         }}
                       />
                     </div>
@@ -517,7 +547,7 @@ function NewArticle() {
                 // </div>
               })} */}
 
-              {selectedImageList.length > 0 && selectedImageList.length < 6 && (
+              {selectedImageList.length > 0 && selectedImageList.length < 100 && (
                 // <div
                 //   className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6"
                 //   style={{
@@ -676,19 +706,25 @@ function NewArticle() {
                     <h5 className="capitalize">titre</h5>
                   </div>
                   <div className="input col-md-6">
-                    <input
-                      type="text"
-                      className="input-lg"
-                      name="titre"
-                      defaultValue={listArticles.titre}
-                      id="titre"
-                      placeholder="Titre"
-                      style={{
-                        borderBottom: "1px solid gray",
-                        background: "#7070700f",
-                      }}
-                      onChange={(e) => setTitre_Article(e.target.value)}
-                    />
+                    {loadingInputs ?
+                      <Skeleton style={{
+                        height: 45
+                      }} />
+                      :
+                      <input
+                        type="text"
+                        className="input-lg"
+                        name="titre"
+                        defaultValue={listArticles.titre}
+                        id="titre"
+                        placeholder="Titre"
+                        style={{
+                          borderBottom: "1px solid gray",
+                          background: "#7070700f",
+                        }}
+                        onChange={(e) => setTitre_Article(e.target.value)}
+                      />
+                    }
                   </div>
                 </div>
 
@@ -697,18 +733,24 @@ function NewArticle() {
                     <h5 className="capitalize">description</h5>
                   </div>
                   <div className="input col-md-6">
-                    <textarea
-                      class="input"
-                      id="exampleFormControlTextarea1"
-                      rows="3"
-                      defaultValue={listArticles.description}
-                      placeholder="Description"
-                      style={{
-                        borderBottom: "1px solid gray",
-                        background: "#7070700f",
-                      }}
-                      onChange={(e) => setDescription(e.target.value)}
-                    ></textarea>
+                    {loadingInputs ?
+                      <Skeleton style={{
+                        height: 85
+                      }} />
+                      :
+                      <textarea
+                        class="input"
+                        id="exampleFormControlTextarea1"
+                        rows="3"
+                        defaultValue={listArticles.description}
+                        placeholder="Description"
+                        style={{
+                          borderBottom: "1px solid gray",
+                          background: "#7070700f",
+                        }}
+                        onChange={(e) => setDescription(e.target.value)}
+                      ></textarea>
+                    }
                     {/* <input
                     type="text"
                     className="input-lg"
@@ -736,105 +778,111 @@ function NewArticle() {
                     className="input col-md-6 "
                     style={{ position: "relative" }}
                   >
-                    <input
-                      type="text"
-                      className="input-lg"
-                      value={titleCat ? titleCat : listArticles.categorie}
-                      name=""
-                      id=""
-                      placeholder="Catégorie"
-                      style={{
-                        borderBottom: "1px solid gray",
-                        background: "#7070700f",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setOpenCategories(!openCategories);
-                        setLevel(0);
-                        setTitleCatHeader("");
-                      }}
-                    />
-                    {openCategories && (
-                      <div
-                        className="col-12 mt-1"
-                        style={{
-                          position: "absolute",
-                          background: "white",
-                          boxShadow: "2px 2px 100px gray",
-                          width: "96%",
-                          zIndex: 999,
-                        }}
-                      >
-                        <div
-                          className=""
+                    {loadingInputs ?
+                      <Skeleton style={{
+                        height: 45
+                      }} />
+                      :
+                      <>
+                        <input
+                          type="text"
+                          className="input-lg"
+                          value={titleCat ? titleCat : listArticles.categorie}
+                          name=""
+                          id=""
+                          placeholder="Catégorie"
                           style={{
-                            padding: "10px 10px 10px 10px",
-                            background: "none",
-                            display: "flex",
-                            justifyContent: level > 0 ? "space-between" : "end",
-                            alignItems: "center",
+                            borderBottom: "1px solid gray",
+                            background: "#7070700f",
+                            cursor: "pointer",
                           }}
-                        >
-                          {level > 0 && (
-                            <>
-                              <BiLeftArrowAlt
-                                className="precedent-cat"
+                          onClick={() => {
+                            setOpenCategories(!openCategories);
+                            setLevel(0);
+                            setTitleCatHeader("");
+                          }}
+                        />
+                        {openCategories && (
+                          <div
+                            className="col-12 mt-1"
+                            style={{
+                              position: "absolute",
+                              background: "white",
+                              boxShadow: "2px 2px 100px gray",
+                              width: "96%",
+                              zIndex: 999,
+                            }}
+                          >
+                            <div
+                              className=""
+                              style={{
+                                padding: "10px 10px 10px 10px",
+                                background: "none",
+                                display: "flex",
+                                justifyContent: level > 0 ? "space-between" : "end",
+                                alignItems: "center",
+                              }}
+                            >
+                              {level > 0 && (
+                                <>
+                                  <BiLeftArrowAlt
+                                    className="precedent-cat"
+                                    style={{
+                                      fontSize: 25,
+                                      cursor: "pointer",
+                                      transition: ".4s linear",
+                                    }}
+                                    onClick={() => {
+                                      precedentListCat();
+                                    }}
+                                  />
+                                  <span
+                                    style={{
+                                      fontSize: 20,
+                                    }}
+                                  >
+                                    {titleCatHeader}
+                                  </span>
+                                </>
+                              )}
+                              <LiaTimesSolid
+                                className="close-cat"
                                 style={{
                                   fontSize: 25,
                                   cursor: "pointer",
                                   transition: ".4s linear",
+                                  color: "black",
                                 }}
+                                // onMouseEnter={(e) => {
+                                //   e.target.style.scale = 1.2;
+                                //   e.target.style.color = "#a749ff";
+                                //   e.target.style.boxShadow = "10px 10px 50px #a749ff";
+                                //   e.target.style.transform = "rotate(90deg)";
+                                //   e.target.style.background = "none";
+                                // }}
+                                // onMouseLeave={(e) => {
+                                //   e.target.style.scale = 1;
+                                //   e.target.style.color = "black";
+                                //   e.target.style.boxShadow = "none";
+                                //   e.target.style.transform = "rotate(-90deg)";
+                                //   e.target.style.background = "none";
+                                // }}
                                 onClick={() => {
-                                  precedentListCat();
+                                  setOpenCategories(!openCategories);
+                                  setLevel(0);
+                                  setTitleCatHeader("");
                                 }}
                               />
-                              <span
-                                style={{
-                                  fontSize: 20,
-                                }}
-                              >
-                                {titleCatHeader}
-                              </span>
-                            </>
-                          )}
-                          <LiaTimesSolid
-                            className="close-cat"
-                            style={{
-                              fontSize: 25,
-                              cursor: "pointer",
-                              transition: ".4s linear",
-                              color: "black",
-                            }}
-                            // onMouseEnter={(e) => {
-                            //   e.target.style.scale = 1.2;
-                            //   e.target.style.color = "#a749ff";
-                            //   e.target.style.boxShadow = "10px 10px 50px #a749ff";
-                            //   e.target.style.transform = "rotate(90deg)";
-                            //   e.target.style.background = "none";
-                            // }}
-                            // onMouseLeave={(e) => {
-                            //   e.target.style.scale = 1;
-                            //   e.target.style.color = "black";
-                            //   e.target.style.boxShadow = "none";
-                            //   e.target.style.transform = "rotate(-90deg)";
-                            //   e.target.style.background = "none";
-                            // }}
-                            onClick={() => {
-                              setOpenCategories(!openCategories);
-                              setLevel(0);
-                              setTitleCatHeader("");
-                            }}
-                          />
-                        </div>
-                        {/* <button onClick={() => setLevel(level)}>1</button> */}
-                        <div
-                          style={{
-                            transition: 0.1,
-                            maxHeight: "350px",
-                            overflow: "auto",
-                          }}
-                        >
-                          {/* {listCategories
+                            </div>
+                            {/* <button onClick={() => setLevel(level)}>1</button> */}
+                            <div
+                              style={{
+                                transition: 0.1,
+                                maxHeight: "350px",
+                                overflow: "auto",
+                              }}
+                            >
+                              {/* {listCategories
                           .filter(e => e.parent_id === (level ? level : null))
                           .map((val, key) => {
                             return (
@@ -865,10 +913,12 @@ function NewArticle() {
                               </div>
                             )
                           })} */}
-                          <DropDownMenu />
-                        </div>
-                      </div>
-                    )}
+                              <DropDownMenu />
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    }
                   </div>
                 </div>
               </div>
@@ -882,20 +932,26 @@ function NewArticle() {
                     <h5>Stock</h5>
                   </div>
                   <div className="input col-md-6">
-                    <input
-                      type="number"
-                      min={0}
-                      className="input-lg"
-                      name=""
-                      defaultValue={listArticles.stock}
-                      id=""
-                      placeholder="Stock"
-                      style={{
-                        borderBottom: "1px solid gray",
-                        background: "#7070700f",
-                      }}
-                      onChange={(e) => setStock(e.target.value)}
-                    />
+                    {loadingInputs ?
+                      <Skeleton style={{
+                        height: 45
+                      }} />
+                      :
+                      <input
+                        type="number"
+                        min={0}
+                        className="input-lg"
+                        name=""
+                        defaultValue={listArticles.stock}
+                        id=""
+                        placeholder="Stock"
+                        style={{
+                          borderBottom: "1px solid gray",
+                          background: "#7070700f",
+                        }}
+                        onChange={(e) => setStock(e.target.value)}
+                      />
+                    }
                   </div>
                 </div>
               </div>
@@ -909,20 +965,26 @@ function NewArticle() {
                     <h5>Prix de vente</h5>
                   </div>
                   <div className="input col-md-6">
-                    <input
-                      type="number"
-                      min={0}
-                      className="input-lg"
-                      name=""
-                      defaultValue={listArticles.prix_vente}
-                      id=""
-                      placeholder="$0.00 Prix de vente"
-                      style={{
-                        borderBottom: "1px solid gray",
-                        background: "#7070700f",
-                      }}
-                      onChange={(e) => setPrix_Vente(e.target.value)}
-                    />
+                    {loadingInputs ?
+                      <Skeleton style={{
+                        height: 45
+                      }} />
+                      :
+                      <input
+                        type="number"
+                        min={0}
+                        className="input-lg"
+                        name=""
+                        defaultValue={listArticles.prix_vente}
+                        id=""
+                        placeholder="$0.00 Prix de vente"
+                        style={{
+                          borderBottom: "1px solid gray",
+                          background: "#7070700f",
+                        }}
+                        onChange={(e) => setPrix_Vente(e.target.value)}
+                      />
+                    }
                   </div>
                 </div>
               </div>
@@ -973,20 +1035,28 @@ function NewArticle() {
                         </label>
                       </div>
                       <div className="col-1 d-flex align-items-end w-2">
-                        <input
-                          className=""
-                          type="radio"
-                          name="colis"
-                          checked={colis === "Small" || colis === "on"}
-                          id="small"
-                          style={{ height: "20px", accentColor: "#a46cdc" }}
-                          onChange={(e) => {
-                            setColis(e.target.value);
-                            if (e.target.value === "on") {
-                              setColis("Small");
-                            }
-                          }}
-                        />
+                        {loadingInputs ?
+                          <Skeleton style={{
+                            height: 20,
+                            width: 20,
+                            borderRadius: '50%'
+                          }} />
+                          :
+                          <input
+                            className=""
+                            type="radio"
+                            name="colis"
+                            checked={colis === "Small" || colis === "on"}
+                            id="small"
+                            style={{ height: "20px", accentColor: "#a46cdc" }}
+                            onChange={(e) => {
+                              setColis(e.target.value);
+                              if (e.target.value === "on") {
+                                setColis("Small");
+                              }
+                            }}
+                          />
+                        }
                       </div>
                     </div>
                     <hr />
@@ -1025,21 +1095,29 @@ function NewArticle() {
                         </label>
                       </div>
                       <div className="col-1 d-flex align-items-end w-2">
-                        <input
-                          className=""
-                          type="radio"
-                          name="colis"
-                          checked={colis === "Medium" || colis === "on"}
-                          value="Medium"
-                          id="medium"
-                          style={{ height: "20px", accentColor: "#a46cdc" }}
-                          onChange={(e) => {
-                            setColis(e.target.value);
-                            if (e.target.value === "on") {
-                              setColis("Medium");
-                            }
-                          }}
-                        />
+                        {loadingInputs ?
+                          <Skeleton style={{
+                            height: 20,
+                            width: 20,
+                            borderRadius: '50%'
+                          }} />
+                          :
+                          <input
+                            className=""
+                            type="radio"
+                            name="colis"
+                            checked={colis === "Medium" || colis === "on"}
+                            value="Medium"
+                            id="medium"
+                            style={{ height: "20px", accentColor: "#a46cdc" }}
+                            onChange={(e) => {
+                              setColis(e.target.value);
+                              if (e.target.value === "on") {
+                                setColis("Medium");
+                              }
+                            }}
+                          />
+                        }
                       </div>
                     </div>
                     <hr />
@@ -1078,21 +1156,29 @@ function NewArticle() {
                         </label>
                       </div>
                       <div className="col-1 d-flex align-items-end w-2">
-                        <input
-                          className=""
-                          type="radio"
-                          name="colis"
-                          checked={colis === "Large" || colis === "on"}
-                          value="Large"
-                          id="large"
-                          style={{ height: "20px", accentColor: "#a46cdc" }}
-                          onChange={(e) => {
-                            setColis(e.target.value);
-                            if (e.target.value === "on") {
-                              setColis("Large");
-                            }
-                          }}
-                        />
+                        {loadingInputs ?
+                          <Skeleton style={{
+                            height: 20,
+                            width: 20,
+                            borderRadius: '50%'
+                          }} />
+                          :
+                          <input
+                            className=""
+                            type="radio"
+                            name="colis"
+                            checked={colis === "Large" || colis === "on"}
+                            value="Large"
+                            id="large"
+                            style={{ height: "20px", accentColor: "#a46cdc" }}
+                            onChange={(e) => {
+                              setColis(e.target.value);
+                              if (e.target.value === "on") {
+                                setColis("Large");
+                              }
+                            }}
+                          />
+                        }
                       </div>
                     </div>
                   </div>
@@ -1109,21 +1195,33 @@ function NewArticle() {
               </div>
               <div className="container">
                 <div className="row col-12">
-                  <div className="titre pt-2 col-8">
+                  <div className="titre pt-2 col-9">
                     <h5>
                       Aidez votre article à se vendre plus rapidement en
                       touchant plus d'acheteurs.
                     </h5>
                   </div>
-                  <div className="col-4">
+                  <div className="col-3">
                     <div className="row align-items-center">
-                      <span className="col ">À partir de 1.34$</span>
-                      <input
-                        className="col"
-                        defaultChecked={listArticles.is_booster}
-                        type="checkbox"
-                        style={{ height: "30px", accentColor: "#a46cdc" }}
-                      />
+                      <span style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                      }}>À partir de 1.34$
+                        {loadingInputs ?
+                          <Skeleton style={{
+                            height: 30,
+                            width: 30,
+                          }} />
+                          :
+                          <input
+                            className="col"
+                            type="checkbox"
+                            defaultChecked={boosters}
+                            style={{ height: "30px", accentColor: "#a46cdc" }}
+                            onClick={(e) => setBooster(!booster)}
+                          />
+                        }</span>
                     </div>
                   </div>
                 </div>
@@ -1133,7 +1231,10 @@ function NewArticle() {
 
           {/*  */}
 
-          <div className=" m-3">
+          <div className="m-3" style={{
+            display: 'flex',
+            justifyContent: 'right',
+          }}>
             <button className="btn-add" onClick={changeImageArticl}>
               Modifier
             </button>

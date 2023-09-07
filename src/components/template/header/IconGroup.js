@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
 import NavMenu from "./NavMenu";
 import { useEffect, useState } from "react";
 import OffcanvasMenu from "./OffcanvasMenu";
-
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
+import Login from "../../../pages/Authentication/Login";
 // import MenuCart from "./sub-components/MenuCart";
 import { FiHelpCircle } from "react-icons/fi";
 import { color } from "framer-motion";
@@ -19,8 +22,12 @@ const IconGroup = ({ iconWhiteClass }) => {
   const handleClick = e => {
     e.currentTarget.nextSibling.classList.toggle("active");
   };
+  const [show, setShow] = useState(false);
 
- 
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const navigate = useNavigate()
+
   const [scroll, setScroll] = useState(0);
   const [headerTop, setHeaderTop] = useState(0);
   const [offcanvasActive, setOffcanvasActive] = useState(false);
@@ -41,12 +48,6 @@ const IconGroup = ({ iconWhiteClass }) => {
   const getActiveState = state => {
     setOffcanvasActive(state);
   };
-<<<<<<< HEAD
-
-  // const { compareItems } = useSelector((state) => state.compare);
-  // const { wishlistItems } = useSelector((state) => state.wishlist);
-  // const { cartItems } = useSelector((state) => state.cart);
-=======
   const onLogout = (ev) => {
     ev.preventDefault();
     localStorage.removeItem("ACCESS_TOKEN");
@@ -66,7 +67,6 @@ const IconGroup = ({ iconWhiteClass }) => {
     });
 
   }, []);
->>>>>>> 5a88eb0f251fc3ce4e29406b6472563a847dc942
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
@@ -177,20 +177,6 @@ const IconGroup = ({ iconWhiteClass }) => {
         
         <div className="account-dropdown">
           <ul>
-<<<<<<< HEAD
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/login-register"}>Login</Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/login-register"}>
-                Register
-              </Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/my-account"}>
-                my account
-              </Link>
-=======
           <li>
               <Link to={process.env.PUBLIC_URL + "/profil"}>
                 My account
@@ -198,7 +184,6 @@ const IconGroup = ({ iconWhiteClass }) => {
               <Link onClick={onLogout}>
                 Logout
               </Link>
->>>>>>> 5a88eb0f251fc3ce4e29406b6472563a847dc942
             </li>
           </ul>
         </div> */}
@@ -226,8 +211,6 @@ const IconGroup = ({ iconWhiteClass }) => {
         activeState={offcanvasActive}
         getActiveState={getActiveState}
       />
-<<<<<<< HEAD
-=======
 
 
       <Modal size="md" show={show} onHide={handleClose}>
@@ -237,7 +220,6 @@ const IconGroup = ({ iconWhiteClass }) => {
           <Login />
         </Modal.Body>
       </Modal>
->>>>>>> 5a88eb0f251fc3ce4e29406b6472563a847dc942
     </div>
   );
 };
@@ -245,7 +227,5 @@ const IconGroup = ({ iconWhiteClass }) => {
 IconGroup.propTypes = {
   iconWhiteClass: PropTypes.string,
 };
-
-
 
 export default IconGroup;

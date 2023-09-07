@@ -11,8 +11,7 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
     ev.preventDefault();
     localStorage.removeItem("ACCESS_TOKEN");
     localStorage.removeItem("REFRESH_TOKEN");
-    localStorage.removeItem("ROLE");
-    navigate('/login-vendeur')
+    navigate('/')
   };
   return (
     <div
@@ -21,13 +20,8 @@ const NavMenu = ({ menuWhiteClass, sidebarMenu }) => {
         : `main-menu ${menuWhiteClass ? menuWhiteClass : ""}`)}
     >
       <nav>
-<<<<<<< HEAD
-        <ul>
-          {localStorage.getItem('ROLE') === "vendeur" ?
-=======
         {/* <ul>
           {localStorage.getItem('ACCESS_TOKEN') ?
->>>>>>> 5a88eb0f251fc3ce4e29406b6472563a847dc942
             <>
               <li>
                 <Link to={process.env.PUBLIC_URL + "/contact"}>

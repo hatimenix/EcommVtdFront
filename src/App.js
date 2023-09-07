@@ -3,7 +3,6 @@ import ScrollToTop from "./helpers/scroll-top";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Login from "./pages/Authentication/Login";
-import LoginVendeur from "./pages/Authentication/Login_vendeur";
 import ListeArticles from "./pages/EspaceVendeur/GestionArticles/ListeArticles";
 import NewArticle from "./pages/EspaceVendeur/GestionArticles/NewArticle";
 import Dash from "./pages/EspaceVendeur/Dashboard/Dash";

@@ -70,7 +70,7 @@ const Login = () => {
 
   const [messageRegister, setMessageRegister] = useState('')
 
-  const [listBuyers, setListBuyers] = useState([])
+  const [listCustomers, setListCustomers] = useState([])
 
   const isRegisterFormFilled = !emailRegister || !passwordRegister || !firstName || !lastName || !confirmPwd || !gender;
 
@@ -125,6 +125,13 @@ const Login = () => {
   //register method
   const onRegister = ev => {
     ev.preventDefault()
+    if (isRegisterFormFilled) {
+      setMessageRegister(' Veuillez remplir tout les champs')
+      return
+    }
+    if (!isPasswordValid(passwordRegister)) {
+      return
+    }
     if (confirmPwd !== passwordRegister) {
       setMessageRegister(" Veuillez confirmer votre mot de passe")
       return
@@ -140,7 +147,7 @@ const Login = () => {
     formData.append("email", emailRegister)
     formData.append("password", passwordRegister)
     formData.append("gender", gender)
-    formData.append("addres", address)
+    // formData.append("addres", address)
     formData.append("etat", true)
 
     axiosClient.post('/customers/', formData).then(() => {
@@ -157,7 +164,7 @@ const Login = () => {
       />
 
       <div style={{ position: "relative" }}>
-        <div
+        {/* <div
           className="test"
           style={{
             zIndex: -1,
@@ -171,11 +178,11 @@ const Login = () => {
             filter: "blur(60px)",
           }}
         >
-        </div>
-        <div className="login-register-area pt-100 pb-100">
+        </div> */}
+        <div className="login-register-area ">
           <div className="container">
             <div className="row">
-              <div className="col-lg-7 col-md-12 ms-auto me-auto">
+              <div className="col-lg-12 col-md-12 ms-auto me-auto">
                 <div className="login-register-wrapper">
                   <Tab.Container defaultActiveKey="login">
                     <Nav variant="pills" className="login-register-tab-list">
@@ -206,11 +213,7 @@ const Login = () => {
                     </Nav>
                     <Tab.Content>
                       <Tab.Pane eventKey="login">
-                        <div className="login-form-container" style={{
-                          background: "#ffffff4a",
-                          boxShadow: "10px 10px 25px #80808096",
-                          borderRadius: "15px",
-                        }}>
+                        <div className="login-form-container" >
                           {message &&
                             <div class="alert alert-danger py-2">
                               <strong className="">Erreur!</strong>{message}
@@ -221,7 +224,7 @@ const Login = () => {
                                 className="rounded-3"
                                 name="email"
                                 style={{
-                                  background: '#e8f0fe'
+                                  background: '#f8f9fa'
                                 }}
                                 onChange={(e) => setEmail(e.target.value)} type="text" placeholder='Tapez votre adresse email'
                               />
@@ -229,7 +232,7 @@ const Login = () => {
                                 className="rounded-3"
                                 name="password"
                                 style={{
-                                  background: '#e8f0fe'
+                                  background: '#f8f9fa'
                                 }}
                                 onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} placeholder='Tapez votre mot de passe'
                               />
@@ -279,11 +282,7 @@ const Login = () => {
                         </div>
                       </Tab.Pane>
                       <Tab.Pane eventKey="register">
-                        <div className="login-form-container" style={{
-                          background: "#ffffff4a",
-                          boxShadow: "10px 10px 25px #80808096",
-                          borderRadius: "15px",
-                        }}>
+                        <div className="login-form-container" >
 
                           {messageRegister &&
                             <div class="alert alert-danger py-2">
@@ -293,10 +292,10 @@ const Login = () => {
                             <form>
                               <div className="row">
                                 <div className="form-group col-6">
-                                  <input type="text" className="form-control" id="last_name" placeholder="Nom" onChange={(e) => setLastName(e.target.value)} style={{ background: '#e8f0fe' }} />
+                                  <input type="text" className="form-control" id="last_name" placeholder="Nom" onChange={(e) => setLastName(e.target.value)} maxLength={20} style={{ background: '#f8f9fa' }} />
                                 </div>
                                 <div className="form-group col-6">
-                                  <input type="text" className="form-control" id="first_name" placeholder="Prenom" onChange={(e) => setFirstName(e.target.value)} style={{ background: '#e8f0fe' }} />
+                                  <input type="text" className="form-control" id="first_name" placeholder="Prenom" onChange={(e) => setFirstName(e.target.value)} maxLength={20} style={{ background: '#f8f9fa' }} />
                                 </div>
                               </div>
 
@@ -306,37 +305,39 @@ const Login = () => {
                                 name="emailRegister"
                                 placeholder="Email"
                                 onChange={(e) => setEmailRegister(e.target.value)}
+                                maxLength={50}
                                 style={{
-                                  background: '#e8f0fe'
+                                  background: '#f8f9fa'
                                 }}
                               />
                               <div className="row">
                                 <div className="form-group col-6">
-                                  <input type="password" className="form-control" id="password" placeholder="Mot de passe" onChange={(e) => setPasswordRegister(e.target.value)} style={{ background: '#e8f0fe' }} />
+                                  <input type="password" className="form-control" id="password" placeholder="Mot de passe" onChange={(e) => setPasswordRegister(e.target.value)} style={{ background: '#f8f9fa' }} />
                                 </div>
                                 <div className="form-group col-6">
-                                  <input type="password" className="form-control" id="confirmpxd" placeholder="Confirmation" onChange={(e) => setConfirmPwd(e.target.value)} style={{ background: '#e8f0fe' }} />
+                                  <input type="password" className="form-control" id="confirmpxd" placeholder="Confirmation" onChange={(e) => setConfirmPwd(e.target.value)} style={{ background: '#f8f9fa' }} />
                                 </div>
                               </div>
 
-                              <div className="">
+                              {/* <div className="">
                                 <input
                                   className="rounded-3"
                                   type="text"
                                   name="addres"
                                   placeholder="address"
+                                  maxLength={100}
                                   style={{
-                                    background: '#e8f0fe'
+                                    background: '#f8f9fa'
                                   }}
                                 />
-                              </div>
+                              </div> */}
 
                               <div className="row mb-4">
                                 <div className="form-group col-md-6">
-                                  <select style={{ background: '#e8f0fe', fontSize: "14px" }} className="custom-select form-control p-2" onChange={(e) => setGender(e.target.value)} id="inputGroupSelect04">
-                                    <option selected>Choisir le genre...</option>
-                                    <option value="FEMME">Femme</option>
-                                    <option value="HOMME">Homme</option>
+                                  <select style={{ background: '#f8f9fa', fontSize: "14px" }} className="custom-select form-control p-2" onChange={(e) => setGender(e.target.value)} id="inputGroupSelect04">
+                                    <option selected value="">Choisir le genre...</option>
+                                    <option value="Femme">Femme</option>
+                                    <option value="Homme">Homme</option>
                                   </select>
                                 </div>
                               </div>

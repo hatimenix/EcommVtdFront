@@ -4,8 +4,6 @@ import clsx from "clsx";
 // import { getDiscountPrice } from "../../helpers/product";
 import ProductImageGallery from "../../../../components/template/product/ProductImageGallery";
 import ProductDescriptionInfo from "../../../../components/template/product/ProductDescriptionInfo";
-import ProductImageGallerySideThumb from "../../../../components/template/product/ProductImageGallerySideThumb";
-import ProductImageFixed from "../../../../components/template/product/ProductImageFixed";
 
 const ProductImageDescription = ({
   id_art,

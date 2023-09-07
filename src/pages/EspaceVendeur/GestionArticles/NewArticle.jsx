@@ -13,8 +13,14 @@ import small_box from "../GestionArticles/Icons/small_box.png";
 
 import "./style_newArticle.css";
 import axiosClient from "../../../axios-client";
+import { useStateContext } from "../../../context/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 function NewArticle() {
+  const { user } = useStateContext();
+
+  const navigate = useNavigate()
+
   const [imageListe, setimageListe] = useState([]);
   const [selectedImageList, setSelectedImageList] = useState([]);
 
@@ -22,12 +28,14 @@ function NewArticle() {
 
   const handleChangeImage = (e) => {
     const image = e.target.files;
-    const selectedImage = Array.from(image);
-    const ArrayImage = selectedImage.map((file) => {
-      return URL.createObjectURL(file);
-    });
-    setimageListe([...imageListe, selectedImage]);
-    setSelectedImageList([...selectedImageList, ArrayImage]);
+    if (image) {
+      const selectedImage = Array.from(image);
+      const ArrayImage = selectedImage.map((file) => {
+        return URL.createObjectURL(file);
+      });
+      setimageListe([...imageListe, selectedImage]);
+      setSelectedImageList([...selectedImageList, ArrayImage]);
+    }
   };
 
   console.log("selected image list : ", selectedImageList);
@@ -67,7 +75,7 @@ function NewArticle() {
     formData.append("unit_prix", prix_Vente);
     formData.append("forme_colis", colis);
     formData.append("is_booster", booster);
-    formData.append("customer_id", 1);
+    formData.append("customer_id", user.id);
 
     for (let index = 0; index < imageListe.length; index++) {
       img.push([imageListe[index]]);
@@ -82,6 +90,8 @@ function NewArticle() {
         console.log("form Data : ", res.data.id_art, " id : ", val[0]);
       });
     });
+
+    navigate('/gestion-articles')
     // console.log(titre_Article, ' ', description, ' ', idCat, ' ', stock, ' ', prix_Vente, ' ', colis, ' ', booster);
   };
 
@@ -282,15 +292,15 @@ function NewArticle() {
                           top: "2%",
                           borderRadius: "50%",
                         }}
-                        onClick={() => {                                                    
+                        onClick={() => {
                           // deleteimg(key)
                           const newImageList = imageListe
-                          const deleteItemImageListe = newImageList.splice(key,1)
+                          const deleteItemImageListe = newImageList.splice(key, 1)
                           setSelectedImageList(
                             selectedImageList.filter((e) => e !== val)
                           );
-                          console.log('new Table : ',newImageList);
-                          console.log('Splited : ',deleteItemImageListe);
+                          console.log('new Table : ', newImageList);
+                          console.log('Splited : ', deleteItemImageListe);
                           setimageListe(newImageList)
                         }}
                       />
@@ -583,7 +593,9 @@ function NewArticle() {
                 <div className="titre col-6 d-none d-md-block">
                   <h5 className="capitalize">titre</h5>
                 </div>
-                <div className="input col-md-6">
+                <div className="input col-md-6" style={{
+                  position: 'relative'
+                }}>
                   <input
                     type="text"
                     className="input-lg"
@@ -593,9 +605,18 @@ function NewArticle() {
                     style={{
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
+                      paddingRight: 52,
                     }}
                     onChange={(e) => setTitre_Article(e.target.value)}
+                    maxlength="50"
+                    required
                   />
+                  <span style={{
+                    position: "absolute",
+                    right: '16px',
+                    top: '10px',
+                    color: '#80808085'
+                  }}>{titre_Article.length}/50</span>
                 </div>
               </div>
 
@@ -603,7 +624,9 @@ function NewArticle() {
                 <div className="titre col-md-6 d-none d-md-block">
                   <h5 className="capitalize">description</h5>
                 </div>
-                <div className="input col-md-6">
+                <div className="input col-md-6" style={{
+                  position: 'relative'
+                }}>
                   <textarea
                     class="input"
                     id="exampleFormControlTextarea1"
@@ -612,9 +635,19 @@ function NewArticle() {
                     style={{
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
+                      paddingRight: 52,
                     }}
                     onChange={(e) => setDescription(e.target.value)}
+                    maxLength={100}
+                    required
                   ></textarea>
+
+                  <span style={{
+                    position: "absolute",
+                    right: '16px',
+                    top: '10px',
+                    color: '#80808085'
+                  }}>{description.length}/100</span>
                   {/* <input
                     type="text"
                     className="input-lg"
@@ -787,7 +820,9 @@ function NewArticle() {
                 <div className="titre col-md-6 d-none d-md-block">
                   <h5>Stock</h5>
                 </div>
-                <div className="input col-md-6">
+                <div className="input col-md-6" style={{
+                  position:'relative'
+                }}>
                   <input
                     type="number"
                     min={0}
@@ -800,6 +835,7 @@ function NewArticle() {
                       background: "#7070700f",
                     }}
                     onChange={(e) => setStock(e.target.value)}
+                    // maxLength={5}
                   />
                 </div>
               </div>
@@ -1003,6 +1039,7 @@ function NewArticle() {
                       className="col"
                       type="checkbox"
                       style={{ height: "30px", accentColor: "#a46cdc" }}
+                      onChange={() => setBooster(!booster)}
                     />
                   </div>
                 </div>
@@ -1010,7 +1047,10 @@ function NewArticle() {
             </div>
           </div>
           {/*  */}
-          <div className=" m-3">
+          <div className="m-3" style={{
+            display: 'flex',
+            justifyContent: 'right',
+          }}>
             <button className="btn-add" onClick={AddArticle}>
               Ajouter
             </button>
