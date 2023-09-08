@@ -21,6 +21,9 @@ const ProductDescriptionInfo = ({
   compareItem,
 }) => {
   const properties = useSelector((state) => state.propertie.properties);
+  const cart = useSelector((state) => state.cart.cartItems);
+  const panier = cart.find(single => product.id_art === single.id_art)
+  // console.log('la quantité du panier: ',panier);
   const dispatch = useDispatch();
 
   const [selectedColor, setSelectedColor] = useState(""); // Initialize with an empty string
@@ -175,8 +178,13 @@ const ProductDescriptionInfo = ({
             />
             <button
               onClick={() =>
+                panier ?
                 setQuantityCount(
-                  quantityCount < productStock - productCartQty
+                  quantityCount < productStock - panier.quantity
+                    ? quantityCount + 1
+                    : quantityCount
+                ) : setQuantityCount(
+                  quantityCount < productStock
                     ? quantityCount + 1
                     : quantityCount
                 )
@@ -201,7 +209,7 @@ const ProductDescriptionInfo = ({
                   window.location.reload();
                 }
                 }
-                disabled={productCartQty >= productStock || !localStorage.getItem("cu")}
+                disabled={quantityCount > productStock || !localStorage.getItem("cu")}
               >
                 {" "}
                 Add To Cart{" "}
@@ -221,10 +229,8 @@ const ProductDescriptionInfo = ({
               }
               onClick={() => {
                 dispatch(addToWishlist(product))
-                // Add a 1-second delay before reloading the page
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100); // 1000 milliseconds = 1 second
+                // actualiser le favoris
+                window.location.reload();
               }}
             >
               <i className="pe-7s-like" />
