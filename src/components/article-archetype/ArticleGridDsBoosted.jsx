@@ -12,29 +12,51 @@ import HeroSliderTen from "../../wrappers/hero-slider/HeroSliderTen";
 import { useLocation } from "react-router-dom";
 import { fetchUser } from "../../store/slices/userSlice";
 import { useArticleSelector, useCategorySelector, useCurrentUserSelector, useRecSelector } from "../../store/selectors/selectors";
+import ArticleGridDsTwoBoosted from "./ArticleGridDsTwoBoosted";
 
-const ArticleGridDs = ({ limit }) => {
+const ArticleGridDsBoosted = ({ limit }) => {
     const dispatch = useDispatch();
     const categories = useSelector((state) => state.categorie.categories);
     const selectedCategory = useSelector((state) => state.categorie.selectedCategory);
     const articles = useSelector((state) => state.article.articles);
-    const iArticles = useSelector((state) => state.article.articles);
-    const iCategories = useSelector((state) => state.categorie.categories);
+    const boostedArt = useSelector((state) => state.boost.boosts);
 
     const __articlesRec = useArticleSelector();
     const __categoriesRec = useCategorySelector();
 
     const __recs = useRecSelector()
-    console.log("recs", __recs);
+    console.log("boostedArt", boostedArt);
 
 
 
+let targetedBoostedArticles = []; // Declare it as an empty array
+const maxArticles = 4; // Set the maximum number of articles
+
+// If boostedArt is an array
+if (Array.isArray(boostedArt)) {
+    // Use a Set to store unique articles
+    const uniqueArticles = new Set();
     
+    boostedArt.forEach(boost => {
+        // Iterate through boosted articles
+        boost.boosted_articles.forEach(article => {
+            // Check if the article's id_art is not in the uniqueArticles set
+            if (!uniqueArticles.has(article.id_art) && targetedBoostedArticles.length < maxArticles) {
+                // Add the article to the uniqueArticles set and targetedBoostedArticles array
+                uniqueArticles.add(article.id_art);
+                targetedBoostedArticles.push(article);
+            }
+        });
+    });
+} else {
+    console.log('Invalid boostedArt data.');
+}
 
 
+    console.log("targetedBoostedArticles", targetedBoostedArticles)
+const targetedBoostedArticlesCount = targetedBoostedArticles.length;
 
-
-
+console.log(`The count of targetedBoostedArticles is: ${targetedBoostedArticlesCount}`);
     // const correspondingArticle = __articlesRec.find(article => article.id === idToFind);
 
 
@@ -140,59 +162,19 @@ const ArticleGridDs = ({ limit }) => {
 
                     <>
 
-                        <SectionTitle
-                            titleText="Recommandé pour toi"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-20 mt-80"
-                        />
-                        {/* <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={iArticles}
-                                categories={iCategories}
-                                csts={csts}
-                                limit={limit}
-                                spaceBottomClass="mb-25"
-                            />
-                        </div> */}
-
-
-                        {cRoad !== '/' ?
-                            <>
-                                <SectionTitle
-                                    titleText={catTitle}
-                                    // subTitleText="Latest arrivals & offers "
-                                    // positionClass="text-center"
-                                    spaceClass="mb-20"
-                                />
-                                <div className="row five-column">
-                                    <ArticleGridDsTwo
-                                        articles={articles}
-                                        categories={categories}
-                                        csts={csts}
-                                        selectedCategory={selectedCategory}
-                                        limit={limit}
-                                        spaceBottomClass="mb-25"
-                                    />
-                                </div>
-                            </>
-
-                            : <></>
-
-                        }
-
+                      
+                        <p>count {targetedBoostedArticlesCount }</p>
 
                         <SectionTitle
-                            titleText="Fil d'actu"
+                            titleText="Articles Populaires"
                             // subTitleText="Latest arrivals & offers "
                             // positionClass="text-center"
                             spaceClass="mb-20"
                         />
 
                         <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={iArticles}
-                                categories={iCategories}
+                            <ArticleGridDsTwoBoosted
+                                articles={targetedBoostedArticles}
                                 csts={csts}
                                 limit={limit}
                                 spaceBottomClass="mb-25"
@@ -214,9 +196,9 @@ const ArticleGridDs = ({ limit }) => {
     );
 };
 
-ArticleGridDs.propTypes = {
+ArticleGridDsBoosted.propTypes = {
 
     limit: PropTypes.number
 };
 
-export default ArticleGridDs;
+export default ArticleGridDsBoosted;

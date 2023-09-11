@@ -29,7 +29,7 @@ const store = configureStore({
         review: reviewReducer,
         replie: replieReducer,
         propertie: propertiesReducer,
-        boosts: boostReducer,
+        boost: boostReducer,
 
         user: userReducer,
         rec: recReducer

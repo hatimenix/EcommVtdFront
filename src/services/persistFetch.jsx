@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchBoosts, fetchCategories, fetchPanier } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
+import { setBoosts } from '../store/slices/boostSlice';
 
 const usePersistData = () => {
     const dispatch = useDispatch();
@@ -39,6 +40,15 @@ const usePersistData = () => {
                 dispatch(setArticleRec(recs));
             } catch (error) {
                 console.error('Error fetching recs:', error);
+            }
+
+
+            
+            try {
+                const boosts = await fetchBoosts();
+                dispatch(setBoosts(boosts));
+            } catch (error) {
+                console.error('Error fetching boosts:', error);
             }
         };
 
