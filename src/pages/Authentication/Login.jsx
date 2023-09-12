@@ -236,12 +236,11 @@ const Login = ({ isSeller }) => {
                               onChange={(e) => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} placeholder='Tapez votre mot de passe'
                             />
                             <div className="button-box">
-                              <div className="login-toggle-btn">
-                                <input type="checkbox" />
-                                <label className="ml-10">Remember me</label>
-                                <Link to={process.env.PUBLIC_URL + "/"}>
+                              <div className="mb-3">
+                                <label><Link to={process.env.PUBLIC_URL + "/"}>
                                   Forgot Password?
-                                </Link>
+                                </Link></label>
+                                
                               </div>
                               <button onClick={onSubmit} type="submit" className="rounded-3">
                                 <span>Login</span>
