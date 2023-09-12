@@ -17,7 +17,7 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass }) => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          Flone
+          EL-BAL
         </a>
         .<br /> All Rights Reserved
       </p>

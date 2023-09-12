@@ -16,7 +16,7 @@ const ProductTabRight = () => {
   const dispatch = useDispatch();
   const currentArticle = useSelector((state) => state.article.articleDetail);
   const allArticles = useSelector((state) => state.article.articles);
-  const [filteredArticles,setFilteredArticles] = useState([])
+  const [filteredArticles, setFilteredArticles] = useState([])
 
   useEffect(() => {
     dispatch(fetchArticleById(articleId));
@@ -33,8 +33,8 @@ const ProductTabRight = () => {
     if (currentCategory) {
       // Filter articles based on related_article IDs and category
       const filtered = allArticles.filter((article) =>
-         article.categorie === currentCategory
-        
+        article.categorie === currentCategory
+
       );
       console.log("useeffect articles:", filtered)
       setFilteredArticles(filtered)
@@ -75,12 +75,14 @@ const ProductTabRight = () => {
               spaceBottomClass="pb-90"
               productFullDesc={currentArticle.description}
             />
-        {/* related product slider */}
-        <RelatedProductSlider
-          spaceBottomClass="pb-95"
-          product={currentArticle}
-        />
-            
+
+            {/* <ArPkg /> */}
+            {/* related product slider */}
+            <RelatedProductSlider
+              spaceBottomClass="pb-95"
+              product={currentArticle}
+            />
+
           </LayoutOne>
         </Fragment>
       ) : (
