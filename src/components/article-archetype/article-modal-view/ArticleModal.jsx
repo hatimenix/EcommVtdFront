@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Rating from "../article-features/ArticleRating";
 import Swiper, { SwiperSlide } from "../../../components/swiper";
 import { getProductCartQuantity } from "../../../helpers/product";
-import { addToCart } from "../../../store/slices/cart-slice";
-import { addToWishlist } from "../../../store/slices/wishlist-slice";
+import { addToCart, initCart } from "../../../store/slices/cart-slice";
+import { addToWishlist, initFavoris } from "../../../store/slices/wishlist-slice";
 import { addToCompare } from "../../../store/slices/compare-slice";
+import axiosClient from "../../../axios-client";
 // import { getProductCartQuantity } from "../../helpers/product";
 // import { addToCart } from "../../store/slices/cart-slice";
 // import { addToWishlist } from "../../store/slices/wishlist-slice";
@@ -36,6 +37,36 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
     //     selectedProductSize
     // );
 
+
+    //fetch data
+    function getfav() {
+        try {
+            // fetch panier
+            axiosClient.get(`favoris/?search=${localStorage.getItem("cu")}`)
+                .then((res) => {
+                    dispatch(initFavoris(res.data))
+                });
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+
+    }
+
+
+    function getpan() {
+        try {
+            // fetch panier
+            axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+                .then((res) => {
+                    dispatch(initCart(res.data))
+                });
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+
+    }
 
     const gallerySwiperParams = {
         spaceBetween: 10,
@@ -293,8 +324,10 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                                         selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
                                                     }))
 
-                                                    //reloading page
-                                                    window.location.reload();
+                                                    // actualiser le favoris
+                                                    setTimeout(() => {
+                                                        getpan()
+                                                    }, 500);
                                                 }
                                                 }
                                                 disabled={quantityCount > productStock || !localStorage.getItem('cu')}
@@ -317,8 +350,11 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                             }
                                             onClick={() => {
                                                 dispatch(addToWishlist(product))
-                                                //reloading page
-                                                window.location.reload();
+
+                                                // actualiser le favoris
+                                                setTimeout(() => {
+                                                    getfav()
+                                                }, 500);
                                             }}
                                         >
                                             <i className="pe-7s-like" />

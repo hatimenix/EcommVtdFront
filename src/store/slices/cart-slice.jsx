@@ -205,14 +205,12 @@ const cartSlice = createSlice({
         decreaseQuantity(state, action) {
 
             const id_user = localStorage.getItem("cu")
-            console.log("le log du user actuel:", id_user);
-
 
             const product = action.payload;
             if (product.quantity === 1) {
                 //suppression de l'article du panier
                 deleteCart(action.payload.id_pan)
-                state.cartItems = state.cartItems.filter(item => item.cartItemId !== product.cartItemId);
+                state.cartItems = state.cartItems.filter(item => item.id_pan !== product.id_pan);
                 cogoToast.error("Removed From Cart", { position: "bottom-left" });
             } else {
 
