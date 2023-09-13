@@ -8,6 +8,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { addToCart, decreaseQuantity, deleteFromCart, deleteAllFromCart } from "../../store/slices/cart-slice";
 import { cartItemStock } from "../../helpers/product";
 import { fetchPanier } from "../../services/fetchData";
+import { linkImage } from "../../axios-client";
 
 
 
@@ -18,6 +19,8 @@ const Cart = () => {
   const [quantityCount] = useState(1);
   const dispatch = useDispatch();
   let { pathname } = useLocation();
+
+  const server = linkImage
 
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
@@ -96,7 +99,7 @@ const Cart = () => {
                                       className="img-fluid"
                                       src={
                                         // process.env.PUBLIC_URL
-                                        'http://localhost:8000' +
+                                        server +
                                         cartItem.image[0]
                                       }
                                       alt=" image unavailable"
