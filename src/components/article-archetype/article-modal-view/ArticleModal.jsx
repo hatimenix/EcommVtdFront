@@ -314,8 +314,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                                         selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null
                                                     }))
                                                 }
-                                                }
-                                                disabled={quantityCount > productStock || !localStorage.getItem('cu')}
+                                                disabled={productCartQty >= productStock}
                                             >
                                                 {" "}
                                                 Add To Cart{" "}
@@ -327,7 +326,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                     <div className="pro-details-wishlist">
                                         <button
                                             className={wishlistItem !== undefined ? "active" : ""}
-                                            disabled={wishlistItem !== undefined}
+                                            disabled={wishlistItem !== undefined || !localStorage.getItem('cu')}
                                             title={
                                                 wishlistItem !== undefined
                                                     ? "Added to wishlist"
