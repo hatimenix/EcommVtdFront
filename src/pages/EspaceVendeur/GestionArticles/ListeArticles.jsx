@@ -145,7 +145,7 @@ function ListeArticles() {
                 <div className="col-sm-12 my-3">
                   <div className="row align-items-center ">
                     <div className="col-sm-6">
-                      <h3 className="cart-page-title">Mes articles  {listArticle.length} is : {isLoading.toString()} empty : {dataEmpty ? 'oui' : "non"} length : {myLength}</h3>
+                      <h3 className="cart-page-title">Mes articles </h3>
                     </div>
                     <div className="col-sm-1 d-none d-sm-block"></div>
                     <div className="col-sm-5 d-flex justify-content-end" style={{ position: "relative" }}>
