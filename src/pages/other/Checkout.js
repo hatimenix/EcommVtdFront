@@ -66,7 +66,7 @@ const Checkout = () => {
     formData.append("total", totalprice);
     formData.append("a_domicile", a_domicile);
     formData.append("email", email);
-    formData.append("pointRelais", 1);
+    // formData.append("pointRelais", 1);
     formData.append("customer", localStorage.getItem("cu"));
 
 
@@ -74,15 +74,18 @@ const Checkout = () => {
       // console.log("commande passée avec suces", res.data);
       try {
         // delete paniers
-        const pan = axiosClient.get(`panier/deleteOrderedCart/?customer=${localStorage.getItem("cu")}&cart=${articl}`);
+        axiosClient.get(`panier/deleteOrderedCart/?customer=${localStorage.getItem("cu")}&cart=${articl}`)
 
-        // fetch panier
-        axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
           .then((res) => {
-            dispatch(initCart(res.data));
-            cogoToast.success("Commande effectuée avec succès", { position: "bottom-left" });
-            navigate('/cart')
-          });
+            // fetch panier
+            axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+              .then((res) => {
+                dispatch(initCart(res.data));
+                cogoToast.success("Commande effectuée avec succès", { position: "bottom-left" });
+                navigate('/cart')
+              });
+
+          })
 
       } catch (error) {
         console.error('Error fetching categories:', error);

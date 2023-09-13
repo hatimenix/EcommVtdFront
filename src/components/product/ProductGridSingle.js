@@ -91,7 +91,7 @@ const ProductGridSingle = ({
                 src={process.env.PUBLIC_URL + product.images[0].image} // Assuming product.images[0].image is a valid image URL
                 className=""
                 alt=""
-                style={{ width : "200px", hieght : "400px"}}
+                style={{ width: "200px", hieght: "400px" }}
               />
             ) : (
               <p>No images available</p> // Display a message if there are no images
