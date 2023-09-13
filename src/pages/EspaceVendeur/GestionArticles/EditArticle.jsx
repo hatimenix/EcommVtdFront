@@ -298,7 +298,7 @@ function NewArticle() {
   return (
     <Fragment>
       <LayoutOne onClick={() => setOpenCategories(!openCategories)}>
-        <div className="container">
+        <div className="container mt-5">
           <h3>Modifier l'article</h3>
           {/* Ajout des images */}
           <div className="bg-gray p-4 m-3 rounded">
@@ -547,7 +547,7 @@ function NewArticle() {
                 // </div>
               })} */}
 
-              {selectedImageList.length > 0 && selectedImageList.length < 100 && (
+              {selectedImageList.length > 0 && selectedImageList.length < 6 && (
                 // <div
                 //   className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6"
                 //   style={{
