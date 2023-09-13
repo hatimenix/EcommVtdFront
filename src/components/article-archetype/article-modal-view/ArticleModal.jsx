@@ -314,12 +314,8 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                                         selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null
                                                     }))
                                                 }
-<<<<<<< HEAD
                                                 }
-                                            // disabled={productCartQty >= productStock}
-=======
-                                                disabled={productCartQty >= productStock}
->>>>>>> 64dad7b7ec669f1299e4c5c73f201dd72b546141
+                                                disabled={quantityCount > productStock || !localStorage.getItem('cu')}
                                             >
                                                 {" "}
                                                 Add To Cart{" "}

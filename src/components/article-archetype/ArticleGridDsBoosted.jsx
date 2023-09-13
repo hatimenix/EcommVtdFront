@@ -162,8 +162,6 @@ console.log(`The count of targetedBoostedArticles is: ${targetedBoostedArticlesC
 
                     <>
 
-                      
-                        <p>count {targetedBoostedArticlesCount }</p>
 
                         <SectionTitle
                             titleText="Articles Populaires"
