@@ -32,8 +32,6 @@ function Reduction() {
                 } else {
                     setEtatReduction(false);
                 }
-                
-            
         }
         fetchData();
         

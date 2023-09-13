@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setArticles } from '../store/slices/articlesSlice';
+import axiosClient from '../axios-client';
 
 const BASE_URL = 'http://127.0.0.1:8000/';
 
@@ -8,7 +9,7 @@ export const fetchArticlesByCategory = createAsyncThunk(
     'articles/fetchByCategory',
     async (categoryId, thunkAPI) => {
         try {
-            const response = await axios.get(`${BASE_URL}articles/category/${categoryId}/`, {
+            const response = await axiosClient.get(`articles/category/${categoryId}/`, {
                 withCredentials: true,
             });
             console.log("response", response.data);
@@ -22,7 +23,7 @@ export const fetchArticlesByCategory = createAsyncThunk(
     }
 );
 export const fetchArticles = async () => {
-    const response = await axios.get(`${BASE_URL}articles/`, {
+    const response = await axiosClient.get(`articles/`, {
         withCredentials: true,
     });
     return response.data;
@@ -36,7 +37,7 @@ export const fetchBoosts = async () => {
 };
 
 export const fetchArticlesRec = async () => {
-    const response = await axios.get(`${BASE_URL}tracked-articles/`, {
+    const response = await axiosClient.get(`tracked-articles/`, {
         withCredentials: true,
     });
     return response.data;
@@ -46,7 +47,7 @@ export const fetchArticleById = createAsyncThunk(
     'article/fetchById',
     async (articleId, thunkAPI) => {
         try {
-            const response = await axios.get(`${BASE_URL}articles/${articleId}/`, {
+            const response = await axiosClient.get(`articles/${articleId}/`, {
                 withCredentials: true,
             });
             return response.data;
@@ -73,7 +74,7 @@ export const fetchArticleById = createAsyncThunk(
 // );
 
 export const fetchArticlesdetails = async (id_art) => {
-    const response = await axios.get(`${BASE_URL}articles/${id_art}/`, {
+    const response = await axiosClient.get(`articles/${id_art}/`, {
         withCredentials: true,
     });
     return response.data;
@@ -82,7 +83,7 @@ export const fetchArticlesdetails = async (id_art) => {
 
 export const fetchReplies = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}replies/`, {
+        const response = await axiosClient.get(`replies/`, {
             withCredentials: true, // If you need credentials
         });
         return response.data;
@@ -94,7 +95,7 @@ export const fetchReplies = async () => {
 };
 
 export const fetchReviews = async () => {
-    const response = await axios.get(`${BASE_URL}reviews/`, {
+    const response = await axiosClient.get(`reviews/`, {
         withCredentials: true,
     });
     return response.data;
@@ -103,7 +104,7 @@ export const fetchReviews = async () => {
 
 export const fetchProperties = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}properties/`, {
+        const response = await axiosClient.get(`properties/`, {
             withCredentials: true,
         });
         return response.data;
@@ -116,14 +117,14 @@ export const fetchProperties = async () => {
 
 
 export const fetchCategories = async () => {
-    const response = await axios.get(`${BASE_URL}categories/`, {
+    const response = await axiosClient.get(`categories/`, {
         withCredentials: true,
     });
     return response.data;
 };
 
 export const fetchLikesCount = async () => {
-    const response = await axios.get(`${BASE_URL}article-likes-count/`, {
+    const response = await axiosClient.get(`article-likes-count/`, {
         withCredentials: true,
     });
     return response.data;
@@ -131,14 +132,14 @@ export const fetchLikesCount = async () => {
 
 
 export const fetchSellers = createAsyncThunk('seller/fetchSellers', async () => {
-    const response = await axios.get(`${BASE_URL}sellers/`, {
+    const response = await axiosClient.get(`sellers/`, {
         withCredentials: true,
     });
     return response.data;
 });
 
 export const fetchCst = createAsyncThunk('seller/fetchCst', async () => {
-    const response = await axios.get(`${BASE_URL}customers/`, {
+    const response = await axiosClient.get(`customers/`, {
         withCredentials: true,
     });
     return response.data;
@@ -147,9 +148,34 @@ export const fetchCst = createAsyncThunk('seller/fetchCst', async () => {
 
 //recuperation du panier
 export const fetchPanier = async (id_user) => {
-    const response = await axios.get(`${BASE_URL}panier/?search=${id_user}`, {
+    const response = await axiosClient.get(`panier/?search=${id_user}`, {
         withCredentials: true,
     });
-    // console.log("le panier: ", response.data);
+    return response.data;
+};
+
+
+
+//recuperation du favoris
+export const fetchFavori = async (id_user) => {
+    const response = await axiosClient.get(`favoris/?search=${id_user}`, {
+        withCredentials: true,
+    });
+    console.log("le panier: ", response.data);
+    return response.data;
+};
+
+
+// get user
+export const fetchUser = async () => {
+    const response = await axiosClient.get('/auth/user/');
+    return response.data;
+};
+
+
+export const fetchPackages = async () => {
+    const response = await axios.get(`${BASE_URL}reduction/`, {
+        withCredentials: true,
+    });
     return response.data;
 };

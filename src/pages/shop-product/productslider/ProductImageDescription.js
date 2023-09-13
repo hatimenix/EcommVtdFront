@@ -12,8 +12,8 @@ const ProductImageDescription = ({ spaceTopClass, spaceBottomClass, galleryType,
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { compareItems } = useSelector((state) => state.compare);
-  const wishlistItem = wishlistItems.find(item => item.id === product.id);
-  const compareItem = compareItems.find(item => item.id === product.id);
+  const wishlistItem = wishlistItems.find(item => item.id_art === product.id_art);
+  const compareItem = compareItems.find(item => item.id_art === product.id_art);
 
   return (
     <div className={clsx("shop-area", spaceTopClass, spaceBottomClass)}>

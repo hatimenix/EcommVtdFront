@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductCartQuantity } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
 import { addToCart } from "../../store/slices/cart-slice";
-import { addToWishlist } from "../../store/slices/wishlist-slice";
+import { addToWishlist, initFavoris } from "../../store/slices/wishlist-slice";
 import { addToCompare } from "../../store/slices/compare-slice";
 import { setProperties } from "../../store/slices/propertiesSlice";
-import { fetchProperties } from "../../services/fetchData";
+import { fetchFavori, fetchProperties } from "../../services/fetchData";
 import { Link } from "react-router-dom"; // Add this import
 
 const ProductDescriptionInfo = ({
@@ -21,6 +21,9 @@ const ProductDescriptionInfo = ({
   compareItem,
 }) => {
   const properties = useSelector((state) => state.propertie.properties);
+  const cart = useSelector((state) => state.cart.cartItems);
+  const panier = cart.find(single => product.id_art === single.id_art)
+  // console.log('la quantité du panier: ',panier);
   const dispatch = useDispatch();
 
   const [selectedColor, setSelectedColor] = useState(""); // Initialize with an empty string
@@ -36,6 +39,7 @@ const ProductDescriptionInfo = ({
         console.error("Error fetching properties:", error);
       });
   }, [dispatch]);
+
 
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [productStock, setProductStock] = useState(product.stock);
@@ -174,8 +178,13 @@ const ProductDescriptionInfo = ({
             />
             <button
               onClick={() =>
+                panier ?
                 setQuantityCount(
-                  quantityCount < productStock - productCartQty
+                  quantityCount < productStock - panier.quantity
+                    ? quantityCount + 1
+                    : quantityCount
+                ) : setQuantityCount(
+                  quantityCount < productStock
                     ? quantityCount + 1
                     : quantityCount
                 )
@@ -187,20 +196,24 @@ const ProductDescriptionInfo = ({
           </div>
           <div className="pro-details-cart btn-hover">
             {productStock && productStock > 0 ? (
-            <button
-              onClick={() =>
-                dispatch(addToCart({
-                  ...product,
-                  quantity: quantityCount,
-                  selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
-                  selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
-                }))
-              }
-              disabled={productCartQty >= productStock}
-            >
-              {" "}
-              Add To Cart{" "}
-            </button>
+              <button
+                onClick={() => {
+                  dispatch(addToCart({
+                    ...product,
+                    quantity: quantityCount,
+                    selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
+                    selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
+                  }))
+
+                  //reloading page
+                  window.location.reload();
+                }
+                }
+                disabled={quantityCount > productStock || !localStorage.getItem("cu")}
+              >
+                {" "}
+                Add To Cart{" "}
+              </button>
             ) : (
               <button disabled>Out of Stock</button>
             )}
@@ -208,13 +221,17 @@ const ProductDescriptionInfo = ({
           <div className="pro-details-wishlist">
             <button
               className={wishlistItem !== undefined ? "active" : ""}
-              disabled={wishlistItem !== undefined}
+              disabled={wishlistItem !== undefined || !localStorage.getItem("cu")}
               title={
                 wishlistItem !== undefined
                   ? "Added to wishlist"
                   : "Add to wishlist"
               }
-              onClick={() => dispatch(addToWishlist(product))}
+              onClick={() => {
+                dispatch(addToWishlist(product))
+                // actualiser le favoris
+                window.location.reload();
+              }}
             >
               <i className="pe-7s-like" />
             </button>

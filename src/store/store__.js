@@ -14,6 +14,10 @@ import boostReducer from './slices/boostSlice';
 import userReducer from './slices/userSlice';
 import firstNameMiddleware from './middlewares/userMiddleware';
 import recReducer from './slices/articlesRecSlice';
+import recsMiddleware from './middlewares/recsMiddleware';
+import midReducer from './slices/articlesRecMidSlice';
+import pkgReducer from './slices/pkgSlice__';
+
 
 
 const store = configureStore({
@@ -32,11 +36,13 @@ const store = configureStore({
         boost: boostReducer,
 
         user: userReducer,
-        rec: recReducer
+        rec: recReducer,
+        artmid: midReducer, // Add the new reducer here
+        pkg: pkgReducer
 
 
     },
-    middleware: [...getDefaultMiddleware(), firstNameMiddleware],
+    // middleware: [...getDefaultMiddleware(), firstNameMiddleware],
 
 });
 
