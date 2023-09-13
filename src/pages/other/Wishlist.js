@@ -7,6 +7,7 @@ import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { addToCart } from "../../store/slices/cart-slice";
 import { deleteFromWishlist, deleteAllFromWishlist } from "../../store/slices/wishlist-slice"
+import { linkImage } from "../../axios-client";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Wishlist = () => {
   const currency = useSelector((state) => state.currency);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
-
+  const server = linkImage
   // console.log("voici la wishlist");
 
   return (
@@ -79,7 +80,7 @@ const Wishlist = () => {
                                       className="img-fluid"
                                       src={
                                         // process.env.PUBLIC_URL +
-                                        'http://localhost:8000' +
+                                        server +
                                         wishlistItem.image[0]
                                       }
                                       alt=""
