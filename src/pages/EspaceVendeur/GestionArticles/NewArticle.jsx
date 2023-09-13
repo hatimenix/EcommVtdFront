@@ -63,8 +63,13 @@ function NewArticle() {
   const [colis, setColis] = useState("");
   const [booster, setBooster] = useState(false);
 
+
+  const [uploaded, setUploaded] = useState()
+  const [to, setTo] = useState(0)
+  const [idArticle, setIdArticle] = useState()
+
   const AddArticle = () => {
-    const img = [];
+    // setUploaded(true)
     const formData = new FormData();
     formData.append("titre", titre_Article);
     formData.append("code_art", "A007");
@@ -77,23 +82,63 @@ function NewArticle() {
     formData.append("is_booster", booster);
     formData.append("customer_id", user.id);
 
+    axiosClient.post("/articles/", formData).then((res) => {
+      AddImagesArticle(res.data.id_art)
+      console.log('idddddddddddddd : ',res.data.id_art)
+    });
+  };
+
+  const AddImagesArticle = (id) => {
+    const img = []
+    const done = []
     for (let index = 0; index < imageListe.length; index++) {
       img.push([imageListe[index]]);
     }
 
-    axiosClient.post("/articles/", formData).then((res) => {
-      imageListe.map((val) => {
-        const formData = new FormData();
-        formData.append("article", res.data.id_art);
-        formData.append("image", val[0]);
-        axiosClient.post("/article-images/", formData);
-        console.log("form Data : ", res.data.id_art, " id : ", val[0]);
-      });
-    });
+    for (let index = 0; index < selectedImageList.length; index++) {
+      const formData = new FormData();
+      formData.append("article", id);
+      formData.append("image", imageListe[index][0]);
+      axiosClient.post("/article-images/", formData
+        // , {
+        //   onUploadProgress: (data) => {
+        //     setUploaded(Math.round((data.loaded / data.total) * 100))
+        //     // console.log(Math.round((data.loaded / data.total) * 100));
+        //   }
+        // }
+      );
+      done.push([true])
 
-    navigate('/gestion-articles')
-    // console.log(titre_Article, ' ', description, ' ', idCat, ' ', stock, ' ', prix_Vente, ' ', colis, ' ', booster);
-  };
+    }
+
+    // imageListe.map((val) => {
+    //   const formData = new FormData();
+    //   formData.append("article", id);
+    //   formData.append("image", val[0]);
+    //   axiosClient.post("/article-images/", formData
+    //     // , {
+    //     //   onUploadProgress: (data) => {
+    //     //     setUploaded(Math.round((data.loaded / data.total) * 100))
+    //     //     // console.log(Math.round((data.loaded / data.total) * 100));
+    //     //   }
+    //     // }
+    //   );
+    //   done.push([true])
+
+    //   // test.push([key])
+    //   // console.log("form Data : ", res.data.id_art, " id : ", val[0]);
+    //   // console.log('uploaaaaaaaaaaaad : ',uploaded);
+    // });
+
+    axiosClient.get("/article-images/").then(res => {
+      console.log('leeeeeeeeeeeength : ', res.data.filter(e => e.article === id).length)
+      if (res.data.filter(e => e.article === id)) {
+        window.location.href = '/gestion-articles'
+        console.log('holla');
+      }
+    })
+  }
+
 
   const checkParentId = (id) => {
     const list = listCategories.filter((e) => e.parent_id === id);
@@ -196,19 +241,19 @@ function NewArticle() {
   return (
     <Fragment>
       <LayoutOne onClick={() => setOpenCategories(!openCategories)}>
-        <div className="container">
+        <div className="container mt-5">
           <h3>Vendre un article</h3>
           {/* Ajout des images */}
           <div className="bg-gray p-4 m-3 rounded">
             <div className="mb-5 font-mono">
-              <span style={{ fontFamily: "cursive", color: "gray",display:'flex',alignItems:'center' }}>
+              <span style={{ fontFamily: "cursive", color: "gray", display: 'flex', alignItems: 'center' }}>
                 Ajoutez jusqu'à 6 images <AiOutlineExclamationCircle style={{
-                  marginLeft:5,
-                    fontSize: 18,
-                    color: '#80808085',
-                    display : [selectedImageList.length === 0 ? 'block' : 'none']
-                  }} />
-                  
+                  marginLeft: 5,
+                  fontSize: 18,
+                  color: '#80808085',
+                  display: [selectedImageList.length === 0 ? 'block' : 'none']
+                }} />
+
               </span>
             </div>
             {/* {images.map((val, key) => {
@@ -608,7 +653,7 @@ function NewArticle() {
                     color: '#80808085',
                     top: '14px',
                     left: '16px',
-                    display : [!titre_Article ? 'block' : 'none']
+                    display: [!titre_Article ? 'block' : 'none']
                   }} />
                   <input
                     type="text"
@@ -648,7 +693,7 @@ function NewArticle() {
                     color: '#80808085',
                     top: '14px',
                     left: '16px',
-                    display : [!description ? 'block' : 'none']
+                    display: [!description ? 'block' : 'none']
                   }} />
                   <textarea
                     class="input"
@@ -699,14 +744,14 @@ function NewArticle() {
                   className="input col-md-6 "
                   style={{ position: "relative" }}
                 >
-                <AiOutlineExclamationCircle style={{
-                  position: 'absolute',
-                  fontSize: 18,
-                  color: '#80808085',
-                  top: '14px',
-                  left: '16px',
-                  display : [!titleCat ? 'block' : 'none']
-                }} />
+                  <AiOutlineExclamationCircle style={{
+                    position: 'absolute',
+                    fontSize: 18,
+                    color: '#80808085',
+                    top: '14px',
+                    left: '16px',
+                    display: [!titleCat ? 'block' : 'none']
+                  }} />
                   <input
                     type="text"
                     className="input-lg"
@@ -855,14 +900,14 @@ function NewArticle() {
                 </div>
                 <div className="input col-md-6"
                   style={{ position: "relative" }}>
-                <AiOutlineExclamationCircle style={{
-                  position: 'absolute',
-                  fontSize: 18,
-                  color: '#80808085',
-                  top: '14px',
-                  left: '16px',
-                  display : [!stock ? 'block' : 'none']
-                }} />
+                  <AiOutlineExclamationCircle style={{
+                    position: 'absolute',
+                    fontSize: 18,
+                    color: '#80808085',
+                    top: '14px',
+                    left: '16px',
+                    display: [!stock ? 'block' : 'none']
+                  }} />
                   <input
                     type="number"
                     min={0}
@@ -891,7 +936,7 @@ function NewArticle() {
                   <h5>Prix de vente</h5>
                 </div>
                 <div className="input col-md-6" style={{
-                  position:'relative'
+                  position: 'relative'
                 }}>
                   <AiOutlineExclamationCircle style={{
                     position: 'absolute',
@@ -899,7 +944,7 @@ function NewArticle() {
                     color: '#80808085',
                     top: '14px',
                     left: '16px',
-                    display : [!prix_Vente? 'block' : 'none']
+                    display: [!prix_Vente ? 'block' : 'none']
                   }} />
                   <input
                     type="number"
@@ -923,13 +968,13 @@ function NewArticle() {
           {/* Colis */}
           <div className="bg-gray p-4 m-3 rounded">
             <div className="mb-3 font-mono">
-              <span style={{ fontFamily: "cursive", color: "gray",display:'flex',alignItems:'center' }}>
+              <span style={{ fontFamily: "cursive", color: "gray", display: 'flex', alignItems: 'center' }}>
                 Sélectionnez la taille de votre colis <AiOutlineExclamationCircle style={{
-                  marginLeft:5,
-                    fontSize: 18,
-                    color: '#80808085',
-                    display : [!colis ? 'block' : 'none']
-                  }} />
+                  marginLeft: 5,
+                  fontSize: 18,
+                  color: '#80808085',
+                  display: [!colis ? 'block' : 'none']
+                }} />
               </span>
             </div>
             <div className="container">
@@ -1114,9 +1159,17 @@ function NewArticle() {
                 Ajouter
               </button>
               :
-              <button className="btn-add" onClick={AddArticle}>
-                Ajouter
-              </button>}
+              uploaded
+                ?
+                <button class="btn-loading" type="button" disabled>
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                </button>
+                : <button className="btn-add" onClick={() => {
+                  AddArticle()
+                }}>
+                  Ajouter
+                </button>
+            }
           </div>
         </div>
       </LayoutOne>

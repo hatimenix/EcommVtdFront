@@ -5,6 +5,9 @@ import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "../article-features/ArticleRating";
 import Swiper, { SwiperSlide } from "../../../components/swiper";
+import axiosClient from "../../../axios-client";
+import { initFavoris } from "../../../store/slices/wishlist-slice";
+import { initCart } from "../../../store/slices/cart-slice";
 // import { getProductCartQuantity } from "../../helpers/product";
 // import { addToCart } from "../../store/slices/cart-slice";
 // import { addToWishlist } from "../../store/slices/wishlist-slice";
@@ -32,6 +35,36 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
     //     selectedProductSize
     // );
 
+
+    //fetch data
+    function getfav() {
+        try {
+            // fetch panier
+            axiosClient.get(`favoris/?search=${localStorage.getItem("cu")}`)
+                .then((res) => {
+                    dispatch(initFavoris(res.data))
+                });
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+
+    }
+
+
+    function getpan() {
+        try {
+            // fetch panier
+            axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+                .then((res) => {
+                    dispatch(initCart(res.data))
+                });
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+
+    }
 
     const gallerySwiperParams = {
         spaceBetween: 10,
@@ -293,7 +326,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                     <div className="pro-details-wishlist">
                                         <button
                                             className={wishlistItem !== undefined ? "active" : ""}
-                                            disabled={wishlistItem !== undefined}
+                                            disabled={wishlistItem !== undefined || !localStorage.getItem('cu')}
                                             title={
                                                 wishlistItem !== undefined
                                                     ? "Added to wishlist"

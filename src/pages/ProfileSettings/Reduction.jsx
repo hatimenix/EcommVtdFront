@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Dropdown, DropdownButton, Form } from 'react-bootstrap'
 import axiosClient from '../../axios-client';
 import { useStateContext } from '../../context/ContextProvider';
+import { Switch } from '@mui/material';
 
 function Reduction() {
     const [showSecondCard, setShowSecondCard] = useState(false);
@@ -14,27 +15,27 @@ function Reduction() {
     const [reduction3, setReduction3] = useState();
     const [reduction5, setReduction5] = useState();
 
- 
+
     useEffect(() => {
         async function fetchData() {
-            
-                const res = await axiosClient.get(`/reduction/?search=${user.id}`);
-                if (res.data.length > 0) {
-                    const reductionData = res.data[0];
-                    setListReduction(reductionData);
-                    setEtatReduction(reductionData.etat);
-                    setReductionId(reductionData.id_red);
-                    setReductionAtribute(reductionData.reduction);
-                    setReduction2(reductionData.reduction[0].pourcentage);
-                    setReduction3(reductionData.reduction[1].pourcentage);
-                    setReduction5(reductionData.reduction[2].pourcentage);
-                    
-                } else {
-                    setEtatReduction(false);
-                }
+
+            const res = await axiosClient.get(`/reduction/?search=${user.id}`);
+            if (res.data.length > 0) {
+                const reductionData = res.data[0];
+                setListReduction(reductionData);
+                setEtatReduction(reductionData.etat);
+                setReductionId(reductionData.id_red);
+                setReductionAtribute(reductionData.reduction);
+                setReduction2(reductionData.reduction[0].pourcentage);
+                setReduction3(reductionData.reduction[1].pourcentage);
+                setReduction5(reductionData.reduction[2].pourcentage);
+
+            } else {
+                setEtatReduction(false);
+            }
         }
         fetchData();
-        
+
     }, [reductionId]);
 
     const update = async () => {
@@ -56,36 +57,36 @@ function Reduction() {
 
 
     const handleSwitchToggle = async () => {
-            const formData = new FormData();
-            formData.append('etat', !etatReduction);
+        const formData = new FormData();
+        formData.append('etat', !etatReduction);
 
-            if (listReduction.length === 0) {
-                // If no existing reduction, create a new one
-                formData.append('seller', user.id);
-                formData.append('reduction', JSON.stringify([
-                    {
-                        "nbr_article": 2,
-                        "pourcentage": "-"
-                    },
-                    {
-                        "nbr_article": 3,
-                        "pourcentage": "-"
-                    },
-                    {
-                        "nbr_article": 5,
-                        "pourcentage": "-"
-                    }
-                ]));                
-                await axiosClient.post('/reduction/', formData);
-            } else {
-                console.log(user.id)
-                await axiosClient.patch(`/reduction/${reductionId}/`, formData);
-            }
+        if (listReduction.length === 0) {
+            // If no existing reduction, create a new one
+            formData.append('seller', user.id);
+            formData.append('reduction', JSON.stringify([
+                {
+                    "nbr_article": 2,
+                    "pourcentage": "-"
+                },
+                {
+                    "nbr_article": 3,
+                    "pourcentage": "-"
+                },
+                {
+                    "nbr_article": 5,
+                    "pourcentage": "-"
+                }
+            ]));
+            await axiosClient.post('/reduction/', formData);
+        } else {
+            console.log(user.id)
+            await axiosClient.patch(`/reduction/${reductionId}/`, formData);
+        }
 
-            // Update the state after the request is successful
-            setEtatReduction(!etatReduction);
-            update();
-       
+        // Update the state after the request is successful
+        setEtatReduction(!etatReduction);
+        update();
+
     };
     const reductionTwoArticles = async (e) => {
         const val = e.target.value;
@@ -155,7 +156,7 @@ function Reduction() {
         }
     };
     // const reductionTwoArticles = (e) => {
-        
+
     //     const newReduction = []
     //     setReduction2(e.target.value);
 
@@ -232,19 +233,26 @@ function Reduction() {
                     <div className="card mb-md-0">
                         <div className="card-body">
                             <div className="row">
-                                <div className="col-sm-8">
-                                    <p class="h4" className="mb-0">Tes réduction</p>
+                                <div className="col-sm-8 align-items-center">
+                                    <p class="h4" className="mb-0">Tes réductions</p>
                                 </div>
                                 <div className="col-sm-4 text-end">
+
                                     <div className="form-switch">
-                                        <input
+                                        <Switch
+                                            size='lg'
+                                            checked={etatReduction}
+                                            onChange={handleSwitchToggle}
+                                            inputProps={{ 'aria-label': 'controlled' }}
+                                        />
+                                        {/* <input
                                             style={{ width: "50px", height: "25px" }}
                                             className="form-check-input"
                                             type="checkbox"
                                             defaultChecked={etatReduction}
                                             id="flexSwitchCheckDefault"
                                             onClick={handleSwitchToggle}
-                                        />
+                                        /> */}
                                     </div>
                                 </div>
                             </div>
