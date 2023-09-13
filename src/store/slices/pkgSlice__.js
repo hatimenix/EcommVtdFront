@@ -10,7 +10,11 @@ const pkgSlice = createSlice({
     },
     reducers: {
         setPackages: (state, action) => {
+            console.log('initialisation du pkg');
             state.pkgs = action.payload;
+
+
+
         },
 
     },

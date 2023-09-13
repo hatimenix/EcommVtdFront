@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductCartQuantity } from "../../helpers/product";
 import Rating from "./sub-components/ProductRating";
-import { addToCart } from "../../store/slices/cart-slice";
+import { addToCart, initCart } from "../../store/slices/cart-slice";
 import { addToWishlist, initFavoris } from "../../store/slices/wishlist-slice";
 import { addToCompare } from "../../store/slices/compare-slice";
 import { setProperties } from "../../store/slices/propertiesSlice";
 import { fetchFavori, fetchProperties } from "../../services/fetchData";
 import { Link } from "react-router-dom"; // Add this import
+import axiosClient from "../../axios-client";
 
 const ProductDescriptionInfo = ({
   product,
@@ -29,6 +30,34 @@ const ProductDescriptionInfo = ({
   const [selectedColor, setSelectedColor] = useState(""); // Initialize with an empty string
   const [selectedSize, setSelectedSize] = useState("");   // Initialize with an empty string
 
+  function getfav() {
+    try {
+      // fetch panier
+      axiosClient.get(`favoris/?search=${localStorage.getItem("cu")}`)
+        .then((res) => {
+          dispatch(initFavoris(res.data))
+        });
+
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+
+  }
+
+
+  function getpan() {
+    try {
+      // fetch panier
+      axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+        .then((res) => {
+          dispatch(initCart(res.data))
+        });
+
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+
+  }
 
   useEffect(() => {
     fetchProperties()
@@ -179,15 +208,15 @@ const ProductDescriptionInfo = ({
             <button
               onClick={() =>
                 panier ?
-                setQuantityCount(
-                  quantityCount < productStock - panier.quantity
-                    ? quantityCount + 1
-                    : quantityCount
-                ) : setQuantityCount(
-                  quantityCount < productStock
-                    ? quantityCount + 1
-                    : quantityCount
-                )
+                  setQuantityCount(
+                    quantityCount < productStock - panier.quantity
+                      ? quantityCount + 1
+                      : quantityCount
+                  ) : setQuantityCount(
+                    quantityCount < productStock
+                      ? quantityCount + 1
+                      : quantityCount
+                  )
               }
               className="inc qtybutton"
             >
@@ -205,8 +234,11 @@ const ProductDescriptionInfo = ({
                     selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
                   }))
 
-                  //reloading page
-                  window.location.reload();
+                  // actualiser panier
+                  setTimeout(() => {
+                    getpan()
+                  }, 500);
+
                 }
                 }
                 disabled={quantityCount > productStock || !localStorage.getItem("cu")}
@@ -230,7 +262,11 @@ const ProductDescriptionInfo = ({
               onClick={() => {
                 dispatch(addToWishlist(product))
                 // actualiser le favoris
-                window.location.reload();
+
+                setTimeout(() => {
+                  getfav()
+                }, 500);
+                // window.location.reload();
               }}
             >
               <i className="pe-7s-like" />

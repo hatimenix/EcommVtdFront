@@ -69,16 +69,88 @@ useEffect(() => {
     if (currentArticleIndex !== -1) {
       filtered.splice(currentArticleIndex, 1);
     }
+<<<<<<< HEAD
 
     setFilteredArticles(filtered);
   }
 }, [dispatch, currentCategory, currentArticle, allArticles, articleId]);
+=======
+  }, [dispatch, currentCategory, currentArticle, allArticles, articleId]);
+
+  const correspondingSeller = csts ? csts.find(c => c.id === currentArticle.customer_id) : null;
+
+  let lotArticles = null;
+
+  if (correspondingSeller !== null) {
+    lotArticles = allArticles ? allArticles.filter(ar => ar.customer_id === correspondingSeller.id) : null;
+  }
+  const lotArticlesLength = lotArticles !== null ? lotArticles.length : 0;
+
+  console.log("lotArticlesLength", lotArticlesLength);
+
+
+  const matchingPkgs = pkgs ? pkgs.filter(pkg => {
+    return lotArticles ? lotArticles.some(article => article.customer_id === pkg.seller) : false;
+  }) : [];
+
+  console.log("matchingPkgs", matchingPkgs);
+
+
+  let reduction = 0
+  let firstMatchingPackage
+
+  let reductions
+
+
+
+
+
+  if (matchingPkgs.length > 0) {
+    firstMatchingPackage = matchingPkgs[0];
+    reduction = firstMatchingPackage.reduction ? firstMatchingPackage.reduction : null;
+
+    console.log("reduction of the first matching package:", reduction);
+  } else {
+    console.log("No matching packages found.");
+  }
+
+
+  console.log("reduction", reduction);
+
+
+
+  const maxPercentage = Array.isArray(reduction) ?
+    reduction.reduce((max, item) => {
+      return item.pourcentage > max ? item.pourcentage : max;
+    }, 0) : 0;
+
+
+  console.log("maxPercentage", maxPercentage);
+
+
+
+  // const articles_lotArray = Array.isArray(csts)
+  //   ? csts.map(cstsItem => {
+  //     const matchingArticle = allArticles.find(article => article.customer_id === cstsItem.id);
+  //     return matchingArticle ? matchingArticle : null;
+  //   })
+  //   : [];
+
+  // console.log("correspondingSeller", correspondingSeller);
+
+  // console.log("Filtered Articles (prods):", filteredArticles);
+
+
+  const nav = useNavigate()
+
+>>>>>>> 64dad7b7ec669f1299e4c5c73f201dd72b546141
 
 
   console.log("Filtered Articles (prods):", filteredArticles);
   return (
     <div className={clsx("related-product-area", spaceBottomClass)}>
       {currentArticle ? (
+<<<<<<< HEAD
         <div className="container">
           <SectionTitle
             titleText="Related Products"
@@ -113,6 +185,75 @@ useEffect(() => {
             </div>
           ) : null}
         </div>
+=======
+
+        <>
+          {
+            firstMatchingPackage && currentArticle.stock > 0 ?
+              (
+                <Card sx={{ maxWidth: '100%', display: 'flex', flexDirection: 'column', }}>
+                  <CardContent style={{ flex: '1' }}>
+                    <Typography color={"gray"} gutterBottom variant="h9" component="div">
+                      {lotArticlesLength} Articles disponibles
+                    </Typography>
+                    <Typography variant="body2">
+                      Acheter un lot
+                    </Typography>
+                    <Typography variant="h6">
+                      Jusqu'a {maxPercentage ? maxPercentage : 0} % de réduction
+                    </Typography>
+                  </CardContent>
+                  <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <CardActions>
+                      <Button onClick={() => nav(`/bundles/${firstMatchingPackage.id_red}`)} style={{ color: 'white', backgroundColor: "#008080" }} size="small">Acheter</Button>
+                    </CardActions>
+                  </div>
+                </Card>
+
+              ) : ''
+
+          }
+
+
+
+
+
+          <div className="container">
+            <SectionTitle
+              titleText="Related Products"
+              positionClass="text-center"
+              spaceClass="mb-50"
+            />
+            {filteredArticles.length > 0 ? (
+              <div className="related-articles">
+                <Swiper options={settings}>
+                  {filteredArticles.map((product) => (
+                    <SwiperSlide key={product.id_art}>
+                      <ProductGridSingle
+                        product={product}
+                        currency={currency}
+                      // cartItem={
+                      //   cartItems.find((cartItem) => cartItem.id === product.id_art)
+                      // }
+                      // wishlistItem={
+                      //   wishlistItems.find(
+                      //     (wishlistItem) => wishlistItem.id === product.id_art
+                      //   )
+                      // }
+                      // compareItem={
+                      //   compareItems.find(
+                      //     (compareItem) => compareItem.id === product.id_art
+                      //   )
+                      // }
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            ) : null}
+          </div>
+        </>
+>>>>>>> 64dad7b7ec669f1299e4c5c73f201dd72b546141
       ) : ("")}
     </div>
   );

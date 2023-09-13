@@ -3,16 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchBoosts, fetchCategories, fetchPanier } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchBoosts, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { setBoosts } from '../store/slices/boostSlice';
-import { fetchFavori, fetchUser, fetchProperties, fetchPackages } from './fetchData';
 import { initFavoris } from '../store/slices/wishlist-slice';
 import { useCurrentUserSelector } from '../store/selectors/selectors';
 import { userChanged } from '../store/slices/userSlice';
 import { setProperties } from '../store/slices/propertiesSlice';
 import { setPackages } from '../store/slices/pkgSlice__';
-// import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
   const dispatch = useDispatch();
@@ -91,6 +89,36 @@ const usePersistData = () => {
         dispatch(initFavoris(favori));
       } catch (error) {
         console.error('Error fetching user and initializing cart and favoris:', error);
+      }
+
+      try {
+        const pkg = await fetchPackages();
+        dispatch(setPackages(pkg));
+        localStorage.setItem("pkgs", JSON.stringify(pkg));
+        console.log("persist pkg", pkg);
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+      }
+
+      // fetch user and initialize cart and favoris
+      try {
+        const recs = await fetchUser();
+        dispatch(userChanged(recs));
+        localStorage.setItem("cu", recs.id);
+        console.log("user identifier:", recs.id);
+
+        // fetch panier
+        const panier = await fetchPanier(recs.id);
+        dispatch(initCart(panier));
+
+        // fetch favoris
+        const favori = await fetchFavori(recs.id);
+        dispatch(initFavoris(favori));
+
+        const cst = await fetchCst(recs.id);
+        dispatch(fetchCst(cst));
+      } catch (error) {
+        console.error('Error fetching recs:', error);
       }
     };
 

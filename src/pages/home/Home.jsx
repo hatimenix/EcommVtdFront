@@ -32,7 +32,6 @@ const Home = () => {
         headerPaddingClass="header-padding-1"
       >
 
-        <NestedNav />
         <HeroSliderTen />
 
 

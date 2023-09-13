@@ -37,7 +37,7 @@ function RenderSubcategories({ parentCategoryId }) {
     };
 
     return (
-        <ul className="sub-category-list">
+        <ul className="mega-menu mega-menu-padding">
             {subcategories.map((subcategory) => (
                 <CategoryItem
                     key={subcategory.id_cat}

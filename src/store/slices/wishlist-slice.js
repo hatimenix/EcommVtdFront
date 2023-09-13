@@ -21,7 +21,7 @@ const addFavoris = async (dataForm) => {
 
 //delete le Favoris
 const deleteFavoris = async (id_pan) => {
-    try     {
+    try {
         const response = await axios.delete(`${BASE_URL}favoris/${id_pan}/`);
         // console.log('updating..............', dataForm);
         return response.data;
@@ -61,12 +61,12 @@ const wishlistSlice = createSlice({
     name: 'wishlist',
     initialState: {
         wishlistItems: [], // Ensure this property is defined
-  },
+    },
     reducers: {
         addToWishlist(state, action) {
             const isInWishlist = state.wishlistItems.findIndex(item => item.id_art === action.payload.id_art);
-            if(isInWishlist > -1){
-                cogoToast.info("Product already in wishlist", {position: "bottom-left"});
+            if (isInWishlist > -1) {
+                cogoToast.info("Product already in wishlist", { position: "bottom-left" });
             } else {
                 const wlist = action.payload
                 dataForm = {
@@ -77,17 +77,17 @@ const wishlistSlice = createSlice({
                 // ajouter à la liste
                 addFavoris(dataForm)
                 // state.wishlistItems.push(action.payload)
-                cogoToast.success("Added To wishlist", {position: "bottom-left"});
+                cogoToast.success("Added To wishlist", { position: "bottom-left" });
             }
-            
+
         },
-        deleteFromWishlist(state, action){
+        deleteFromWishlist(state, action) {
             const id_fav = action.payload
             deleteFavoris(id_fav)
             state.wishlistItems = state.wishlistItems.filter(item => item.id_fav !== id_fav);
-            cogoToast.error("Removed From Wishlist", {position: "bottom-left"});
+            cogoToast.error("Removed From Wishlist", { position: "bottom-left" });
         },
-        deleteAllFromWishlist(state){
+        deleteAllFromWishlist(state) {
             deleteAllFavoris(id_user)
             state.wishlistItems = []
         },
@@ -100,5 +100,5 @@ const wishlistSlice = createSlice({
     },
 });
 
-export const { addToWishlist, deleteFromWishlist, deleteAllFromWishlist,initFavoris } = wishlistSlice.actions;
+export const { addToWishlist, deleteFromWishlist, deleteAllFromWishlist, initFavoris } = wishlistSlice.actions;
 export default wishlistSlice.reducer;

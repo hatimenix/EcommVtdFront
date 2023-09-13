@@ -18,6 +18,7 @@ import recsMiddleware from './middlewares/recsMiddleware';
 import midReducer from './slices/articlesRecMidSlice';
 import pkgReducer from './slices/pkgSlice__';
 
+import listPkgReducer from './slices/listPkgSlice';
 
 
 const store = configureStore({
@@ -38,7 +39,8 @@ const store = configureStore({
         user: userReducer,
         rec: recReducer,
         artmid: midReducer, // Add the new reducer here
-        pkg: pkgReducer
+        pkg: pkgReducer,
+        lpkg: listPkgReducer
 
 
     },
