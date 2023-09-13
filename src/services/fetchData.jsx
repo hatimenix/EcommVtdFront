@@ -29,6 +29,13 @@ export const fetchArticles = async () => {
     return response.data;
 };
 
+export const fetchBoosts = async () => {
+    const response = await axios.get(`${BASE_URL}boosts/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
+
 export const fetchArticlesRec = async () => {
     const response = await axiosClient.get(`tracked-articles/`, {
         withCredentials: true,
@@ -50,6 +57,21 @@ export const fetchArticleById = createAsyncThunk(
         }
     }
 );
+
+// export const fetchBoosts = createAsyncThunk(
+//   'boosts/fetchBoosts',
+//   async () => {
+//     try {
+//       const response = await axios.get(`${BASE_URL}boosts/`, {
+//         withCredentials: true,
+//       });
+//       return response.data;
+//     } catch (error) {
+//       console.error('Error fetching boosts:', error);
+//       throw error;
+//     }
+//   }
+// );
 
 export const fetchArticlesdetails = async (id_art) => {
     const response = await axiosClient.get(`articles/${id_art}/`, {

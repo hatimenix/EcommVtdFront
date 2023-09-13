@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../../store/slices/categoriesSlice";
 import { fetchArticlesByCategory } from "../../services/fetchData";
 import NestedNav from "../../components/nav-archetype/NavState";
+import ArticleGridDsBoosted from "../../components/article-archetype/ArticleGridDsBoosted";
 
 const Home = () => {
 
@@ -35,6 +36,7 @@ const Home = () => {
 
 
         <ArticleGridDs />
+        <ArticleGridDsBoosted/>
       </LayoutOne>
     </Fragment>
   );

@@ -22,7 +22,7 @@ import { fetchUser } from '../../store/slices/userSlice';
 import { useCurrentUserSelector } from '../../store/selectors/selectors';
 
 
-const ArticleGridDsSingleTwo = ({
+const ArticleGridDsSingleTwoBoosted = ({
     article,
     cartItem,
     wishlistItem,
@@ -324,14 +324,13 @@ const ArticleGridDsSingleTwo = ({
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 article={article}
-                product={article}
 
             />
         </Fragment>
     );
 };
 
-ArticleGridDsSingleTwo.propTypes = {
+ArticleGridDsSingleTwoBoosted.propTypes = {
     cartItem: PropTypes.shape({}),
     compareItem: PropTypes.shape({}),
     wishlistItem: PropTypes.shape({}),
@@ -352,4 +351,4 @@ ArticleGridDsSingleTwo.propTypes = {
     titlePriceClass: PropTypes.string,
 };
 
-export default ArticleGridDsSingleTwo;
+export default ArticleGridDsSingleTwoBoosted;

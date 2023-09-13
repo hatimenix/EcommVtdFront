@@ -1,13 +1,15 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Rating from "./sub-components/ProductRating";
 import { getDiscountPrice } from "../../helpers/product";
 import ProductModal from "./ProductModal";
 import { addToCart } from "../../store/slices/cart-slice";
 import { addToWishlist } from "../../store/slices/wishlist-slice";
+import { fetchCst } from "../../services/fetchData";
+
 
 const ProductGridSingle = ({
   product,
@@ -24,9 +26,63 @@ const ProductGridSingle = ({
     discountedPrice * currency.currencyRate
   ).toFixed(2);
   const dispatch = useDispatch();
+  // const csts = useSelector((state) => state.cst.csts);
+
+
+
+//   useEffect(() => {
+
+
+
+//         dispatch(fetchCst());
+
+
+
+
+
+
+//     }, [dispatch]);
+
+
+
+
+// console.log("cts:", csts)
+// const correspondingSeller = csts.find(c => c.id === product.customer_id);
+
+//     if (!correspondingSeller) {
+//         return null;
+//     }
+
+//     const avatarStyle = {
+//         position: 'absolute',
+//         top: '00px',
+//         left: '10px',
+//         width: '40px',
+//         height: '40px',
+//         backgroundColor: '#fff',
+//         borderRadius: '50%',
+//         padding: '0px',
+//         boxShadow: '0 0 5px rgba(0, 0, 0, 0.2)',
+//         overflow: 'hidden',
+//     };
+
+
+//     const sellerNameStyle = {
+//         position: 'absolute',
+//         top: '10px',
+//         right: '140px',
+//         fontSize: '12px',
+//     };
+
 
   return (
     <Fragment>
+      {/* <div style={avatarStyle}>
+                    <img src={correspondingSeller.image} alt={correspondingSeller.name} width="40" height="40" />
+
+                </div>
+                <div style={sellerNameStyle}>{correspondingSeller.first_name}</div> */}
+
       <div className={clsx("product-wrap", spaceBottomClass)}>
         <div className="product-img">
           <Link to={process.env.PUBLIC_URL + "/articles/" + product.id_art}>
