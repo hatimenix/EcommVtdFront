@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
 import NavMenu from "./NavMenu";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import OffcanvasMenu from "./OffcanvasMenu";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -59,7 +59,7 @@ const IconGroup = ({ iconWhiteClass }) => {
     ev.preventDefault();
     localStorage.removeItem("ACCESS_TOKEN");
     localStorage.removeItem("REFRESH_TOKEN");
-    localStorage.removeItem ("cu")
+    localStorage.removeItem("cu")
     navigate('/')
   };
 
@@ -68,7 +68,6 @@ const IconGroup = ({ iconWhiteClass }) => {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useStateContext();
   const [image, setImage] = useState()
-
 
 
   return (
@@ -90,7 +89,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         <>
           <div className="row " style={{ width: "100%%" }}>
             <Button onClick={handleShow} className="col-6" style={{ fontSize: "12px", width: "fit-content", color: "teal", borderColor: "teal", backgroundColor: "transparent" }} size="sm" >SignUp | Login</Button>
-            <Button className="col-6 " style={{ fontSize: "12px", width: "fit-content", marginLeft: 5, backgroundColor: "teal", border: "none" }} size="sm" onClick={()=>{
+            <Button className="col-6 " style={{ fontSize: "12px", width: "fit-content", marginLeft: 5, backgroundColor: "teal", border: "none" }} size="sm" onClick={() => {
               setIsSeller(true)
               handleShow()
             }}>sell now</Button>
@@ -160,6 +159,11 @@ const IconGroup = ({ iconWhiteClass }) => {
                   </Link>
                 </Dropdown.Item >
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
+                  <Link to={process.env.PUBLIC_URL + "/gestion-articles"}>
+                    Mes articles
+                  </Link>
+                </Dropdown.Item >
+                <Dropdown.Item style={{ backgroundColor: "transparent" }}>
                   <Link to={process.env.PUBLIC_URL + "/gestion-profil"}>
                     Mes paramètres
                   </Link>
@@ -168,7 +172,6 @@ const IconGroup = ({ iconWhiteClass }) => {
                 <Link onClick={onLogout}>
                   <Dropdown.Item style={{ backgroundColor: "transparent", color: 'red' }}>
                     Se déconnecter
-
                   </Dropdown.Item>
                 </Link>
               </Dropdown.Menu>
@@ -195,7 +198,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         </div> */}
           </div>
           <div className="row d-flex align-items-center d-none d-lg-block d-md-block" style={{ width: "100%%" }}>
-            <Button className="col-6 " style={{ fontSize: "12px", width: "70px", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" onClick={()=>{
+            <Button className="col-6 " style={{ fontSize: "12px", width: "70px", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" onClick={() => {
               navigate('/nouveau-article')
             }}>sell now</Button>
           </div>
@@ -227,7 +230,7 @@ const IconGroup = ({ iconWhiteClass }) => {
 
         <Modal.Body  >
           <Modal.Header style={{ border: 'none' }} closeButton />
-          <Login isSeller={isSeller}/>
+          <Login isSeller={isSeller} />
         </Modal.Body>
       </Modal>
     </div>
