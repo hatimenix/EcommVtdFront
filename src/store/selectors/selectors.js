@@ -25,3 +25,13 @@ export const useCurrentUserSelector = () => {
 export const useRecSelector = () => {
     return useSelector((state) => state.rec.recs);
 };
+
+
+export const usePropsSelectore = () => {
+    return useSelector((state) => state.propertie.properties);
+};
+
+
+export const usePkgSelectore = () => {
+    return useSelector((state) => state.pkg.pkgs);
+};

@@ -90,9 +90,9 @@ function Wallet() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 md-row" style={{ display: 'flex', justifyContent: "space-between"}}>
-                            <span className='mr-10 col-xs-12 col-md-10' style={{ fontSize: "11px", color: 'gray' , lineHeight:2 }}>Tes données personnelles ne seront jamais partagées, excepté avec notre prestataire de paiement pour les prélèvements, ou dans le cas où nous serions légalement tenus de le faire (autorités fiscales par exemple).</span>
-                            <button type="button" className="btn btn-sm btn-outline-success p-2 " style={{ position: 'relative', alignContent: 'top',height:'fit-content' }}>
+                        <div className="col-12 md-row" style={{ display: 'flex', justifyContent: "space-between" }}>
+                            <span className='mr-10 col-xs-12 col-md-10' style={{ fontSize: "11px", color: 'gray', lineHeight: 2 }}>Tes données personnelles ne seront jamais partagées, excepté avec notre prestataire de paiement pour les prélèvements, ou dans le cas où nous serions légalement tenus de le faire (autorités fiscales par exemple).</span>
+                            <button type="button" className="btn btn-sm btn-outline-success p-2 " style={{ position: 'relative', alignContent: 'top', height: 'fit-content' }}>
                                 Enregistrer
                             </button>
                         </div>
@@ -132,23 +132,44 @@ function Wallet() {
 
                             </div>
                         </div>
-                        <div className='p-2 mb-1'>
-                            <div className="col-sm-12 mb-2">
-                                <p className="mb-0">Pays</p>
-                            </div>
-                            <div className="col-sm-12">
-                                <input placeholder='Saisis votre pays' className="form-control-sm h-50" style={{
-                                    borderTop: "none",
-                                    borderRight: "none",
-                                    borderLeft: "none",
-                                    borderRadius: "0",
-                                    borderBottom: "1px solid lightgray",
-                                    outline: "none",
-                                    backgroundColor: "#f8f9fa57"
-                                }}
-                                />
+                        <div className=' row p-2 mb-1'>
+                            <div className='col-6'>
+                                <div className="col-sm-12 mb-2">
+                                    <p className="mb-0">Pays</p>
+                                </div>
+                                <div className="col-sm-12">
+                                    <input placeholder='Saisis votre pays' className="form-control-sm h-50" style={{
+                                        borderTop: "none",
+                                        borderRight: "none",
+                                        borderLeft: "none",
+                                        borderRadius: "0",
+                                        borderBottom: "1px solid lightgray",
+                                        outline: "none",
+                                        backgroundColor: "#f8f9fa57"
+                                    }}
+                                    />
 
+                                </div>
                             </div>
+                            <div className='col-6'>
+                                <div className="col-sm-12 mb-2">
+                                    <p className="mb-0">Ville</p>
+                                </div>
+                                <div className="col-sm-12">
+                                    <input placeholder='Saisis votre ville' className="form-control-sm h-50" style={{
+                                        borderTop: "none",
+                                        borderRight: "none",
+                                        borderLeft: "none",
+                                        borderRadius: "0",
+                                        borderBottom: "1px solid lightgray",
+                                        outline: "none",
+                                        backgroundColor: "#f8f9fa57"
+                                    }}
+                                    />
+
+                                </div>
+                            </div>
+
                         </div>
                         <div className='p-2 mb-1'>
                             <div className="col-sm-12 mb-2">

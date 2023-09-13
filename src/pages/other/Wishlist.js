@@ -11,12 +11,12 @@ import { deleteFromWishlist, deleteAllFromWishlist } from "../../store/slices/wi
 const Wishlist = () => {
   const dispatch = useDispatch();
   let { pathname } = useLocation();
-  
+
   const currency = useSelector((state) => state.currency);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
-  
-  console.log("voici la wishlist");
+
+  // console.log("voici la wishlist");
 
   return (
     <Fragment>
@@ -26,11 +26,11 @@ const Wishlist = () => {
       />
       <LayoutOne headerTop="visible">
         {/* breadcrumb */}
-        <Breadcrumb 
+        <Breadcrumb
           pages={[
-            {label: "Home", path: process.env.PUBLIC_URL + "/" },
-            {label: "Wishlist", path: process.env.PUBLIC_URL + pathname }
-          ]} 
+            { label: "Home", path: process.env.PUBLIC_URL + "/" },
+            { label: "Wishlist", path: process.env.PUBLIC_URL + pathname }
+          ]}
         />
         <div className="cart-main-area pt-90 pb-100">
           <div className="container">
@@ -144,7 +144,7 @@ const Wishlist = () => {
                                       }
                                       className={
                                         cartItem !== undefined &&
-                                        cartItem.quantity > 0
+                                          cartItem.quantity > 0
                                           ? "active"
                                           : ""
                                       }
@@ -159,7 +159,7 @@ const Wishlist = () => {
                                       }
                                     >
                                       {cartItem !== undefined &&
-                                      cartItem.quantity > 0
+                                        cartItem.quantity > 0
                                         ? "Added"
                                         : "Add to cart"}
                                     </button>

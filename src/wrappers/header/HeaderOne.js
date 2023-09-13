@@ -31,6 +31,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import '../../assets/css/float.css'
+import NestedNav from "../../components/nav-archetype/NavState";
 
 const HeaderOne = ({
   layout,
@@ -155,9 +156,9 @@ const HeaderOne = ({
                 <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"} logoClass="logo" />
               </div>
 
-              <div className="col-xl-6 col-lg-6 d-none d-lg-block mt-2" style={{ position: 'relative', overflow: 'hidden' }}>
+              <div className="col-xl-6 col-lg-6 d-none d-lg-block mt-2" style={{ position: 'relative' }}>
                 {/* Nav menu */}
-                <InputGroup style={{ width: '100%', minHeight: '20px', outline: "none", boxShadow: "none", }}>
+                <InputGroup style={{ width: '100%', minHeight: '20px', outline: "none", boxShadow: "none" }}>
                   <DropdownButton
                     variant="outline-secondary"
                     title={selectedOption}
@@ -372,9 +373,16 @@ const HeaderOne = ({
                 <IconGroup />
               </div>
             </div>
+
           </div>
           {/* mobile menu */}
-          <MobileMenu />
+          
+            <MobileMenu />
+            <div className={scroll > headerTop && ''}>
+              <NestedNav />
+            </div>
+          
+
         </div>
       </header>
 

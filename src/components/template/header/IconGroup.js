@@ -21,6 +21,7 @@ import { useStateContext } from "../../../context/ContextProvider";
 const styles = `
 .my-modal {
     max-width: 500px; /* Adjust this value to your preference */
+    margin: 2% auto;
     padding: 10px;
 }
 `;

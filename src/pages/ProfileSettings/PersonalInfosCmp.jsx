@@ -115,7 +115,7 @@ function PersonalInfosCmp() {
         <div className="col-lg-8">
             <div className="card mb-4 pb-2">
                 <div className="card-body">
-                    <p className="mb-4"><span className="text-primary font-italic me-1">Mes informations</span></p>
+                    <p className="mb-4"><span className=" font-italic me-1" style={{color:'#00BFB1'}}>Mes informations</span></p>
                     <div className="row">
                         <div className="col-sm-3">
                             <p className="mb-0">Nom</p>
@@ -203,7 +203,7 @@ function PersonalInfosCmp() {
                 <div className="col-md-12 ">
                     <div className="card mb-4 mb-md-0 pb-2">
                         <div className="card-body">
-                            <p className="mb-4"><span className="text-primary font-italic me-1">Mon emplacement</span></p>
+                            <p className="mb-4"><span className="font-italic me-1" style={{color:"#00BFB1"}}>Mon emplacement</span></p>
                             <div className="row align-items-center"> {/* Use 'align-items-center' to vertically align items */}
                                 <div className="col-md-2 mb-2 mb-md-0"> {/* Use 'col-md-2' to make the columns stack on small screens */}
                                     <p className="mb-0">Pays</p>

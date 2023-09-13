@@ -1,5 +1,7 @@
 import axios from "axios";
 
+export const linkImage = 'http://127.0.0.1:8000'
+
 const axiosClient = axios.create({
   baseURL: "http://localhost:8000/",
   // baseURL: "https://api.paiperleckelearning.com/",
@@ -104,5 +106,4 @@ export default axiosClient;
 // export default axiosClient;
 
 
-export const linkImage = 'http://127.0.0.1:8000'
 

@@ -11,9 +11,10 @@ const ProductImageDescription = ({ spaceTopClass, spaceBottomClass, galleryType,
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
+  console.log("le log du wishlist: ", wishlistItems);
   const { compareItems } = useSelector((state) => state.compare);
-  const wishlistItem = wishlistItems.find(item => item.id === product.id);
-  const compareItem = compareItems.find(item => item.id === product.id);
+  const wishlistItem = wishlistItems.find(item => item.id_art === product.id_art);
+  const compareItem = compareItems.find(item => item.id_art === product.id_art);
 
   return (
     <div className={clsx("shop-area", spaceTopClass, spaceBottomClass)}>
