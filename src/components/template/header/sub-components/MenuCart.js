@@ -100,7 +100,7 @@ const MenuCart = () => {
           </div>
         </Fragment>
       ) : (
-        <p className="text-center">No items added to cart</p>
+        <p className="text-center">pas d'article dans le panier</p>
       )}
     </div>
   );

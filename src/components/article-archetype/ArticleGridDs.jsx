@@ -251,7 +251,7 @@ const ArticleGridDs = ({ limit }) => {
                             titleText="Recherche par marque"
                             // subTitleText="Latest arrivals & offers "
                             // positionClass="text-center"
-                            spaceClass="mb-50 mt-30"
+                            spaceClass="mb-20 mt-30"
                         />
 
                         <div className="row five-column">
