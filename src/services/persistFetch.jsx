@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { initFavoris } from '../store/slices/wishlist-slice';
 import { useCurrentUserSelector } from '../store/selectors/selectors';
@@ -70,6 +70,9 @@ const usePersistData = () => {
             try {
                 const pkg = await fetchPackages();
                 dispatch(setPackages(pkg));
+                localStorage.setItem("pkgs", JSON.stringify(pkg))
+
+                console.log("persist pkg", pkg);
             } catch (error) {
                 console.error('Error fetching packages:', error);
             }
@@ -89,6 +92,12 @@ const usePersistData = () => {
                 // fetch favoris
                 const favori = await fetchFavori(recs.id);
                 dispatch(initFavoris(favori));
+
+
+                const cst = await fetchCst(recs.id);
+
+                dispatch(fetchCst(cst));
+
 
             } catch (error) {
                 console.error('Error fetching recs:', error);

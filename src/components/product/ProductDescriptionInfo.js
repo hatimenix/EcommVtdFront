@@ -221,10 +221,8 @@ const ProductDescriptionInfo = ({
               }
               onClick={() => {
                 dispatch(addToWishlist(product))
-                // Add a 1-second delay before reloading the page
-                setTimeout(() => {
-                  window.location.reload();
-                }, 100); // 1000 milliseconds = 1 second
+                //reloading page
+                window.location.reload();
               }}
             >
               <i className="pe-7s-like" />
