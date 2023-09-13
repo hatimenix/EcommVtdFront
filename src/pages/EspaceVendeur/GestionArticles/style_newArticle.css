@@ -12,19 +12,31 @@
     background-color: rgb(226, 225, 225);
 }
 
-.btn-add{
+.btn-add {
     padding: 5px;
     width: 100px;
     background-color: transparent;
     font-size: 15px;
-    border : 1px solid rgb(183, 181, 181);
+    border: 1px solid rgb(183, 181, 181);
     border-radius: 5px;
     transition: .2s ease-in-out 100ms;
     color: #17b2b0;
 }
-.btn-add:hover{
+
+.btn-add:hover {
     background-color: #17b2b0;
     color: white;
     scale: 1.02;
     box-shadow: 10px 10px 50px gray;
+}
+
+.btn-loading {
+    padding-top: 5px;
+    width: 100px;
+    background-color: transparent;
+    font-size: 10px;
+    border: 1px solid #17b2b0;
+    border-radius: 5px;
+    transition: .2s ease-in-out 100ms;
+    color: #17b2b0;
 }
