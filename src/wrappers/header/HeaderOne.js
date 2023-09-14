@@ -151,12 +151,12 @@ const HeaderOne = ({
         >
           <div >
             <div className="row">
-              <div className="col-xl-2 col-lg-2 col-md-3 col-4 p-3">
+              <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 col-4 p-3">
                 {/* header logo */}
                 <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"} logoClass="logo" />
               </div>
 
-              <div className="col-xl-6 col-lg-6 d-none d-lg-block mt-2" style={{ position: 'relative' }}>
+              <div className="col-xl-5 col-lg-5 col-md-3 d-none d-lg-block mt-2" style={{ position: 'relative' }}>
                 {/* Nav menu */}
                 <InputGroup style={{ width: '100%', minHeight: '20px', outline: "none", boxShadow: "none" }}>
                   <DropdownButton
@@ -367,8 +367,8 @@ const HeaderOne = ({
               </div>
 
 
-              <div className="col-xl-6 col-lg-6 col-md-3 d-none d-md-block d-xl-none d-lg-none" ></div>
-              <div className="col-xl-4 col-lg-4 col-md-6 col-8 mt-3">
+              <div className="col-xl-5 col-lg-6 col-md-3 col-sm-4 d-none d-sm-block d-md-none d-xl-none d-lg-none" ></div>
+              <div className="col-xl-5 col-lg-5 col-md-9 col-sm-5 col-8 mt-3">
                 {/* Icon group */}
                 <IconGroup />
               </div>
