@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
 import NavMenu from "./NavMenu";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import OffcanvasMenu from "./OffcanvasMenu";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -61,7 +61,7 @@ const IconGroup = ({ iconWhiteClass }) => {
     ev.preventDefault();
     localStorage.removeItem("ACCESS_TOKEN");
     localStorage.removeItem("REFRESH_TOKEN");
-    localStorage.removeItem ("cu")
+    localStorage.removeItem("cu")
     navigate('/')
   };
 
@@ -70,7 +70,6 @@ const IconGroup = ({ iconWhiteClass }) => {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useStateContext();
   const [image, setImage] = useState()
-
 
 
   return (
@@ -208,6 +207,11 @@ const IconGroup = ({ iconWhiteClass }) => {
                   </Link>
                 </Dropdown.Item >
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
+                  <Link to={process.env.PUBLIC_URL + "/gestion-articles"}>
+                    Mes articles
+                  </Link>
+                </Dropdown.Item >
+                <Dropdown.Item style={{ backgroundColor: "transparent" }}>
                   <Link to={process.env.PUBLIC_URL + "/gestion-profil"}>
                     Mes paramètres
                   </Link>
@@ -216,7 +220,6 @@ const IconGroup = ({ iconWhiteClass }) => {
                 <Link onClick={onLogout}>
                   <Dropdown.Item style={{ backgroundColor: "transparent", color: 'red' }}>
                     Se déconnecter
-
                   </Dropdown.Item>
                 </Link>
               </Dropdown.Menu>
@@ -275,7 +278,7 @@ const IconGroup = ({ iconWhiteClass }) => {
 
         <Modal.Body  >
           <Modal.Header style={{ border: 'none' }} closeButton />
-          <Login isSeller={isSeller}/>
+          <Login isSeller={isSeller} />
         </Modal.Body>
       </Modal>
     </div>

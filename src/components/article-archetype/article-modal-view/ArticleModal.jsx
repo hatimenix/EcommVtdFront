@@ -5,10 +5,9 @@ import { Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "../article-features/ArticleRating";
 import Swiper, { SwiperSlide } from "../../../components/swiper";
-import { getProductCartQuantity } from "../../../helpers/product";
-import { addToCart } from "../../../store/slices/cart-slice";
-import { addToWishlist } from "../../../store/slices/wishlist-slice";
-import { addToCompare } from "../../../store/slices/compare-slice";
+import axiosClient from "../../../axios-client";
+import { initFavoris } from "../../../store/slices/wishlist-slice";
+import { initCart } from "../../../store/slices/cart-slice";
 // import { getProductCartQuantity } from "../../helpers/product";
 // import { addToCart } from "../../store/slices/cart-slice";
 // import { addToWishlist } from "../../store/slices/wishlist-slice";
@@ -36,6 +35,36 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
     //     selectedProductSize
     // );
 
+
+    //fetch data
+    function getfav() {
+        try {
+            // fetch panier
+            axiosClient.get(`favoris/?search=${localStorage.getItem("cu")}`)
+                .then((res) => {
+                    dispatch(initFavoris(res.data))
+                });
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+
+    }
+
+
+    function getpan() {
+        try {
+            // fetch panier
+            axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+                .then((res) => {
+                    dispatch(initCart(res.data))
+                });
+
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        }
+
+    }
 
     const gallerySwiperParams = {
         spaceBetween: 10,
@@ -81,18 +110,6 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
         </Tooltip>
     ) : null;
 
-
-    const properties = useSelector((state) => state.propertie.properties);
-
-    const [selectedColor, setSelectedColor] = useState(""); // Initialize with an empty string
-    const [selectedSize, setSelectedSize] = useState("");   // Initialize with an empty string
-
-
-
-
-    const [selectedProperty, setSelectedProperty] = useState(null);
-    const [productStock, setProductStock] = useState(product.stock);
-    const [quantityCount, setQuantityCount] = useState(1);
 
 
 
@@ -240,9 +257,11 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
 
 
 
-                            {product.affiliateLink ? (
+
+
+                            {/* {product.affiliateLink ? (
                                 <div className="pro-details-quality">
-                                    <div className="pro-details-cart btn-hover ml-0">
+                                    <div className="pro-details-cart btn-hover">
                                         <a
                                             href={product.affiliateLink}
                                             rel="noopener noreferrer"
@@ -257,7 +276,9 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                     <div className="cart-plus-minus">
                                         <button
                                             onClick={() =>
-                                                setQuantityCount(quantityCount > 1 ? quantityCount - 1 : 1)
+                                                setQuantityCount(
+                                                    quantityCount > 1 ? quantityCount - 1 : 1
+                                                )
                                             }
                                             className="dec qtybutton"
                                         >
@@ -272,7 +293,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                         <button
                                             onClick={() =>
                                                 setQuantityCount(
-                                                    quantityCount < productStock
+                                                    quantityCount < productStock - productCartQty
                                                         ? quantityCount + 1
                                                         : quantityCount
                                                 )
@@ -285,19 +306,15 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                     <div className="pro-details-cart btn-hover">
                                         {productStock && productStock > 0 ? (
                                             <button
-                                                onClick={() => {
+                                                onClick={() =>
                                                     dispatch(addToCart({
                                                         ...product,
                                                         quantity: quantityCount,
-                                                        selectedProductColor: selectedColor ? selectedColor : product.selectedProductColor ? product.selectedProductColor : null,
-                                                        selectedProductSize: selectedSize ? selectedSize : product.selectedProductSize ? product.selectedProductSize : null
+                                                        selectedProductColor: selectedProductColor ? selectedProductColor : product.selectedProductColor ? product.selectedProductColor : null,
+                                                        selectedProductSize: selectedProductSize ? selectedProductSize : product.selectedProductSize ? product.selectedProductSize : null
                                                     }))
-
-                                                    //reloading page
-                                                    window.location.reload();
                                                 }
-                                                }
-                                                disabled={quantityCount > productStock || !localStorage.getItem('cu')}
+                                                disabled={productCartQty >= productStock}
                                             >
                                                 {" "}
                                                 Add To Cart{" "}
@@ -315,11 +332,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                                     ? "Added to wishlist"
                                                     : "Add to wishlist"
                                             }
-                                            onClick={() => {
-                                                dispatch(addToWishlist(product))
-                                                //reloading page
-                                                window.location.reload();
-                                            }}
+                                            onClick={() => dispatch(addToWishlist(product))}
                                         >
                                             <i className="pe-7s-like" />
                                         </button>
@@ -339,8 +352,81 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                         </button>
                                     </div>
                                 </div>
-                            )}
+                            )}  */}
 
+
+                            <div className="pro-details-quality">
+                                <div className="pro-details-cart btn-hover">
+                                    <a
+                                        href="test.com"
+                                        rel="noopener noreferr  er"
+                                        target="_blank"
+                                    >
+                                        Buy Now
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div className="pro-details-quality">
+                                <div className="cart-plus-minus">
+                                    <button
+
+                                        className="dec qtybutton"
+                                    >
+                                        -
+                                    </button>
+                                    <input
+                                        className="cart-plus-minus-box"
+                                        type="text"
+                                        value={100}
+                                        readOnly
+                                    />
+                                    <button
+
+                                        className="inc qtybutton"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                                <div className="pro-details-cart btn-hover">
+                                    {true && true == true ? (
+                                        <button
+
+                                        >
+                                            {" "}
+                                            Add To Cart{" "}
+                                        </button>
+                                    ) : (
+                                        <button disabled>Out of Stock</button>
+                                    )}
+                                </div>
+                                <div className="pro-details-wishlist">
+                                    <button
+                                        className={"active"}
+                                        title={
+
+                                            "Added to wishlist"
+                                        }
+                                    >
+                                        <i className="pe-7s-like" />
+                                    </button>
+                                </div>
+                                <div className="pro-details-compare">
+                                    <button
+                                        className={"active"}
+                                        title={
+                                            "Added to compare"
+                                        }
+                                    >
+                                        <i className="pe-7s-shuffle" />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

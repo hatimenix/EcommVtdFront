@@ -10,6 +10,7 @@ import currencyReducer from './slices/currency-slice';
 import reviewReducer from './slices/reviewsSlice';
 import replieReducer from './slices/repliesSlice';
 import propertiesReducer from './slices/propertiesSlice';
+import boostReducer from './slices/boostSlice';
 import userReducer from './slices/userSlice';
 import firstNameMiddleware from './middlewares/userMiddleware';
 import recReducer from './slices/articlesRecSlice';
@@ -17,6 +18,7 @@ import recsMiddleware from './middlewares/recsMiddleware';
 import midReducer from './slices/articlesRecMidSlice';
 import pkgReducer from './slices/pkgSlice__';
 
+import listPkgReducer from './slices/listPkgSlice';
 
 
 const store = configureStore({
@@ -32,10 +34,13 @@ const store = configureStore({
         review: reviewReducer,
         replie: replieReducer,
         propertie: propertiesReducer,
+        boost: boostReducer,
+
         user: userReducer,
         rec: recReducer,
         artmid: midReducer, // Add the new reducer here
-        pkg: pkgReducer
+        pkg: pkgReducer,
+        lpkg: listPkgReducer
 
 
     },

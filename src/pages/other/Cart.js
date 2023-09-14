@@ -8,6 +8,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { addToCart, decreaseQuantity, deleteFromCart, deleteAllFromCart } from "../../store/slices/cart-slice";
 import { cartItemStock } from "../../helpers/product";
 import { fetchPanier } from "../../services/fetchData";
+import { linkImage } from "../../axios-client";
 
 
 
@@ -18,10 +19,12 @@ const Cart = () => {
   const [quantityCount] = useState(1);
   const dispatch = useDispatch();
   let { pathname } = useLocation();
-  
+
+  const server = linkImage
+
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
-  console.log('image: ', cartItems);
+  // console.log('image: ', cartItems);
 
 
   return (
@@ -33,17 +36,17 @@ const Cart = () => {
 
       <LayoutOne headerTop="visible">
         {/* breadcrumb */}
-        <Breadcrumb 
+        <Breadcrumb
           pages={[
-            {label: "Home", path: process.env.PUBLIC_URL + "/" },
-            {label: "Cart", path: process.env.PUBLIC_URL + pathname }
-          ]} 
+            { label: "Home", path: process.env.PUBLIC_URL + "/" },
+            { label: "Cart", path: process.env.PUBLIC_URL + pathname }
+          ]}
         />
         <div className="cart-main-area pt-90 pb-100">
           <div className="container">
             {cartItems && cartItems.length >= 1 ? (
               <Fragment>
-                <h3 className="cart-page-title">Your cart items</h3>
+                <h3 className="cart-page-title">Votre Panier</h3>
                 <div className="row">
                   <div className="col-12">
                     <div className="table-content table-responsive cart-table-content">
@@ -51,11 +54,11 @@ const Cart = () => {
                         <thead>
                           <tr>
                             <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Unit Price</th>
-                            <th>Qty</th>
-                            <th>Subtotal</th>
-                            <th>action</th>
+                            <th>Nom Du Produit</th>
+                            <th>Prix Unitaire</th>
+                            <th>Quantité</th>
+                            <th>Prix Total</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -67,15 +70,21 @@ const Cart = () => {
                             const finalProductPrice = (
                               cartItem.price * currency.currencyRate
                             ).toFixed(2);
-                            const finalDiscountedPrice = (
-                              discountedPrice * currency.currencyRate
-                            ).toFixed(2);
 
-                            discountedPrice != null
-                              ? (cartTotalPrice +=
-                                  finalDiscountedPrice * cartItem.quantity)
-                              : (cartTotalPrice +=
-                                  finalProductPrice * cartItem.quantity);
+                            // const finalDiscountedPrice = (
+                            //   discountedPrice * currency.currencyRate
+                            // ).toFixed(2);
+
+                            // discountedPrice != null
+                            //   ? (cartTotalPrice +=
+                            //     finalDiscountedPrice * cartItem.quantity)
+                            //   : (cartTotalPrice +=
+                            //     finalProductPrice * cartItem.quantity);
+
+                            // prix total du produit
+                            cartTotalPrice +=
+                              finalProductPrice * cartItem.quantity
+
                             return (
                               <tr key={key}>
                                 <td className="product-thumbnail">
@@ -90,7 +99,7 @@ const Cart = () => {
                                       className="img-fluid"
                                       src={
                                         // process.env.PUBLIC_URL
-                                        'http://localhost:8000' +
+                                        server +
                                         cartItem.image[0]
                                       }
                                       alt=" image unavailable"
@@ -109,13 +118,13 @@ const Cart = () => {
                                     {cartItem.titre}
                                   </Link>
                                   {cartItem.selectedProductColor &&
-                                  cartItem.selectedProductSize ? (
+                                    cartItem.selectedProductSize ? (
                                     <div className="cart-item-variation">
                                       <span>
-                                        Color: {cartItem.selectedProductColor}
+                                        Couleur: {cartItem.selectedProductColor}
                                       </span>
                                       <span>
-                                        Size: {cartItem.selectedProductSize}
+                                        Taille: {cartItem.selectedProductSize}
                                       </span>
                                     </div>
                                   ) : (
@@ -132,7 +141,7 @@ const Cart = () => {
                                       </span>
                                       <span className="amount">
                                         {currency.currencySymbol +
-                                          finalDiscountedPrice}
+                                          finalProductPrice}
                                       </span>
                                     </Fragment>
                                   ) : (
@@ -148,7 +157,7 @@ const Cart = () => {
                                     <button
                                       className="dec qtybutton"
                                       onClick={() =>
-                                          dispatch(decreaseQuantity(cartItem))
+                                        dispatch(decreaseQuantity(cartItem))
                                       }
                                     >
                                       -
@@ -171,11 +180,11 @@ const Cart = () => {
                                         cartItem !== undefined &&
                                         cartItem.quantity &&
                                         cartItem.quantity >=
-                                          cartItemStock(
-                                            cartItem,
-                                            cartItem.selectedProductColor,
-                                            cartItem.selectedProductSize
-                                          )
+                                        cartItemStock(
+                                          cartItem,
+                                          cartItem.selectedProductColor,
+                                          cartItem.selectedProductSize
+                                        )
                                       }
                                     >
                                       +
@@ -183,15 +192,20 @@ const Cart = () => {
                                   </div>
                                 </td>
                                 <td className="product-subtotal">
-                                  {discountedPrice !== null
-                                    ? currency.currencySymbol +
-                                      (
-                                        finalDiscountedPrice * cartItem.quantity
-                                      ).toFixed(2)
-                                    : currency.currencySymbol +
-                                      (
-                                        finalProductPrice * cartItem.quantity
-                                      ).toFixed(2)}
+                                  {
+                                    // discountedPrice !== null
+                                    //   ? currency.currencySymbol +
+                                    //   (
+                                    //     finalDiscountedPrice * cartItem.quantity
+                                    //   ).toFixed(2)
+                                    //   : currency.currencySymbol +
+                                    //   (
+                                    //     finalProductPrice * cartItem.quantity
+                                    //   ).toFixed(2)
+
+                                    (finalProductPrice * cartItem.quantity).toFixed(2)
+                                  }
+
                                 </td>
 
                                 <td className="product-remove">
@@ -218,12 +232,12 @@ const Cart = () => {
                         <Link
                           to={process.env.PUBLIC_URL + "/shop-grid-standard"}
                         >
-                          Continue Shopping
+                          Continuer l'Achat
                         </Link>
                       </div>
                       <div className="cart-clear">
                         <button onClick={() => dispatch(deleteAllFromCart())}>
-                          Clear Shopping Cart
+                          Supprimer le panier
                         </button>
                       </div>
                     </div>
@@ -298,11 +312,11 @@ const Cart = () => {
                     <div className="grand-totall">
                       <div className="title-wrap">
                         <h4 className="cart-bottom-title section-bg-gary-cart">
-                          Cart Total
+                          Total du panier
                         </h4>
                       </div>
                       <h5>
-                        Total products{" "}
+                        Total des produits{" "}
                         <span>
                           {currency.currencySymbol + cartTotalPrice.toFixed(2)}
                         </span>
@@ -315,7 +329,7 @@ const Cart = () => {
                         </span>
                       </h4>
                       <Link to={process.env.PUBLIC_URL + "/checkout"}>
-                        Proceed to Checkout
+                        Commander
                       </Link>
                     </div>
                   </div>

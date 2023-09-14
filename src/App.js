@@ -18,6 +18,7 @@ import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming 
 import ArticlePkg__ from "./components/article-archetype/ArticlePkg__";
 import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
 import AboutUs from "./pages/FooterPages/AboutUs";
+import ArticlePkg from "./components/article-archetype/ArticlePkg";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -120,7 +121,7 @@ const App = () => {
 
             <Route
               path={process.env.PUBLIC_URL + "/bundles/:articleId"}
-              element={<ArticlePkg__ />}
+              element={<ArticlePkg />}
             />
 
             <Route

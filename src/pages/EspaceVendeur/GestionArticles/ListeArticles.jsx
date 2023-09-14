@@ -16,6 +16,7 @@ import { useStateContext } from "../../../context/ContextProvider";
 
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { Alert } from "@mui/material";
 
 function ListeArticles() {
   const navigate = useNavigate();
@@ -23,21 +24,48 @@ function ListeArticles() {
   const [displayIconSearch, setDisplayIconSearch] = useState(true);
 
   const [listArticle, setListArticle] = useState([]);
-  const [emptyListMessage, setEmptyListMessage] = useState("");
+  const [imageArticleListe, setImageArticleListe] = useState([])
 
-  const [isLoading, setIsLoading] = useState('encours')
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [dataEmpty, setDataEmpty] = useState()
+
+  const [myLength, setMylength] = useState(0)
 
   useEffect(() => {
     axiosClient.get("/articles/").then((res) => {
-      if (res.data) {
-        setListArticle(res.data.filter((e) => e.customer_id === user.id).sort().reverse());
-        setIsLoading('false')
+      let array = []
+      const myData = res.data.filter((e) => e.customer_id === user.id)
+      for (let index = 0; index < myData.length; index++) {
+        array.push(myData[index])
+        if (index === myData.length - 1) {
+          setIsLoading(false)
+        }
+        setMylength(array.length)
       }
-      else {
-        setIsLoading('true')
-      }
+      setListArticle(array.sort().reverse())
+      // setListArticle(res.data.filter((e) => e.customer_id === user.id).sort().reverse());
+      // setImageArticleListe(res.data.filter((e) => e.customer_id === user.id).image)
+      // console.log('image Liste : ',res.data.filter((e) => e.customer_id === user.id));
+      // setIsLoading(false)
+
+      // setIsLoading((myData.length === 0 && array.length === 0) && false)
+      setDataEmpty(myData.length !== 0 && false)
+      setDataEmpty(myData.length === 0 && true)
+      setIsLoading(myData.length === 0 && false)
     });
-  }, [user.id]);
+  }, [user.id, isLoading]);
+
+  useEffect(() => {
+    // axiosClient.get("/articles/").then((res) => {
+    //   if (res.data.filter((e) => e.customer_id === user.id).length < 1) {
+    //     setDataEmpty(true)
+    //     setIsLoading(false)
+    //   }
+    // });
+  
+
+  }, [user.id, isLoading]);
 
 
   const [alertDelete, setAlertDelete] = useState(false);
@@ -66,6 +94,7 @@ function ListeArticles() {
 
     });
   }, [listArticle, search]);
+  // console.log('dataaaaaaaa : ', listArticle.length);
 
   return (
     <Fragment>
@@ -91,16 +120,16 @@ function ListeArticles() {
                 <button
                   className="py-2 px-3"
                   style={{
-                    borderRadius:10,
-                    color:'#17b2b0',
-                    border:'1px solid #17b2b0',    
-                    backgroundColor:'white'                
+                    borderRadius: 10,
+                    color: '#17b2b0',
+                    border: '1px solid #17b2b0',
+                    backgroundColor: 'white'
                   }}
-                  onMouseEnter={e=>{
+                  onMouseEnter={e => {
                     e.target.style.color = 'white'
                     e.target.style.backgroundColor = '#17b2b0'
                   }}
-                  onMouseLeave={e=>{
+                  onMouseLeave={e => {
                     e.target.style.color = '#17b2b0'
                     e.target.style.backgroundColor = 'white'
                   }}
@@ -111,56 +140,54 @@ function ListeArticles() {
                   Nouveau article
                 </button>
               </div>
-              <div className="col-sm-12 my-3">
-                <div className="row align-items-center ">
-                  <div className="col-sm-6">
-                    <h3 className="cart-page-title">Mes articles</h3>
-                  </div>
-                  <div className="col-sm-1 d-none d-sm-block"></div>
-                  <div className="col-sm-5 d-flex justify-content-end" style={{ position: "relative" }}>
-                    <input
-                      className="input"
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Recherche"
-                      style={{
-                        paddingLeft: 30,
-                        borderRadius: 5,
-                        width: '100%'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.paddingLeft = "10px";
-                        setDisplayIconSearch(false);
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.boxShadow = "none";
-                        e.target.style.paddingLeft = "30px";
-                        setDisplayIconSearch(true);
-                      }}
-                      onChange={(e) => setSearch(e.target.value)}
-                    />
-                    <AiOutlineSearch
-                      style={{
-                        fontSize: 18,
-                        display: displayIconSearch ? "block" : "none",
-                        left: 20,
-                        top: 13,
-                        position: "absolute",
-                        color: "gray",
-                      }}
-                    />
+
+              <>
+                <div className="col-sm-12 my-3">
+                  <div className="row align-items-center ">
+                    <div className="col-sm-6">
+                      <h3 className="cart-page-title">Mes articles </h3>
+                    </div>
+                    <div className="col-sm-1 d-none d-sm-block"></div>
+                    <div className="col-sm-5 d-flex justify-content-end" style={{ position: "relative" }}>
+                      <input
+                        className="input"
+                        type="text"
+                        name=""
+                        id=""
+                        placeholder="Recherche"
+                        style={{
+                          paddingLeft: 30,
+                          borderRadius: 5,
+                          width: '100%'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.paddingLeft = "10px";
+                          setDisplayIconSearch(false);
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.boxShadow = "none";
+                          e.target.style.paddingLeft = "30px";
+                          setDisplayIconSearch(true);
+                        }}
+                        onChange={(e) => setSearch(e.target.value)}
+                        disabled={dataEmpty}
+                      />
+                      <AiOutlineSearch
+                        style={{
+                          fontSize: 18,
+                          display: displayIconSearch ? "block" : "none",
+                          left: 20,
+                          top: 13,
+                          position: "absolute",
+                          color: "gray",
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div>
-                  <div className="table-responsive cart-table-content border-r-4">
-                    {emptyListMessage ? (
-                      <div class="alert alert-danger" role="alert">
-                        <span className="display-6">{emptyListMessage}!</span>
-                      </div>
-                    ) : (
+                <div className="row">
+                  <div>
+                    <div className="table-responsive cart-table-content border-r-4">
                       <table className="col-12 ">
                         <thead>
                           <tr>
@@ -177,7 +204,7 @@ function ListeArticles() {
                         </thead>
                         <tbody>
 
-                          {isLoading === 'encours' && (
+                          {(isLoading) && (
                             <>
                               <tr>
                                 <td><Skeleton style={{
@@ -196,95 +223,125 @@ function ListeArticles() {
                               </tr>
                             </>
                           )}
-                          {filtredData().map((val, key) => {
-                            return (
-                              <>
-                                <tr key={key}>
-                                  <td>
-                                    {val.images.map((v, k) => {
-                                      if (k === 0) {
-                                        return (
-                                          <img
-                                            src={v.image}
+                          {
+                            listArticle
+                              .filter((row) => {
+                                return (
+                                  row.code_art.toLowerCase().includes(search.toLocaleLowerCase()) ||
+                                  row.titre.toLowerCase().includes(search.toLocaleLowerCase()) ||
+                                  row.description.toLowerCase().includes(search.toLocaleLowerCase()) ||
+                                  row.categorie.toLowerCase().includes(search.toLocaleLowerCase()) ||
+                                  row.stock.toString().includes(search.toString()) ||
+                                  row.prix_vente.toString().includes(search.toString()) ||
+                                  row.forme_colis.toLowerCase().includes(search.toLocaleLowerCase())
+                                );
+
+                              })
+                              .map((val, key) => {
+                                return (
+                                  <>
+                                    <tr key={key}>
+                                      <td>
+                                        {val.images.map((v, k) => {
+                                          if (k === 0) {
+                                            return (
+                                              <img
+                                                src={v.image}
+                                                style={{
+                                                  height: "50px",
+                                                  width: "50px",
+                                                }}
+                                              />
+                                            );
+                                          }
+                                        })}
+                                      </td>
+                                      <td>#{val.code_art}</td>
+                                      <td>{val.titre}</td>
+                                      <td>{val.description}</td>
+                                      <td>{val.categorie}</td>
+                                      <td>{val.stock}</td>
+                                      <td>{val.prix_vente}</td>
+                                      <td>{val.forme_colis}</td>
+                                      <td className="p-0">
+                                        <div className="" style={{
+                                          display: 'flex',
+                                          justifyContent: 'space-evenly'
+                                        }}>
+                                          <TbListDetails
                                             style={{
-                                              height: "50px",
-                                              width: "50px",
+                                              cursor: "pointer",
+                                              fontSize: 25,
+                                              color: '#6c757d9e'
+                                            }}
+                                            onClick={() => {
+                                              navigate("/details-article", {
+                                                state: {
+                                                  id_art: val.id_art,
+                                                },
+                                              });
                                             }}
                                           />
-                                        );
-                                      }
-                                    })}
-                                  </td>
-                                  <td>#{val.code_art}</td>
-                                  <td>{val.titre}</td>
-                                  <td>{val.description}</td>
-                                  <td>{val.categorie}</td>
-                                  <td>{val.stock}</td>
-                                  <td>{val.prix_vente}</td>
-                                  <td>{val.forme_colis}</td>
-                                  <td className="p-0">
-                                    <div className="" style={{
-                                      display: 'flex',
-                                      justifyContent: 'space-evenly'
-                                    }}>
-                                      <TbListDetails
-                                        style={{
-                                          cursor: "pointer",
-                                          fontSize: 25,
-                                          color: '#6c757d9e'
-                                        }}
-                                        onClick={() => {
-                                          navigate("/details-article", {
-                                            state: {
-                                              id_art: val.id_art,
-                                            },
-                                          });
-                                        }}
-                                      />
-                                      <LiaEdit
-                                        style={{
-                                          cursor: "pointer",
-                                          marginInline: 4,
-                                          fontSize: 25,
-                                          color: '#0f720f9c'
-                                        }}
-                                        onClick={() => {
-                                          navigate("/edit-article", {
-                                            state: {
-                                              id_art: val.id_art,
-                                            },
-                                          });
-                                        }}
-                                      />
-                                      <BsTrash
-                                        style={{
-                                          cursor: "pointer",
-                                          marginTop: 2,
-                                          fontSize: 25,
-                                          color: '#ff000078'
-                                        }}
-                                        onClick={() => {
-                                          setDeleted_id(val.id_art);
-                                          setAlertDelete(true);
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                </tr>
-                              </>
-                            );
-                          })}
+                                          <LiaEdit
+                                            style={{
+                                              cursor: "pointer",
+                                              marginInline: 4,
+                                              fontSize: 25,
+                                              color: '#0f720f9c'
+                                            }}
+                                            onClick={() => {
+                                              navigate("/edit-article", {
+                                                state: {
+                                                  id_art: val.id_art,
+                                                },
+                                              });
+                                            }}
+                                          />
+                                          <BsTrash
+                                            style={{
+                                              cursor: "pointer",
+                                              marginTop: 2,
+                                              fontSize: 25,
+                                              color: '#ff000078'
+                                            }}
+                                            onClick={() => {
+                                              setDeleted_id(val.id_art);
+                                              setAlertDelete(true);
+                                            }}
+                                          />
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </>
+                                );
+                              })}
                         </tbody>
-                        {isLoading !== 'encours' && filtredData().length === 0 &&
+
+                        {/* {!isLoading && listArticle.length === 0 && (
                           <tr>
-                            <td colSpan={9}>vide</td>
+                            <td colSpan={9} style={{
+                              padding: 10,
+                              fontSize: 20,
+                              color: '#14a4a2'
+                            }}>
+                              <Alert severity="warning" >Votre store est actuellement vide.</Alert>
+                            </td>
+                          </tr>
+                        )} */}
+                        {search && filtredData().length === 0 &&
+                          <tr>
+                            <td colSpan={9} style={{
+                              padding: 10,
+                              fontSize: 20,
+                              color: '#14a4a2'
+                            }}>Il semblerait qu'il n'y ait aucun résultat pertinent associé à votre recherche</td>
                           </tr>
                         }
                       </table>
-                    )}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             </Fragment>
           </div>
         </div>

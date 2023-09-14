@@ -67,6 +67,10 @@ const ArticleGridDs = ({ limit }) => {
         console.log('Invalid __recs data.');
     }
 
+    
+
+
+
 
     // Convert the Set back to an array of unique articles
     const targetedArticles = Array.from(uniqueArticles).map(id_art => {
@@ -251,7 +255,7 @@ const ArticleGridDs = ({ limit }) => {
                             titleText="Recherche par marque"
                             // subTitleText="Latest arrivals & offers "
                             // positionClass="text-center"
-                            spaceClass="mb-50 mt-30"
+                            spaceClass="mb-20 mt-30"
                         />
 
                         <div className="row five-column">
