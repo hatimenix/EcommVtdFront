@@ -10,7 +10,7 @@ import { LiaEdit } from "react-icons/lia";
 import django from "../GestionArticles/django.png";
 import logo512 from "../GestionArticles/logo512.png";
 import { useEffect } from "react";
-import axiosClient from "../../../axios-client";
+import axiosClient, { linkImage } from "../../../axios-client";
 import { useCallback } from "react";
 import { useStateContext } from "../../../context/ContextProvider";
 
@@ -24,47 +24,17 @@ function ListeArticles() {
   const [displayIconSearch, setDisplayIconSearch] = useState(true);
 
   const [listArticle, setListArticle] = useState([]);
-  const [imageArticleListe, setImageArticleListe] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
 
-  const [dataEmpty, setDataEmpty] = useState()
-
-  const [myLength, setMylength] = useState(0)
-
   useEffect(() => {
-    axiosClient.get("/articles/").then((res) => {
-      let array = []
-      const myData = res.data.filter((e) => e.customer_id === user.id)
-      for (let index = 0; index < myData.length; index++) {
-        array.push(myData[index])
-        if (index === myData.length - 1) {
-          setIsLoading(false)
-        }
-        setMylength(array.length)
-      }
-      setListArticle(array.sort().reverse())
-      // setListArticle(res.data.filter((e) => e.customer_id === user.id).sort().reverse());
-      // setImageArticleListe(res.data.filter((e) => e.customer_id === user.id).image)
-      // console.log('image Liste : ',res.data.filter((e) => e.customer_id === user.id));
-      // setIsLoading(false)
+    if (user.id) {
+      axiosClient.get(`/articles/getArticlesByCostumer/?customer_id=${user.id}`).then((res) => {
+        setListArticle(res.data.sort().reverse())
+        setIsLoading(false)
+      });
 
-      // setIsLoading((myData.length === 0 && array.length === 0) && false)
-      setDataEmpty(myData.length !== 0 && false)
-      setDataEmpty(myData.length === 0 && true)
-      setIsLoading(myData.length === 0 && false)
-    });
-  }, [user.id, isLoading]);
-
-  useEffect(() => {
-    // axiosClient.get("/articles/").then((res) => {
-    //   if (res.data.filter((e) => e.customer_id === user.id).length < 1) {
-    //     setDataEmpty(true)
-    //     setIsLoading(false)
-    //   }
-    // });
-  
-
+    }
   }, [user.id, isLoading]);
 
 
@@ -145,7 +115,7 @@ function ListeArticles() {
                 <div className="col-sm-12 my-3">
                   <div className="row align-items-center ">
                     <div className="col-sm-6">
-                      <h3 className="cart-page-title">Mes articles  {listArticle.length} is : {isLoading.toString()} empty : {dataEmpty ? 'oui' : "non"} length : {myLength}</h3>
+                      <h3 className="cart-page-title">Mes articles</h3>
                     </div>
                     <div className="col-sm-1 d-none d-sm-block"></div>
                     <div className="col-sm-5 d-flex justify-content-end" style={{ position: "relative" }}>
@@ -170,7 +140,7 @@ function ListeArticles() {
                           setDisplayIconSearch(true);
                         }}
                         onChange={(e) => setSearch(e.target.value)}
-                        disabled={dataEmpty}
+                        disabled={!isLoading && listArticle.length === 0}
                       />
                       <AiOutlineSearch
                         style={{
@@ -246,7 +216,7 @@ function ListeArticles() {
                                           if (k === 0) {
                                             return (
                                               <img
-                                                src={v.image}
+                                                src={linkImage + v.image}
                                                 style={{
                                                   height: "50px",
                                                   width: "50px",
@@ -317,7 +287,7 @@ function ListeArticles() {
                               })}
                         </tbody>
 
-                        {/* {!isLoading && listArticle.length === 0 && (
+                        {!isLoading && listArticle.length === 0 && (
                           <tr>
                             <td colSpan={9} style={{
                               padding: 10,
@@ -327,7 +297,7 @@ function ListeArticles() {
                               <Alert severity="warning" >Votre store est actuellement vide.</Alert>
                             </td>
                           </tr>
-                        )} */}
+                        )}
                         {search && filtredData().length === 0 &&
                           <tr>
                             <td colSpan={9} style={{
