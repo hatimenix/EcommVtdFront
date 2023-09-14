@@ -17,6 +17,8 @@ import persistanceThroughObjects from "./services/persistFetch";
 import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming this is where your individual Article component is located
 import ArticlePkg__ from "./components/article-archetype/ArticlePkg__";
 import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
+import AboutUs from "./pages/FooterPages/AboutUs";
+import ArticlePkg from "./components/article-archetype/ArticlePkg";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -101,7 +103,7 @@ const App = () => {
               path={process.env.PUBLIC_URL + "/edit-article"}
               element={<EditArticle />}
             />
-          
+
 
             <Route
               path={process.env.PUBLIC_URL + "/category/:categoryId"} // Updated route path
@@ -110,7 +112,7 @@ const App = () => {
               }
             />
             <Route
-              path={process.env.PUBLIC_URL + "wallet"} 
+              path={process.env.PUBLIC_URL + "wallet"}
               element={
                 <Wallet />
               }
@@ -119,10 +121,13 @@ const App = () => {
 
             <Route
               path={process.env.PUBLIC_URL + "/bundles/:articleId"}
-              element={<ArticlePkg__ />}
+              element={<ArticlePkg />}
             />
 
-
+            <Route
+              path={process.env.PUBLIC_URL + "/a-propos"}
+              element={<AboutUs />}
+            />
 
 
           </Routes>

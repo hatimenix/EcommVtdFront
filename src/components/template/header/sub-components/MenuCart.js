@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getDiscountPrice } from "../../../../helpers/product";
 import { deleteFromCart } from "../../../../store/slices/cart-slice"
+import { getPath } from "@mui/system";
+import { linkImage } from "../../../../axios-client";
 
 const MenuCart = () => {
   const dispatch = useDispatch();
   const currency = useSelector((state) => state.currency);
   const { cartItems } = useSelector((state) => state.cart);
+  const server = linkImage
   let cartTotalPrice = 0;
 
   // console.log('le cart item: ', cartItems);
@@ -40,7 +43,7 @@ const MenuCart = () => {
                     <Link to={process.env.PUBLIC_URL + "/product/" + item.id}>
                       <img
                         alt="image non disponible"
-                        src={'http://localhost:8000' + item.image[0]}
+                        src={server + item.image[0]}
                         className="img-fluid"
                       />
                     </Link>

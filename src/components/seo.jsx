@@ -22,7 +22,7 @@ SEO.propTypes = {
 }
 
 SEO.defaultProps = {
-    title: "logo",
+    title: "Elbal",
     titleTemplate: "Product Page",
     description: "Product page of flone react minimalist eCommerce template.",
 };
