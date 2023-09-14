@@ -6,6 +6,7 @@ import { FaTimes } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { LiaTimesSolid } from "react-icons/lia";
 import { BiLeftArrowAlt } from "react-icons/bi";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { color } from "framer-motion";
 import large_box from "../GestionArticles/Icons/large_box.png";
 import medium_box from "../GestionArticles/Icons/medium_box.png";
@@ -84,7 +85,7 @@ function NewArticle() {
 
     axiosClient.post("/articles/", formData).then((res) => {
       AddImagesArticle(res.data.id_art)
-      console.log('idddddddddddddd : ',res.data.id_art)
+      console.log('idddddddddddddd : ', res.data.id_art)
     });
   };
 
@@ -256,9 +257,6 @@ function NewArticle() {
 
               </span>
             </div>
-            {/* {images.map((val, key) => {
-              return (<img src={val} />)
-            })} */}
             <div
               className="row gy-1"
               style={{
@@ -359,163 +357,7 @@ function NewArticle() {
                   );
                 })}
 
-              {/* <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div> */}
-              {/*               
-              {imageListe && imageListe.map((val, key) => {
-                return (
-                  <div
-                    key={key}
-                    className="col-lg-3 col-md-3"
-                    style={{
-                      position: 'relative',
-                      paddingLeft: 3,
-                      paddingRight: 3,
-                      background:'black',
-                    }}>
-                    <img
-                      src={val}
-                      className="rounded"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                    <AiFillCloseCircle style={{
-                      position: 'absolute',
-                      fontSize: 30,
-                      cursor: 'pointer',
-                      left: "80%",
-                      top: "5%",
-                      color: "#c7c4c4",
-                    }}
-                      onClick={() => {
-                        setimageListe(imageListe.filter(e => e !== val))
-                      }} />
-                  </div>
-                )
-                // <div
-                //   className="col-lg-2 col-md-3 col-sm-6 my-1"
-                //   style={{
-                //     position: 'relative',
-                //     paddingLeft: 3,
-                //     paddingRight: 3
-                //   }}>
-                //   <img
-                //     key={key}
-                //     src={val}
-                //     className="rounded"
-                //     style={{
-                //       height: "100%",
-                //       width: "100%",
-                //       objectFit: "contain",
-                //     }}
-                //   />
-                //   <AiFillCloseCircle style={{
-                //     position: 'absolute',
-                //     fontSize: 30,
-                //     cursor: 'pointer',
-                //     left: "80%",
-                //     top: "5%",
-                //     color: "#c7c4c4",
-                //   }} />
-                // </div>
-              })} */}
-
               {selectedImageList.length > 0 && selectedImageList.length < 6 && (
-                // <div
-                //   className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6"
-                //   style={{
-                //     height:'20%',
-                //     // width:'100%'
-                //   }}
-                // >
-                //   <button
-                //     className="btn btn-md btn-outline-success"
-                //     style={{ position: "relative", cursor: "pointer" }}
-                //   >
-                //     <AiOutlinePlus style={{ fontSize: 22 }} />
-                //     <input
-                //       type="file"
-                //       multiple
-                //       onChange={handleChangeImage}
-                //       style={{
-                //         position: "absolute",
-                //         width: "100%",
-                //         height: "100%",
-                //         top: 0,
-                //         left: 0,
-                //         opacity: 0,
-                //       }}
-                //       accept="image/*"
-                //     />
-                //   </button>
-                // </div>
                 <div
                   className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6 d-flex justify-content-center align-items-center"
                   style={{
@@ -543,98 +385,8 @@ function NewArticle() {
                   </button>
                 </div>
               )}
-              {/* {myImages()} */}
-              {/* {images && images.map((val, key) => {
-              <div
-                key={key}
-                className="col-lg-2 col-md-3 col-sm-6 my-1"
-                style={{
-                  position: 'relative',
-                  paddingLeft: 3,
-                  paddingRight: 3
-                }}>
-                <img
-                  src={val}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-                <AiFillCloseCircle style={{
-                  position: 'absolute',
-                  fontSize: 30,
-                  cursor: 'pointer',
-                  left: "80%",
-                  top: "5%",
-                  color: "#c7c4c4",
-                }} />
-              </div>
-              })} */}
-              {/*
-               */}
+
             </div>
-            {/* <div
-              className="d-flex flex-row max"
-              style={{ height: "200px", border: "1px dashed gray" }}
-            >
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-            </div> */}
           </div>
 
           {/* titre & description */}
@@ -717,17 +469,6 @@ function NewArticle() {
                     top: '10px',
                     color: '#80808085'
                   }}>{description.length}/100</span>
-                  {/* <input
-                    type="text"
-                    className="input-lg"
-                    name=""
-                    id=""
-                    placeholder="Titre"
-                    style={{
-                      borderBottom: "1px solid gray",
-                      background: "#7070700f",
-                    }}
-                  /> */}
                 </div>
               </div>
             </div>
@@ -742,7 +483,7 @@ function NewArticle() {
                 </div>
                 <div
                   className="input col-md-6 "
-                  style={{ position: "relative" }}
+                  style={{ position: "relative",cursor:'pointer' }}
                 >
                   <AiOutlineExclamationCircle style={{
                     position: 'absolute',
@@ -763,14 +504,21 @@ function NewArticle() {
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
                       cursor: "pointer",
-                      paddingLeft: [!titleCat ? '25px' : '5px']
-                    }}
+                      paddingLeft: [!titleCat ? '25px' : '5px'],
+                    }}                  
                     onClick={() => {
                       setOpenCategories(!openCategories);
                       setLevel(0);
                       setTitleCatHeader("");
                     }}
                   />
+                  <MdKeyboardArrowDown style={{
+                    position: 'absolute',
+                    fontSize: 25,
+                    color: '#80808085',
+                    top: '10px',
+                    right: '16px',
+                  }} />
                   {openCategories && (
                     <div
                       className="col-12 mt-1"
@@ -822,20 +570,6 @@ function NewArticle() {
                             transition: ".4s linear",
                             color: "black",
                           }}
-                          // onMouseEnter={(e) => {
-                          //   e.target.style.scale = 1.2;
-                          //   e.target.style.color = "#a749ff";
-                          //   e.target.style.boxShadow = "10px 10px 50px #a749ff";
-                          //   e.target.style.transform = "rotate(90deg)";
-                          //   e.target.style.background = "none";
-                          // }}
-                          // onMouseLeave={(e) => {
-                          //   e.target.style.scale = 1;
-                          //   e.target.style.color = "black";
-                          //   e.target.style.boxShadow = "none";
-                          //   e.target.style.transform = "rotate(-90deg)";
-                          //   e.target.style.background = "none";
-                          // }}
                           onClick={() => {
                             setOpenCategories(!openCategories);
                             setLevel(0);
@@ -843,7 +577,6 @@ function NewArticle() {
                           }}
                         />
                       </div>
-                      {/* <button onClick={() => setLevel(level)}>1</button> */}
                       <div
                         style={{
                           transition: 0.1,
@@ -851,37 +584,6 @@ function NewArticle() {
                           overflow: "auto",
                         }}
                       >
-                        {/* {listCategories
-                          .filter(e => e.parent_id === (level ? level : null))
-                          .map((val, key) => {
-                            return (
-                              <div className="test" key={key} onClick={() => {
-                                if (checkParentId(val.id_cat)) {
-                                  setLevel(val.id_cat)
-                                  setTitleCatHeader(val.titre)
-                                } else {
-                                  setTitleCat(val.titre)
-                                  setIdCat(val.id_cat)
-                                  setOpenCategories(!openCategories)
-                                }
-                              }}>
-                                <DropDownMenu check={checkParentId(val.id_cat)} id={checkParentId(val.id_cat) && val.id_cat} icon={2}>
-                                  <div style={{
-                                    height: '50px',
-                                    width: '50px',
-                                    borderRadius: '50%'
-                                  }}>
-                                    <img src={val.icon} style={{
-                                      height: '100%',
-                                      width: '100%',
-                                      objectFit: 'contain'
-                                    }} />
-                                  </div>
-                                  {val.titre}
-                                </DropDownMenu>
-                              </div>
-                            )
-                          })} */}
                         <DropDownMenu />
                       </div>
                     </div>
