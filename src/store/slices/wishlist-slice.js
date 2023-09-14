@@ -70,7 +70,7 @@ const wishlistSlice = createSlice({
                 const wlist = action.payload
                 dataForm = {
                     "article": wlist.id_art,
-                    "Customer": id_user
+                    "customer": id_user
                 }
 
                 // ajouter à la liste

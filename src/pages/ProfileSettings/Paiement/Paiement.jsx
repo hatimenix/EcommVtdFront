@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, InputGroup, Modal } from 'react-bootstrap';
 import { AiOutlineLock } from 'react-icons/ai';
 import { MdKeyboardArrowRight } from 'react-icons/md'
@@ -13,7 +13,13 @@ import axiosClient from '../../../axios-client';
 import axios from 'axios';
 import Stripe from 'stripe';
 import { loadStripe } from '@stripe/stripe-js';
-
+import PropTypes from "prop-types";
+import { EffectFade, Thumbs } from 'swiper';
+import AnotherLightbox from "yet-another-react-lightbox";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Swiper, { SwiperSlide } from "../../../components/template/swiper";
 
 const styles = `
 .my-modal {
@@ -21,6 +27,19 @@ const styles = `
     margin: 2% auto;
     padding: 1px;
 }
+,
+.mycard {
+    position: relative;
+    display: flex;
+    width: 395px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #23406f;
+    background-clip: border-box;
+    border: 1px solid #23406f;
+    border-radius: 7px;
+  }
 
 `;
 function Paiement() {
@@ -34,7 +53,22 @@ function Paiement() {
     const [numCard, setNumCard] = useState()
     const [expDate, setExpDate] = useState()
     const [securityCode, setSecurityCode] = useState()
-    
+
+    const [listPaiement, setListPaiement] = useState([])
+
+    useEffect(() => {
+        async function fetchData() {
+
+            const res = await axiosClient.get(`/paiement/?search=${user.id}`);
+            if (res.data.length > 0) {
+                const paiementData = res.data;
+                setListPaiement(paiementData);
+                console.log(paiementData)
+            }
+        }
+        fetchData();
+    }, []);
+
     function formatMonthYear(e) {
         const input = e.target;
         let value = input.value;
@@ -108,28 +142,28 @@ function Paiement() {
     const stripe = require('stripe')('pk_test_51NnjDSAGd0ipJgCDa5PtH2fiPZL8MAyGRAafPnYohGjNG1q2GsO3mIs7X6hhKeFiqyP1TSNqVOZVoieCPctD9ti6002uJdkrAP');
     const createPaymentMethod = async (cardNumber, expMonth, expYear, cvc) => {
         try {
-          const paymentMethod = await stripe.paymentMethods.create({
-            type: 'card',
-            card: {
-              number: cardNumber,
-              exp_month: expMonth,
-              exp_year: expYear,
-              cvc: cvc,
-            },
-          });
-      
-          setIsCardValid(true)
-          return true;
+            const paymentMethod = await stripe.paymentMethods.create({
+                type: 'card',
+                card: {
+                    number: cardNumber,
+                    exp_month: expMonth,
+                    exp_year: expYear,
+                    cvc: cvc,
+                },
+            });
+
+            setIsCardValid(true)
+            return true;
         } catch (error) {
-          // Handle any errors, e.g., invalid card details
-          setIsCardValid(false)
-          return false;
+            // Handle any errors, e.g., invalid card details
+            setIsCardValid(false)
+            return false;
         }
-      };
-      
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
-        
+
         const dateParts = expDate.split('/');
         const month = dateParts[0]; // This will be "09"
         const year = dateParts[1];
@@ -144,10 +178,10 @@ function Paiement() {
         //     },
         // });
         createPaymentMethod(numCard, month, year, securityCode);
-        
+
         if (!isCardValid) {
             return;
-          } else {
+        } else {
             const formData = new FormData();
 
             formData.append("name", name);
@@ -166,12 +200,60 @@ function Paiement() {
                     console.log('ok')
                 })
             } catch (err) {
-    
+
             }
-          }
-        
+        }
+
     };
 
+
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
+    const [index, setIndex] = useState(-1);
+    const [listArticle, setlistArticle] = useState([])
+    const [listImageArticle, setlistImageArticle] = useState([])
+    const slides = listImageArticle.map((img, i) => ({
+        src: img.image,
+        key: i,
+    }));
+
+    // useEffect(() => {
+    //     axiosClient.get(`/paiement/`).then(res => {
+    //         setlistImageArticle(res.data.filter(e => e.customer === user.id));
+    //     })
+    // }, [user.id])
+
+    // // swiper slider settings
+    // const gallerySwiperParams = {
+    //     spaceBetween: 10,
+    //     loop: true,
+    //     effect: "fade",
+    //     fadeEffect: {
+    //         crossFade: true
+    //     },
+    //     thumbs: { swiper: thumbsSwiper },
+    //     modules: [EffectFade, Thumbs],
+    // };
+
+    const thumbnailSwiperParams = listPaiement.length > 3 ? {
+        onSwiper: setThumbsSwiper,
+        spaceBetween: 10,
+        slidesPerView: 2,
+        touchRatio: 0.2,
+        freeMode: true,
+        loop: true,
+        slideToClickedSlide: true,
+        navigation: true
+    }
+        : {
+            onSwiper: setThumbsSwiper,
+            spaceBetween: 0,
+            slidesPerView: listPaiement.length,
+            touchRatio: 0.2,
+            freeMode: true,
+            loop: false,
+            slideToClickedSlide: true,
+            navigation: true
+        }
     return (
         <div className="col-lg-8">
             <div className="row mb-4" >
@@ -180,6 +262,122 @@ function Paiement() {
                         <div className="card-body">
                             <p class="h4" className="mb-0">Options de paiement</p>
                         </div>
+
+
+                        {/* <div className="product-small-image-wrapper">
+                            {listPaiement.length ? (
+                                <Swiper options={thumbnailSwiperParams}>
+                                    {listPaiement.map((val, key) => (
+                                        <SwiperSlide key={key}>
+                                            <div key={key} className="px-3 py-1" style={{
+                                                width: "50%",
+                                                color: 'white',
+                                                position: "relative",
+                                                display: 'flex',
+                                                flexDirection: "column",
+                                                wordWrap: "break-word",
+                                                backgroundColor: "#23406f",
+                                                backgroundClip: "border-box",
+                                                border: "1px solid #23406f",
+                                                borderRadius: "7px",
+                                                margin: "5px"
+                                            }}>
+                                                <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
+                                                <div className="d-flex justify-content-between card-details mt-3 mb-3">
+                                                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
+                                                    <div className="d-flex flex-row">
+                                                        <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
+                                                        <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div key={key} className="col-6 px-3 py-1" style={{
+                                                width: "50%",
+                                                color: 'white',
+                                                position: "relative",
+                                                display: 'flex',
+                                                flexDirection: "column",
+                                                wordWrap: "break-word",
+                                                backgroundColor: "#23406f",
+                                                backgroundClip: "border-box",
+                                                border: "1px solid #23406f",
+                                                borderRadius: "7px",
+                                                margin: "5px"
+                                            }}>
+                                                <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
+                                                <div className="d-flex justify-content-between card-details mt-3 mb-3">
+                                                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
+                                                    <div className="d-flex flex-row">
+                                                        <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
+                                                        <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            ) :
+                                null
+                            }
+                        </div> */}
+
+
+                        <div className=" d-flex justify-left-center container " style={{ width: "90%" }}>
+
+                            {listPaiement.map((val, key) => {
+                                return (
+                                    <>
+                                        <div key={key} className="col-6 px-3 py-1" style={{
+                                            width: "50%",
+                                            color: 'white',
+                                            position: "relative",
+                                            display: 'flex',
+                                            flexDirection: "column",
+                                            wordWrap: "break-word",
+                                            backgroundColor: "#23406f",
+                                            backgroundClip: "border-box",
+                                            border: "1px solid #23406f",
+                                            borderRadius: "7px",
+                                            margin: "5px"
+                                        }}>
+                                            <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
+                                            <div className="d-flex justify-content-between card-details mt-3 mb-3">
+                                                <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
+                                                <div className="d-flex flex-row">
+                                                    <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
+                                                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* <div key={key} className="col-6 px-3 py-1" style={{
+                                            width: "50%",
+                                            color: 'white',
+                                            position: "relative",
+                                            display: 'flex',
+                                            flexDirection: "column",
+                                            wordWrap: "break-word",
+                                            backgroundColor: "#23406f",
+                                            backgroundClip: "border-box",
+                                            border: "1px solid #23406f",
+                                            borderRadius: "7px",
+                                            margin: "5px"
+                                        }}>
+                                            <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
+                                            <div className="d-flex justify-content-between card-details mt-3 mb-3">
+                                                <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
+                                                <div className="d-flex flex-row">
+                                                    <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
+                                                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                                                </div>
+                                            </div>
+                                        </div> */}
+                                    </>
+                                )
+                            })}
+                        </div>
+
+                        {/* <div className="card-body">{listPaiement}</div> */}
+
                         <div className="card-body" onClick={handleShow} style={{ cursor: 'pointer' }}>
                             <div className='row'>
                                 <div className="col-sm-9">

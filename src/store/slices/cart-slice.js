@@ -6,8 +6,6 @@ import axiosClient from '../../axios-client';
 
 
 
-const BASE_URL = 'http://127.0.0.1:8000/';
-
 
 
 const addPanier = async (dataForm) => {
@@ -85,7 +83,7 @@ const cartSlice = createSlice({
                     dataForm = {
                         "article": product.id_art,
                         "quantity": product.quantity ? product.quantity : 1,
-                        "Customer": id_user
+                        "customer": id_user
                     }
 
                     // ajouter le panier
@@ -106,7 +104,7 @@ const cartSlice = createSlice({
                             dataForm = {
                                 "article": product.id_art,
                                 "quantity": product.quantity ? item.quantity + product.quantity : item.quantity + 1,
-                                "Customer": id_user
+                                "customer": id_user
                             }
                             console.log("mise à jour de l'article: ", item.id_pan)
 
@@ -217,7 +215,7 @@ const cartSlice = createSlice({
                 dataForm = {
                     "article": product.id_art,
                     "quantity": product.quantity - 1,
-                    "Customer": id_user
+                    "customer": id_user
                 }
 
                 //mettre à jour le panier
