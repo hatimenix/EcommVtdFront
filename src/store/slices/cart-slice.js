@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import cogoToast from 'cogo-toast';
 import { fetchPanier, fetchPanierAsync } from '../../services/fetchData';
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axiosClient from '../../axios-client';
 
 
 
@@ -12,7 +12,7 @@ const BASE_URL = 'http://127.0.0.1:8000/';
 
 const addPanier = async (dataForm) => {
     try {
-        const response = await axios.post(`${BASE_URL}panier/`, dataForm);
+        const response = await axiosClient.post(`panier/`, dataForm);
         return response.data;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -24,7 +24,7 @@ const addPanier = async (dataForm) => {
 //update le panier
 const updatePanier = (id_pan, dataForm) => {
     try {
-        const response = axios.patch(`${BASE_URL}panier/${id_pan}/`, dataForm);
+        const response = axiosClient.patch(`panier/${id_pan}/`, dataForm);
         console.log('updating..............', response.data);
         return response.data;
     } catch (error) {
@@ -47,7 +47,7 @@ const retrievePanier = (id_user) => {
 const deleteCart = async (id_pan) => {
     // recuperation du panier
     try {
-        const panier = await axios.delete(`${BASE_URL}panier/${id_pan}/`);
+        const panier = await axiosClient.delete(`panier/${id_pan}/`);
         return panier
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -57,7 +57,7 @@ const deleteCart = async (id_pan) => {
 const deleteAllCart = async (id_user) => {
     // recuperation du panier
     try {
-        const panier = await axios.get(`${BASE_URL}panier/deleteAllCart/?customer=${id_user}`);
+        const panier = await axiosClient.get(`panier/deleteAllCart/?customer=${id_user}`);
         return panier
     } catch (error) {
         console.error('Error fetching categories:', error);

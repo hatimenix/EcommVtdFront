@@ -3,7 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setArticles } from '../store/slices/articlesSlice';
 import axiosClient from '../axios-client';
 
-const BASE_URL = 'http://127.0.0.1:8000/';
 
 export const fetchArticlesByCategory = createAsyncThunk(
     'articles/fetchByCategory',
@@ -144,6 +143,16 @@ export const fetchFavori = async (id_user) => {
 };
 
 
+//recuperation des commandes
+export const fetchCommande = async (id_user) => {
+    const response = await axiosClient.get(`commande/?search=${id_user}`, {
+        withCredentials: true,
+    });
+    // console.log("la commande: ", response.data);
+    return response.data;
+};
+
+
 // get user
 export const fetchUser = async () => {
     const response = await axiosClient.get('/auth/user/');
@@ -152,7 +161,7 @@ export const fetchUser = async () => {
 
 
 export const fetchPackages = async () => {
-    const response = await axios.get(`${BASE_URL}reduction/`, {
+    const response = await axiosClient.get(`reduction/`, {
         withCredentials: true,
     });
     return response.data;

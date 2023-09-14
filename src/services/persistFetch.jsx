@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { initFavoris } from '../store/slices/wishlist-slice';
 import { useCurrentUserSelector } from '../store/selectors/selectors';
 import { userChanged } from '../store/slices/userSlice';
 import { setProperties } from '../store/slices/propertiesSlice';
 import { setPackages } from '../store/slices/pkgSlice__';
+import { initCommande } from '../store/slices/commande-slice';
 // import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
@@ -92,6 +93,11 @@ const usePersistData = () => {
                 // fetch favoris
                 const favori = await fetchFavori(recs.id);
                 dispatch(initFavoris(favori));
+
+
+                // fetch favoris
+                const commande = await fetchCommande(recs.id);
+                dispatch(initCommande(commande));
 
 
                 const cst = await fetchCst(recs.id);

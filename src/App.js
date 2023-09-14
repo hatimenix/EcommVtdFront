@@ -18,6 +18,7 @@ import ProductTabRight from './pages/shop-product/ProductTabRight'; // Assuming 
 import ArticlePkg__ from "./components/article-archetype/ArticlePkg__";
 import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
 import ArticlePkg from "./components/article-archetype/ArticlePkg";
+import Commande from "./pages/other/commande";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -123,6 +124,11 @@ const App = () => {
               element={<ArticlePkg />}
             />
 
+
+            <Route
+              path={process.env.PUBLIC_URL + "/commande"}
+              element={<Commande />}
+            />
 
 
 
