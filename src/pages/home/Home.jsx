@@ -24,8 +24,8 @@ const Home = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Home"
-        description="Home page."
+        titleTemplate="Accueil"
+        description="Page d'accueil"
       />
       <LayoutOne
         headerContainerClass="container-fluid"
