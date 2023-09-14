@@ -23,6 +23,7 @@ const NestedNav = () => {
   }
 
   const handleCategoryClick = (categoryId, categoryLevel) => {
+    console.log("okkkk tff")
     if (expandedCategories.includes(categoryId)) {
       setExpandedCategories(expandedCategories.filter((id) => id !== categoryId));
     } else {
@@ -90,7 +91,7 @@ const NestedNav = () => {
             {getCategories(catId ? catId : test_id).map((val, key) => {
               return (
                 <li style={{width:"50%"}}>
-                  <Link style={{ color: "#555252" }}>
+                  <Link onClick={() => handleCategoryClick(val.id_cat, val.level)} style={{ color: "#555252" }}>
 
                     {val.titre}
                   </Link>
