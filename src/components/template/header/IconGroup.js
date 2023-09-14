@@ -71,6 +71,9 @@ const IconGroup = ({ iconWhiteClass }) => {
   const { user } = useStateContext();
   const [image, setImage] = useState()
 
+  let commandeList = useSelector((state) => state.commandeList.commandeListItem);
+
+  commandeList = commandeList.filter(item => item.etat === false);
 
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
@@ -155,11 +158,10 @@ const IconGroup = ({ iconWhiteClass }) => {
               </Link>
             </div>
             <div className="same-style header-compare d-none d-lg-block d-md-block">
-              <Link to={process.env.PUBLIC_URL + "/compare"}>
+              <Link to={process.env.PUBLIC_URL + "/commande"}>
                 <i className="pe-7s-bell" />
                 <span className="count-style text-center align-items-center">
-                  1
-                  {compareItems && compareItems.length ? compareItems.length : 0}
+                  {commandeList && commandeList.length ? commandeList.length : 0}
                 </span>
               </Link>
             </div>
