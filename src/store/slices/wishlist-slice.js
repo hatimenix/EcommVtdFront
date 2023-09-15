@@ -93,7 +93,8 @@ const wishlistSlice = createSlice({
 
         // initialisation du favoris
         initFavoris(state, action) {
-            state.wishlistItems = action.payload
+            const sortedwishlistItems = action.payload.slice().sort((a, b) => b.id_fav - a.id_fav);
+            state.wishlistItems = sortedwishlistItems
         }
 
     },
