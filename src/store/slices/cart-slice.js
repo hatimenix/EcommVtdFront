@@ -246,7 +246,8 @@ const cartSlice = createSlice({
         },
 
         initCart(state, action) {
-            state.cartItems = action.payload
+            const sortedCartItems = action.payload.slice().sort((a, b) => b.id_pan - a.id_pan);
+            state.cartItems = sortedCartItems
         }
     },
     // extraReducers: (builder) => {

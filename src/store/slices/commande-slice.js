@@ -26,8 +26,8 @@ const commandeSlice = createSlice({
     reducers: {
         // initialisation du Commande
         initCommande(state, action) {
-            console.log('la liste de commande', action.payload);
-            state.commandeListItem = action.payload
+            const sortedcommandeListItem = action.payload.slice().sort((a, b) => b.id_com - a.id_com);
+            state.commandeListItem = sortedcommandeListItem
         }
 
     },
