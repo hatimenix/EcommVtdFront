@@ -7,7 +7,7 @@ function Contact() {
     return (
         <Fragment>
             <SEO
-                titleTemplate="About us"
+                titleTemplate="A propos de nous"
                 description="About page of flone react minimalist eCommerce template."
             />
 
@@ -26,7 +26,7 @@ function Contact() {
                                                         <span style={{ color: "#00BFB1", fontSize: "20px" }} className="fa fa-map-marker"></span>
                                                     </div>
                                                     <div className="text">
-                                                        <p> 198 West 21th Street, Suite 721 New York NY 10016</p>
+                                                        <p> 5éme étage Immeuble "le 129" quartier Haut Founty , Agadir</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -36,7 +36,7 @@ function Contact() {
                                                         <span style={{ color: "#00BFB1", fontSize: "20px" }} className="fa fa-phone"></span>
                                                     </div>
                                                     <div className="text">
-                                                        <p><a href="tel://1234567920">+ 1235 2355 98</a></p>
+                                                        <p><a href="tel://0808628496">+212 8 08 62 84 96</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -46,7 +46,7 @@ function Contact() {
                                                         <span style={{ color: "#00BFB1", fontSize: "20px" }} className="fa fa-paper-plane"></span>
                                                     </div>
                                                     <div className="text">
-                                                        <p><a href="mailto:info@yoursite.com">info@yoursite.com</a></p>
+                                                        <p><a href="contact@atexperts.ma">contact@atexperts.ma</a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,7 +56,7 @@ function Contact() {
                                                         <span style={{ color: "#00BFB1", fontSize: "20px" }} className="fa fa-globe"></span>
                                                     </div>
                                                     <div className="text">
-                                                        <p><a href="#">yoursite.com</a></p>
+                                                        <p><a href="https://atexperts.ma/">https://atexperts.ma</a></p>
                                                     </div>
                                                 </div>
                                             </div>

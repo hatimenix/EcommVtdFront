@@ -429,8 +429,8 @@ const Login = ({ isSeller }) => {
                                   label={
                                     <span style={{ fontSize: '13px', textAlign: 'justify' }}>
                                       En t’inscrivant, tu confirmes que tu acceptes les &nbsp;
-                                      <Link style={{ color: "#00BFB1" }} to={"/termes-et-conditions"}>
-                                        Termes & Conditions d'Elbal</Link>  , avoir lu la   <Link to={"/Politique-de-confidentialité"} style={{ color: "#00BFB1" }}> Politique de confidentialité </Link>
+                                      <Link style={{ color: "#00BFB1" }} to={"/termes-et-conditions"} target='_blank'>
+                                        Termes & Conditions d'Elbal</Link>  , avoir lu la   <Link to={"/Politique-de-confidentialité"} target='_blank' style={{ color: "#00BFB1" }}> Politique de confidentialité </Link>
                                       , et avoir au moins 18 ans.
                                     </span>
                                   }
