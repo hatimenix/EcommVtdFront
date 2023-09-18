@@ -4,7 +4,7 @@ import axiosClient, { linkImage } from '../../axios-client';
 import axios from 'axios';
 import PersonalInfosCmp from './PersonalInfosCmp';
 import { AiOutlineCheck, AiOutlineClose } from "react-icons/ai";
-import { BiSolidUserDetail,BiTrendingDown } from "react-icons/bi";
+import { BiSolidUserDetail, BiTrendingDown } from "react-icons/bi";
 import { BsShieldLockFill } from "react-icons/bs"
 import { MdPayment } from "react-icons/md"
 import { Navigate, useNavigate, useHistory } from 'react-router-dom';
@@ -12,6 +12,7 @@ import SecurityProfile from './SecurityProfile';
 import Reduction from './Reduction';
 import { useStateContext } from '../../context/ContextProvider';
 import Paiement from './Paiement/Paiement';
+import defaultImage from '../../../src/assets/image/default-image.png'
 
 
 const LinkItems = [
@@ -20,7 +21,10 @@ const LinkItems = [
     { name: "Paiements", icon: MdPayment, path: "/paiement" },
     { name: "Réduction sur les lots", icon: BiTrendingDown, path: "/réduction-sur-les-lots" },
 
-];
+]; 
+
+
+
 
 function ProfileSide() {
     const { user } = useStateContext();
@@ -36,24 +40,38 @@ function ProfileSide() {
 
     // Authentification
     useEffect(() => {
-       
-
         if (selectedImage) {
             setImage(URL.createObjectURL(selectedImage))
         }
+        else {
+            setSelectedImage()
+        }
     }, [selectedImage]);
 
-    const saveImage = () => {
+    const [uploaded, setUploaded] = useState(null)
+    const [reloadPage, setReloadPage]=useState(false)
+    const saveImage = () => {    
         const formData = new FormData()
         formData.append('image', selectedImage)
-        axiosClient.put('/user_image_update/' + user.id + '/', formData).then(() => {
-            setSelectedImage()
-            setImage()
+        axiosClient.put('/user_image_update/' + user.id + '/', formData, {
+            onUploadProgress: (data) => {
+                setUploaded(Math.round((data.loaded / data.total) * 100));
+            },
+        })
+        .then(() => {
+            // axiosClient.get('/customers/' + user.id + '/').then(res => {
+            //     setImage(res.data.image)
+            //     setUploaded(null)
+            // })
+            
+        setSelectedImage()
+
+        window.location.reload()
         })
     }
 
     const handleLinkClick = (path) => {
-        setSelectedLink(path); 
+        setSelectedLink(path);
     };
 
     const renderComponent = () => {
@@ -61,15 +79,15 @@ function ProfileSide() {
             return <PersonalInfosCmp />;
         }
         if (selectedLink === "/mot-de-passe-et-sécurité") {
-            return <SecurityProfile/>;
+            return <SecurityProfile />;
         }
         if (selectedLink === "/réduction-sur-les-lots") {
-            return <Reduction/>;
+            return <Reduction />;
         }
         if (selectedLink === "/paiement") {
-            return <Paiement/>;
+            return <Paiement />;
         }
-        
+
     };
 
     return (
@@ -104,29 +122,48 @@ function ProfileSide() {
                             <div className="col-lg-4">
                                 <div className="card mb-4">
                                     <div className="card-body text-center">
-                                        <div style={{ position: 'relative' }}>
-                                            <img src={image ? image : linkImage + user.image} alt="avatar"
-                                                className="rounded-circle img-fluid" style={{ width: "150px", height: '150px' }} />
+                                        <div style={{
+                                            position: 'relative'
+                                        }}>
+                                            <img src={image ? image : user.image ? linkImage + user.image : defaultImage} alt="avatar"
+                                                className="rounded-circle img-fluid" style={{ width: "150px", height: '150px',objectFit:'cover' }} />
                                             {selectedImage && image &&
                                                 <div
                                                     className="close"
                                                     style={{ position: 'absolute', top: 0, right: 0, fontSize: 20, cursor: 'pointer' }}
                                                     onClick={() => {
-                                                        setSelectedImage('')
-                                                        setImage('')
+                                                        setSelectedImage()
+                                                        setImage()
                                                     }}>
                                                     <AiOutlineClose />
                                                 </div>
                                             }
                                         </div>
                                         <h5 className="my-3">{user.first_name} {user.last_name}</h5>
-                                        <p className="text-muted mb-1">{user.rue}</p>
-                                        <p className="text-muted mb-4">{`${user.pays}, ${user.ville} ${user.code_postal}`} </p>
+                                        {!user.rue && !user.pays && !user.ville && !user.code_postal
+                                            ?
+                                            <p className=" mb-4" style={{
+                                                color: 'lightgray'
+                                            }}>Adresse non spécifiée</p>
+                                            :
+                                            <>
+                                                <p className="text-muted mb-1">{user.rue}</p>
+                                                <p className="text-muted mb-4">{`${user.pays}, ${user.ville} ${user.code_postal}`} </p>
+                                            </>
+                                        }
                                         <div className="d-flex justify-content-center mb-2">
-                                            <button type="button" className="btn btn-sm btn-outline-primary" style={{ position: 'relative' }}>
-                                                <span>Choisissez une photo</span>
-                                                <input type="file" name="" id="" style={{ cursor: 'pointer', position: 'absolute', left: 0, top: 0, height: '100%', opacity: 0 }} onChange={handleChangeImage} accept='image/*' />
-                                            </button>
+                                            {uploaded
+                                                ?
+                                                <button className="btn btn-sm btn-outline-primary" style={{
+                                                    width: '150px'
+                                                }} type="button" disabled>
+                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                </button>
+                                                :
+                                                <button type="button" className="btn btn-sm btn-outline-primary" style={{ position: 'relative', cursor: 'pointer' }}>
+                                                    <span>Choisissez une photo</span>
+                                                    <input type="file" name="" id="" style={{ cursor: 'pointer', position: 'absolute', left: 0, top: 0, height: '100%', opacity: 0 }} onChange={handleChangeImage} accept='image/*' />
+                                                </button>}
                                             {selectedImage &&
                                                 <div style={{ marginLeft: 5 }}>
                                                     <button className="btn btn-sm btn-outline-success" onClick={saveImage}>
@@ -185,7 +222,7 @@ function ProfileSide() {
                     </div>
                 </section>
             </LayoutOne>
-        </Fragment>
+        </Fragment >
     )
 }
 

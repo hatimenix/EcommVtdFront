@@ -22,7 +22,7 @@ import { fetchUser } from '../../store/slices/userSlice';
 import { useCurrentUserSelector } from '../../store/selectors/selectors';
 
 
-const ArticleGridDsSingleTwo = ({
+const ArticleGridDsSingleTwoBoosted = ({
     article,
     cartItem,
     wishlistItem,
@@ -145,6 +145,7 @@ const ArticleGridDsSingleTwo = ({
 
     return (
         <Fragment>
+            {article.is_boosted ? <p>boosted</p>   :  <p>null</p>}
             <div
                 className={clsx('product-wrap-2', spaceBottomClass, colorClass, { 'out-of-stock': isOutOfStock })}
                 onMouseEnter={() => setHovered(true)}
@@ -171,7 +172,7 @@ const ArticleGridDsSingleTwo = ({
                             {article.images.map((image, index) => (
                                 <div key={index} className="slide">
                                     <img style={{ width: "200px", height: "260px" }}
-                                        src={image.image}
+                                        src={"http://127.0.0.1:8000/" +image.image}
                                         alt={article.titre}
                                     />
                                 </div>
@@ -286,6 +287,9 @@ const ArticleGridDsSingleTwo = ({
                                     )}
 
                                 </Link>
+                                {article.is_boosted && (
+                  <span className="boosted-text">Boosted</span>
+                )}
                             </h3>
 
                             {true && (
@@ -324,14 +328,13 @@ const ArticleGridDsSingleTwo = ({
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 article={article}
-                product={article}
 
             />
         </Fragment>
     );
 };
 
-ArticleGridDsSingleTwo.propTypes = {
+ArticleGridDsSingleTwoBoosted.propTypes = {
     cartItem: PropTypes.shape({}),
     compareItem: PropTypes.shape({}),
     wishlistItem: PropTypes.shape({}),
@@ -352,4 +355,4 @@ ArticleGridDsSingleTwo.propTypes = {
     titlePriceClass: PropTypes.string,
 };
 
-export default ArticleGridDsSingleTwo;
+export default ArticleGridDsSingleTwoBoosted;

@@ -34,7 +34,6 @@ const NestedNav = () => {
       dispatch(fetchArticlesByCategory(categoryId));
       navigate(`/category/${categoryId}`);
       window.location.reload()
-
     }
   };
 
@@ -90,7 +89,7 @@ const NestedNav = () => {
             {getCategories(catId ? catId : test_id).map((val, key) => {
               return (
                 <li style={{width:"50%"}}>
-                  <Link style={{ color: "#555252" }}>
+                  <Link onClick={() => handleCategoryClick(val.id_cat, val.level)} style={{ color: "#555252" }}>
 
                     {val.titre}
                   </Link>

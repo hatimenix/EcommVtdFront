@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectCategory } from "../../store/slices/categoriesSlice";
 import { fetchArticlesByCategory } from "../../services/fetchData";
 import NestedNav from "../../components/nav-archetype/NavState";
+import ArticleGridDsBoosted from "../../components/article-archetype/ArticleGridDsBoosted";
 
 const Home = () => {
 
@@ -23,8 +24,8 @@ const Home = () => {
   return (
     <Fragment>
       <SEO
-        titleTemplate="Home"
-        description="Home page."
+        titleTemplate="Accueil"
+        description="Page d'accueil"
       />
       <LayoutOne
         headerContainerClass="container-fluid"
@@ -34,7 +35,8 @@ const Home = () => {
         <HeroSliderTen />
 
 
-        <ArticleGridDs limit={5} />
+        <ArticleGridDs />
+        <ArticleGridDsBoosted />
       </LayoutOne>
     </Fragment>
   );

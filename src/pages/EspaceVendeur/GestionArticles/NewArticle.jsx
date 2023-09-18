@@ -6,15 +6,18 @@ import { FaTimes } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { LiaTimesSolid } from "react-icons/lia";
 import { BiLeftArrowAlt } from "react-icons/bi";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { color } from "framer-motion";
 import large_box from "../GestionArticles/Icons/large_box.png";
 import medium_box from "../GestionArticles/Icons/medium_box.png";
 import small_box from "../GestionArticles/Icons/small_box.png";
-
+import Paiement from '../../ProfileSettings/Paiement/pay'; // Adjust the path to the Paiement component file as needed
 import "./style_newArticle.css";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+// import Paiement from './pay'; // Adjust the path to the Paiement component file as needed
 
 function NewArticle() {
   const { user } = useStateContext();
@@ -58,15 +61,27 @@ function NewArticle() {
   const [titre_Article, setTitre_Article] = useState("");
   const [description, setDescription] = useState("");
   const [idCat, setIdCat] = useState();
-  const [stock, setStock] = useState();
+  const [stock, setStock] = useState('');
   const [prix_Vente, setPrix_Vente] = useState();
   const [colis, setColis] = useState("");
-  const [booster, setBooster] = useState(false);
-
+  const [Boosting, setBoosting] = useState(false);
+  const [article, setarticle] = useState();
+  // const [user, setuser] = useState(false);
+  const [boost_type, setboost_type] = useState();
+  const [start_date, setstart_date] = useState();
+  const [end_date, setend_date] = useState();
+  const [boosted_articles, setboosted_articles] = useState([1, 2]);
 
   const [uploaded, setUploaded] = useState()
   const [to, setTo] = useState(0)
   const [idArticle, setIdArticle] = useState()
+
+  const [name, setname] = useState()
+  const [numCard, setnumCard] = useState()
+  const [expDate, setexpDate] = useState()
+  const [securityCode, setsecurityCode] = useState()
+  const [customer, setcustomer] = useState()
+
 
   const AddArticle = () => {
     // setUploaded(true)
@@ -79,14 +94,60 @@ function NewArticle() {
     formData.append("prix_vente", prix_Vente);
     formData.append("unit_prix", prix_Vente);
     formData.append("forme_colis", colis);
-    formData.append("is_booster", booster);
+    formData.append("Boosting", Boosting);
     formData.append("customer_id", user.id);
 
     axiosClient.post("/articles/", formData).then((res) => {
       AddImagesArticle(res.data.id_art)
+      Boosting && addBoosting(res.data.id_art)
       console.log('idddddddddddddd : ', res.data.id_art)
     });
   };
+
+
+  const addBoosting = (article_id) => {
+    // setUploaded(true)
+    const formData = new FormData();
+    formData.append("article", article_id);
+    formData.append("boost_type", boost_type);
+    formData.append("user", user.id);
+    formData.append("start_date", start_date);
+    formData.append("end_date", end_date);
+    formData.append("boosted_articles", boosted_articles);
+
+    try {
+      axiosClient.post("/boosts/", formData).then((res) => {
+        console.log('boosting : ', res.data.id)
+      });
+
+    }
+    catch (error) {
+      console.error('Error fetching boosting value:', error);
+    }
+  };
+
+
+  const addpaiement = (article_id) => {
+    // setUploaded(true)
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("numCard", numCard);
+    formData.append("expDate", expDate);
+    formData.append("securityCode", securityCode);
+    formData.append("customer", user.id);
+
+
+    try {
+      axiosClient.post("/paiement/", formData).then((res) => {
+        console.log('paiement : ', res.data.id)
+      });
+
+    }
+    catch (error) {
+      console.error('Error fetching paiement value:', error);
+    }
+  };
+
 
   const AddImagesArticle = (id) => {
     const img = []
@@ -238,6 +299,33 @@ function NewArticle() {
     console.log();
   }
 
+  useEffect(() => {
+    // Fetch the boosting attribute from the backend
+    const fetchBoostingValue = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/boosts/', {
+          withCredentials: true,
+        });
+        const data = response.data;
+        // Set the boosting state based on the fetched value
+        setBoosting(data.boosting);
+      } catch (error) {
+        console.error('Error fetching boosting value:', error);
+      }
+    };
+
+    // Call the fetchBoostingValue function to fetch the value
+    fetchBoostingValue();
+  }, []); // Run this effect only once on component mount
+
+  const [selectedLink, setSelectedLink] = useState("/nouveau-article");
+
+  const renderComponent = () => {
+
+    if (selectedLink === "/paiement") {
+      return <Paiement />;
+    }
+  };
   return (
     <Fragment>
       <LayoutOne onClick={() => setOpenCategories(!openCategories)}>
@@ -256,9 +344,6 @@ function NewArticle() {
 
               </span>
             </div>
-            {/* {images.map((val, key) => {
-              return (<img src={val} />)
-            })} */}
             <div
               className="row gy-1"
               style={{
@@ -359,163 +444,7 @@ function NewArticle() {
                   );
                 })}
 
-              {/* <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div>
-              <div className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6">
-                <img
-                  src={django}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-              </div> */}
-              {/*               
-              {imageListe && imageListe.map((val, key) => {
-                return (
-                  <div
-                    key={key}
-                    className="col-lg-3 col-md-3"
-                    style={{
-                      position: 'relative',
-                      paddingLeft: 3,
-                      paddingRight: 3,
-                      background:'black',
-                    }}>
-                    <img
-                      src={val}
-                      className="rounded"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                    <AiFillCloseCircle style={{
-                      position: 'absolute',
-                      fontSize: 30,
-                      cursor: 'pointer',
-                      left: "80%",
-                      top: "5%",
-                      color: "#c7c4c4",
-                    }}
-                      onClick={() => {
-                        setimageListe(imageListe.filter(e => e !== val))
-                      }} />
-                  </div>
-                )
-                // <div
-                //   className="col-lg-2 col-md-3 col-sm-6 my-1"
-                //   style={{
-                //     position: 'relative',
-                //     paddingLeft: 3,
-                //     paddingRight: 3
-                //   }}>
-                //   <img
-                //     key={key}
-                //     src={val}
-                //     className="rounded"
-                //     style={{
-                //       height: "100%",
-                //       width: "100%",
-                //       objectFit: "contain",
-                //     }}
-                //   />
-                //   <AiFillCloseCircle style={{
-                //     position: 'absolute',
-                //     fontSize: 30,
-                //     cursor: 'pointer',
-                //     left: "80%",
-                //     top: "5%",
-                //     color: "#c7c4c4",
-                //   }} />
-                // </div>
-              })} */}
-
               {selectedImageList.length > 0 && selectedImageList.length < 6 && (
-                // <div
-                //   className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6"
-                //   style={{
-                //     height:'20%',
-                //     // width:'100%'
-                //   }}
-                // >
-                //   <button
-                //     className="btn btn-md btn-outline-success"
-                //     style={{ position: "relative", cursor: "pointer" }}
-                //   >
-                //     <AiOutlinePlus style={{ fontSize: 22 }} />
-                //     <input
-                //       type="file"
-                //       multiple
-                //       onChange={handleChangeImage}
-                //       style={{
-                //         position: "absolute",
-                //         width: "100%",
-                //         height: "100%",
-                //         top: 0,
-                //         left: 0,
-                //         opacity: 0,
-                //       }}
-                //       accept="image/*"
-                //     />
-                //   </button>
-                // </div>
                 <div
                   className="col-xl-2 col-lg-3  col-md-4 col-sm-5 col-xs-6 d-flex justify-content-center align-items-center"
                   style={{
@@ -543,98 +472,8 @@ function NewArticle() {
                   </button>
                 </div>
               )}
-              {/* {myImages()} */}
-              {/* {images && images.map((val, key) => {
-              <div
-                key={key}
-                className="col-lg-2 col-md-3 col-sm-6 my-1"
-                style={{
-                  position: 'relative',
-                  paddingLeft: 3,
-                  paddingRight: 3
-                }}>
-                <img
-                  src={val}
-                  className="rounded"
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                />
-                <AiFillCloseCircle style={{
-                  position: 'absolute',
-                  fontSize: 30,
-                  cursor: 'pointer',
-                  left: "80%",
-                  top: "5%",
-                  color: "#c7c4c4",
-                }} />
-              </div>
-              })} */}
-              {/*
-               */}
+
             </div>
-            {/* <div
-              className="d-flex flex-row max"
-              style={{ height: "200px", border: "1px dashed gray" }}
-            >
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-              <div className="border h-100" style={{ width: "20%" }}>
-                <img
-                  className="rounded "
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    objectFit: "contain",
-                  }}
-                  src={logo512}
-                />
-              </div>
-            </div> */}
           </div>
 
           {/* titre & description */}
@@ -717,17 +556,6 @@ function NewArticle() {
                     top: '10px',
                     color: '#80808085'
                   }}>{description.length}/100</span>
-                  {/* <input
-                    type="text"
-                    className="input-lg"
-                    name=""
-                    id=""
-                    placeholder="Titre"
-                    style={{
-                      borderBottom: "1px solid gray",
-                      background: "#7070700f",
-                    }}
-                  /> */}
                 </div>
               </div>
             </div>
@@ -742,7 +570,7 @@ function NewArticle() {
                 </div>
                 <div
                   className="input col-md-6 "
-                  style={{ position: "relative" }}
+                  style={{ position: "relative", cursor: 'pointer' }}
                 >
                   <AiOutlineExclamationCircle style={{
                     position: 'absolute',
@@ -763,7 +591,7 @@ function NewArticle() {
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
                       cursor: "pointer",
-                      paddingLeft: [!titleCat ? '25px' : '5px']
+                      paddingLeft: [!titleCat ? '25px' : '5px'],
                     }}
                     onClick={() => {
                       setOpenCategories(!openCategories);
@@ -771,6 +599,13 @@ function NewArticle() {
                       setTitleCatHeader("");
                     }}
                   />
+                  <MdKeyboardArrowDown style={{
+                    position: 'absolute',
+                    fontSize: 25,
+                    color: '#80808085',
+                    top: '10px',
+                    right: '16px',
+                  }} />
                   {openCategories && (
                     <div
                       className="col-12 mt-1"
@@ -822,20 +657,6 @@ function NewArticle() {
                             transition: ".4s linear",
                             color: "black",
                           }}
-                          // onMouseEnter={(e) => {
-                          //   e.target.style.scale = 1.2;
-                          //   e.target.style.color = "#a749ff";
-                          //   e.target.style.boxShadow = "10px 10px 50px #a749ff";
-                          //   e.target.style.transform = "rotate(90deg)";
-                          //   e.target.style.background = "none";
-                          // }}
-                          // onMouseLeave={(e) => {
-                          //   e.target.style.scale = 1;
-                          //   e.target.style.color = "black";
-                          //   e.target.style.boxShadow = "none";
-                          //   e.target.style.transform = "rotate(-90deg)";
-                          //   e.target.style.background = "none";
-                          // }}
                           onClick={() => {
                             setOpenCategories(!openCategories);
                             setLevel(0);
@@ -843,7 +664,6 @@ function NewArticle() {
                           }}
                         />
                       </div>
-                      {/* <button onClick={() => setLevel(level)}>1</button> */}
                       <div
                         style={{
                           transition: 0.1,
@@ -851,37 +671,6 @@ function NewArticle() {
                           overflow: "auto",
                         }}
                       >
-                        {/* {listCategories
-                          .filter(e => e.parent_id === (level ? level : null))
-                          .map((val, key) => {
-                            return (
-                              <div className="test" key={key} onClick={() => {
-                                if (checkParentId(val.id_cat)) {
-                                  setLevel(val.id_cat)
-                                  setTitleCatHeader(val.titre)
-                                } else {
-                                  setTitleCat(val.titre)
-                                  setIdCat(val.id_cat)
-                                  setOpenCategories(!openCategories)
-                                }
-                              }}>
-                                <DropDownMenu check={checkParentId(val.id_cat)} id={checkParentId(val.id_cat) && val.id_cat} icon={2}>
-                                  <div style={{
-                                    height: '50px',
-                                    width: '50px',
-                                    borderRadius: '50%'
-                                  }}>
-                                    <img src={val.icon} style={{
-                                      height: '100%',
-                                      width: '100%',
-                                      objectFit: 'contain'
-                                    }} />
-                                  </div>
-                                  {val.titre}
-                                </DropDownMenu>
-                              </div>
-                            )
-                          })} */}
                         <DropDownMenu />
                       </div>
                     </div>
@@ -909,7 +698,7 @@ function NewArticle() {
                     display: [!stock ? 'block' : 'none']
                   }} />
                   <input
-                    type="number"
+                    type="text"
                     min={0}
                     className="input-lg"
                     name=""
@@ -918,10 +707,20 @@ function NewArticle() {
                     style={{
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
-                      paddingLeft: [!stock ? '25px' : '5px']
+                      paddingLeft: !stock ? '25px' : '5px'
                     }}
-                    onChange={(e) => setStock(e.target.value)}
-                  // maxLength={5}
+                    onChange={(e) => {
+                      let inputValue = e.target.value;
+
+                      // Remove any non-numeric characters, including decimal points and commas
+                      inputValue = inputValue.replace(/[^0-9]/g, '');
+
+                      // Update the input field value with the sanitized value
+                      e.target.value = inputValue;
+
+                      // Update the stock state with the sanitized value
+                      setStock(inputValue);
+                    }}
                   />
                 </div>
               </div>
@@ -947,7 +746,7 @@ function NewArticle() {
                     display: [!prix_Vente ? 'block' : 'none']
                   }} />
                   <input
-                    type="number"
+                    type="text"
                     min={0}
                     className="input-lg"
                     name=""
@@ -958,7 +757,28 @@ function NewArticle() {
                       background: "#7070700f",
                       paddingLeft: [!prix_Vente ? '25px' : '5px']
                     }}
-                    onChange={(e) => setPrix_Vente(e.target.value)}
+                    onChange={(e) => {
+                      let inputValue = e.target.value;
+
+                      // Remove any characters that are not digits or dots
+                      inputValue = inputValue.replace(/[^0-9.]/g, '');
+
+                      // Replace commas with dots for consistent decimal handling
+                      inputValue = inputValue.replace(/,/g, '.');
+
+                      // Limit to two decimal places
+                      const decimalParts = inputValue.split('.');
+                      if (decimalParts.length > 1) {
+                        decimalParts[1] = decimalParts[1].slice(0, 2); // Keep only two decimal places
+                        inputValue = decimalParts.join('.');
+                      }
+
+                      // Update the input field value with the sanitized value
+                      e.target.value = inputValue;
+
+                      // Update the prix_Vente state with the sanitized value
+                      setPrix_Vente(inputValue);
+                    }}
                   />
                 </div>
               </div>
@@ -1120,7 +940,7 @@ function NewArticle() {
           </div>
 
           {/* Booster */}
-          <div className="bg-gray p-4 m-3 rounded">
+          <div className="common-style">
             <div className="mb-3 font-mono">
               <span style={{ fontFamily: "cursive", color: "gray" }}>
                 Booster votre produit
@@ -1136,18 +956,70 @@ function NewArticle() {
                 </div>
                 <div className="col-4">
                   <div className="row align-items-center">
-                    <span className="col ">À partir de 1.34$</span>
+                    <span className="col">À partir de 1.34$</span>
                     <input
                       className="col"
                       type="checkbox"
                       style={{ height: "30px", accentColor: "#a46cdc" }}
-                      onChange={() => setBooster(!booster)}
+                      onChange={() => setBoosting(!Boosting)}
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Boost Fields */}
+          {Boosting && (
+            <div className="common-style">
+              {/* Render the fields for Boost */}
+              <div className="form-group">
+                <label htmlFor="boost_type">Boost Type</label>
+                <input
+                  onChange={(e) => setboost_type(e.target.value)}
+                  type="text"
+                  className="form-control"
+                  id="boost_type"
+                // Add other props and handlers as needed
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="start_date">Start Date</label>
+                <input
+                  onChange={(e) => setstart_date(e.target.value)}
+                  type="date"
+                  className="form-control"
+                  id="start_date"
+                // Add other props and handlers as needed
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="end_date">End Date</label>
+                <input
+                  onChange={(e) => setend_date(e.target.value)}
+                  type="date"
+                  className="form-control"
+                  id="end_date"
+                // Add other props and handlers as needed
+                />
+              </div>
+              {/* Add more Boost fields as needed */}
+            </div>
+          )}
+
+          {/* Payment Fields */}
+          {Boosting && (
+            <div className="common-style">
+              {/* Render the fields for Payment */}
+              <div>
+                <h1>Paiement</h1>
+                {/* Include the Paiement component with the common style */}
+                <Paiement />
+              </div>
+              {/* Add more Payment fields as needed */}
+            </div>
+          )}
+
           {/*  */}
           <div className="m-3" style={{
             display: 'flex',
@@ -1173,7 +1045,7 @@ function NewArticle() {
           </div>
         </div>
       </LayoutOne>
-    </Fragment>
+    </Fragment >
   );
 }
 

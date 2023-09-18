@@ -101,6 +101,7 @@ function PersonalInfosCmp() {
                     position: toast.POSITION.TOP_CENTER,
                     autoClose: 4000,
                 });
+                window.location.reload()
             })
         } catch (err) {
 

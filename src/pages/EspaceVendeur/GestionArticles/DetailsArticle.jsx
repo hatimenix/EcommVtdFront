@@ -23,7 +23,7 @@ const DetailsArtice = () => {
         description="Product page of flone react minimalist eCommerce template."
       /> */}
 
-      <LayoutOne headerTop="visible">
+      <LayoutOne >
 
         {/* product description with image */}
         <ProductImageDescription

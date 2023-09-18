@@ -3,7 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setArticles } from '../store/slices/articlesSlice';
 import axiosClient from '../axios-client';
 
-const BASE_URL = 'http://127.0.0.1:8000/';
 
 export const fetchArticlesByCategory = createAsyncThunk(
     'articles/fetchByCategory',
@@ -24,6 +23,13 @@ export const fetchArticlesByCategory = createAsyncThunk(
 );
 export const fetchArticles = async () => {
     const response = await axiosClient.get(`articles/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
+
+export const fetchBoosts = async () => {
+    const response = await axiosClient.get(`boosts/`, {
         withCredentials: true,
     });
     return response.data;
@@ -50,6 +56,30 @@ export const fetchArticleById = createAsyncThunk(
         }
     }
 );
+
+// export const fetchBoosts = createAsyncThunk(
+//   'boosts/fetchBoosts',
+//   async () => {
+//     try {
+//       const response = await axios.get(`${BASE_URL}boosts/`, {
+//         withCredentials: true,
+//       });
+//       return response.data;
+//     } catch (error) {
+//       console.error('Error fetching boosts:', error);
+//       throw error;
+//     }
+//   }
+// );
+
+const sendBoostData = async (boostData) => {
+    try {
+        const response = await axiosClient.post(`create_boost/`, boostData);
+        console.log(response.data); // Handle the response from Django if needed
+    } catch (error) {
+        console.error('Error creating boost:', error);
+    }
+}
 
 export const fetchArticlesdetails = async (id_art) => {
     const response = await axiosClient.get(`articles/${id_art}/`, {
@@ -153,6 +183,16 @@ export const fetchFavori = async (id_user) => {
 };
 
 
+//recuperation des commandes
+export const fetchCommande = async (id_user) => {
+    const response = await axiosClient.get(`commande/?search=${id_user}`, {
+        withCredentials: true,
+    });
+    // console.log("la commande: ", response.data);
+    return response.data;
+};
+
+
 // get user
 export const fetchUser = async () => {
     const response = await axiosClient.get('/auth/user/');
@@ -161,7 +201,7 @@ export const fetchUser = async () => {
 
 
 export const fetchPackages = async () => {
-    const response = await axios.get(`${BASE_URL}reduction/`, {
+    const response = await axiosClient.get(`reduction/`, {
         withCredentials: true,
     });
     return response.data;
@@ -170,7 +210,7 @@ export const fetchPackages = async () => {
 
 
 export const fetchLot = async () => {
-    const response = await axios.get(`${BASE_URL}packages/`, {
+    const response = await axiosClient.get(`packages/`, {
         withCredentials: true,
     });
     return response.data;
