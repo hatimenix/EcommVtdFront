@@ -10,11 +10,13 @@ import { color } from "framer-motion";
 import large_box from "../GestionArticles/Icons/large_box.png";
 import medium_box from "../GestionArticles/Icons/medium_box.png";
 import small_box from "../GestionArticles/Icons/small_box.png";
-
+import Paiement from '../../ProfileSettings/Paiement/pay'; // Adjust the path to the Paiement component file as needed
 import "./style_newArticle.css";
 import axiosClient from "../../../axios-client";
 import { useStateContext } from "../../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+// import Paiement from './pay'; // Adjust the path to the Paiement component file as needed
 
 function NewArticle() {
   const { user } = useStateContext();
@@ -61,12 +63,24 @@ function NewArticle() {
   const [stock, setStock] = useState();
   const [prix_Vente, setPrix_Vente] = useState();
   const [colis, setColis] = useState("");
-  const [booster, setBooster] = useState(false);
-
+  const [Boosting, setBoosting] = useState(false);
+  const [article, setarticle] = useState();
+  // const [user, setuser] = useState(false);
+  const [boost_type, setboost_type] = useState();
+  const [start_date, setstart_date] = useState();
+  const [end_date, setend_date] = useState();
+  const [boosted_articles, setboosted_articles] = useState([1, 2]);
 
   const [uploaded, setUploaded] = useState()
   const [to, setTo] = useState(0)
   const [idArticle, setIdArticle] = useState()
+
+  const [name, setname] = useState()
+  const [numCard, setnumCard] = useState()
+  const [expDate, setexpDate] = useState()
+  const [securityCode, setsecurityCode] = useState()
+  const [customer, setcustomer] = useState()
+
 
   const AddArticle = () => {
     // setUploaded(true)
@@ -79,14 +93,60 @@ function NewArticle() {
     formData.append("prix_vente", prix_Vente);
     formData.append("unit_prix", prix_Vente);
     formData.append("forme_colis", colis);
-    formData.append("is_booster", booster);
+    formData.append("Boosting", Boosting);
     formData.append("customer_id", user.id);
 
     axiosClient.post("/articles/", formData).then((res) => {
       AddImagesArticle(res.data.id_art)
-      console.log('idddddddddddddd : ',res.data.id_art)
+      Boosting && addBoosting(res.data.id_art)
+      console.log('idddddddddddddd : ', res.data.id_art)
     });
   };
+
+
+  const addBoosting = (article_id) => {
+    // setUploaded(true)
+    const formData = new FormData();
+    formData.append("article", article_id);
+    formData.append("boost_type", boost_type);
+    formData.append("user", user.id);
+    formData.append("start_date", start_date);
+    formData.append("end_date", end_date);
+    formData.append("boosted_articles", boosted_articles);
+
+    try {
+      axiosClient.post("/boosts/", formData).then((res) => {
+        console.log('boosting : ', res.data.id)
+      });
+
+    }
+    catch (error) {
+      console.error('Error fetching boosting value:', error);
+    }
+  };
+
+
+  const addpaiement = (article_id) => {
+    // setUploaded(true)
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("numCard", numCard);
+    formData.append("expDate", expDate);
+    formData.append("securityCode", securityCode);
+    formData.append("customer", user.id);
+
+
+    try {
+      axiosClient.post("/paiement/", formData).then((res) => {
+        console.log('paiement : ', res.data.id)
+      });
+
+    }
+    catch (error) {
+      console.error('Error fetching paiement value:', error);
+    }
+  };
+
 
   const AddImagesArticle = (id) => {
     const img = []
@@ -238,6 +298,33 @@ function NewArticle() {
     console.log();
   }
 
+  useEffect(() => {
+    // Fetch the boosting attribute from the backend
+    const fetchBoostingValue = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/boosts/', {
+          withCredentials: true,
+        });
+        const data = response.data;
+        // Set the boosting state based on the fetched value
+        setBoosting(data.boosting);
+      } catch (error) {
+        console.error('Error fetching boosting value:', error);
+      }
+    };
+
+    // Call the fetchBoostingValue function to fetch the value
+    fetchBoostingValue();
+  }, []); // Run this effect only once on component mount
+
+  const [selectedLink, setSelectedLink] = useState("/nouveau-article");
+
+  const renderComponent = () => {
+
+    if (selectedLink === "/paiement") {
+      return <Paiement />;
+    }
+  };
   return (
     <Fragment>
       <LayoutOne onClick={() => setOpenCategories(!openCategories)}>
@@ -1120,7 +1207,7 @@ function NewArticle() {
           </div>
 
           {/* Booster */}
-          <div className="bg-gray p-4 m-3 rounded">
+          <div className="common-style">
             <div className="mb-3 font-mono">
               <span style={{ fontFamily: "cursive", color: "gray" }}>
                 Booster votre produit
@@ -1136,18 +1223,70 @@ function NewArticle() {
                 </div>
                 <div className="col-4">
                   <div className="row align-items-center">
-                    <span className="col ">À partir de 1.34$</span>
+                    <span className="col">À partir de 1.34$</span>
                     <input
                       className="col"
                       type="checkbox"
                       style={{ height: "30px", accentColor: "#a46cdc" }}
-                      onChange={() => setBooster(!booster)}
+                      onChange={() => setBoosting(!Boosting)}
                     />
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Boost Fields */}
+          {Boosting && (
+            <div className="common-style">
+              {/* Render the fields for Boost */}
+              <div className="form-group">
+                <label htmlFor="boost_type">Boost Type</label>
+                <input
+                  onChange={(e) => setboost_type(e.target.value)}
+                  type="text"
+                  className="form-control"
+                  id="boost_type"
+                // Add other props and handlers as needed
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="start_date">Start Date</label>
+                <input
+                  onChange={(e) => setstart_date(e.target.value)}
+                  type="date"
+                  className="form-control"
+                  id="start_date"
+                // Add other props and handlers as needed
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="end_date">End Date</label>
+                <input
+                  onChange={(e) => setend_date(e.target.value)}
+                  type="date"
+                  className="form-control"
+                  id="end_date"
+                // Add other props and handlers as needed
+                />
+              </div>
+              {/* Add more Boost fields as needed */}
+            </div>
+          )}
+
+          {/* Payment Fields */}
+          {Boosting && (
+            <div className="common-style">
+              {/* Render the fields for Payment */}
+              <div>
+                <h1>Paiement</h1>
+                {/* Include the Paiement component with the common style */}
+                <Paiement />
+              </div>
+              {/* Add more Payment fields as needed */}
+            </div>
+          )}
+
           {/*  */}
           <div className="m-3" style={{
             display: 'flex',
@@ -1173,7 +1312,7 @@ function NewArticle() {
           </div>
         </div>
       </LayoutOne>
-    </Fragment>
+    </Fragment >
   );
 }
 
