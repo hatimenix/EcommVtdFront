@@ -17,6 +17,7 @@ import recReducer from './slices/articlesRecSlice';
 import recsMiddleware from './middlewares/recsMiddleware';
 import midReducer from './slices/articlesRecMidSlice';
 import pkgReducer from './slices/pkgSlice__';
+import commandeSliceReducer from './slices/commande-slice';
 
 import listPkgReducer from './slices/listPkgSlice';
 
@@ -40,7 +41,8 @@ const store = configureStore({
         rec: recReducer,
         artmid: midReducer, // Add the new reducer here
         pkg: pkgReducer,
-        lpkg: listPkgReducer
+        lpkg: listPkgReducer,
+        commandeList: commandeSliceReducer,
 
 
     },

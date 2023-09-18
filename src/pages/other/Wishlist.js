@@ -5,9 +5,9 @@ import { getDiscountPrice } from "../../helpers/product";
 import SEO from "../../components/seo";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import { addToCart } from "../../store/slices/cart-slice";
-import { deleteFromWishlist, deleteAllFromWishlist } from "../../store/slices/wishlist-slice"
-import { linkImage } from "../../axios-client";
+import { addToCart, initCart } from "../../store/slices/cart-slice";
+import { deleteFromWishlist, deleteAllFromWishlist, initFavoris } from "../../store/slices/wishlist-slice"
+import axiosClient, { linkImage } from "../../axios-client";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,38 @@ const Wishlist = () => {
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { cartItems } = useSelector((state) => state.cart);
   const server = linkImage
-  // console.log("voici la wishlist");
+  // console.log("voici la wishlist", wishlistItems);
+
+
+  function getfav() {
+    try {
+      // fetch panier
+      axiosClient.get(`favoris/?search=${localStorage.getItem("cu")}`)
+        .then((res) => {
+          dispatch(initFavoris(res.data))
+        });
+
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+
+  }
+
+
+  function getpan() {
+    try {
+      // fetch panier
+      axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+        .then((res) => {
+          dispatch(initCart(res.data))
+        });
+
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+
+  }
+
 
   return (
     <Fragment>
@@ -30,14 +61,14 @@ const Wishlist = () => {
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Wishlist", path: process.env.PUBLIC_URL + pathname }
+            { label: "Favoris", path: process.env.PUBLIC_URL + pathname }
           ]}
         />
         <div className="cart-main-area pt-90 pb-100">
           <div className="container">
             {wishlistItems && wishlistItems.length >= 1 ? (
               <Fragment>
-                <h3 className="cart-page-title">Your wishlist items</h3>
+                <h3 className="cart-page-title">Votre liste de favoris</h3>
                 <div className="row">
                   <div className="col-12">
                     <div className="table-content table-responsive cart-table-content">
@@ -45,10 +76,10 @@ const Wishlist = () => {
                         <thead>
                           <tr>
                             <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Unit Price</th>
-                            <th>Add To Cart</th>
-                            <th>action</th>
+                            <th>Nom Du Produit</th>
+                            <th>Prix Unitaire</th>
+                            <th>AJOUTER AU PANIER</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -128,7 +159,7 @@ const Wishlist = () => {
                                       target="_blank"
                                     >
                                       {" "}
-                                      Buy now{" "}
+                                      Acheter maintenant{" "}
                                     </a>
                                   ) : wishlistItem.variation &&
                                     wishlistItem.variation.length >= 1 ? (
@@ -140,8 +171,15 @@ const Wishlist = () => {
                                   ) : wishlistItem.stock &&
                                     wishlistItem.stock > 0 ? (
                                     <button
-                                      onClick={() =>
+                                      onClick={() => {
                                         dispatch(addToCart(wishlistItem))
+
+
+                                        // actualiser panier
+                                        setTimeout(() => {
+                                          getpan()
+                                        }, 500);
+                                      }
                                       }
                                       className={
                                         cartItem !== undefined &&
@@ -155,14 +193,14 @@ const Wishlist = () => {
                                       }
                                       title={
                                         wishlistItem !== undefined
-                                          ? "Added to cart"
-                                          : "Add to cart"
+                                          ? "AJOUTER AU PANIER"
+                                          : "DEJA AJOUTE"
                                       }
                                     >
                                       {cartItem !== undefined &&
                                         cartItem.quantity > 0
-                                        ? "Added"
-                                        : "Add to cart"}
+                                        ? "DEJA AJOUTE"
+                                        : "AJOUTER AU PANIER"}
                                     </button>
                                   ) : (
                                     <button disabled className="active">
@@ -194,14 +232,14 @@ const Wishlist = () => {
                     <div className="cart-shiping-update-wrapper">
                       <div className="cart-shiping-update">
                         <Link
-                          to={process.env.PUBLIC_URL + "/shop-grid-standard"}
+                          to={process.env.PUBLIC_URL + "/"}
                         >
-                          Continue Shopping
+                          Continuer l'achat
                         </Link>
                       </div>
                       <div className="cart-clear">
                         <button onClick={() => dispatch(deleteAllFromWishlist())}>
-                          Clear Wishlist
+                          Vider la liste de favoris
                         </button>
                       </div>
                     </div>
