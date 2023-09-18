@@ -194,7 +194,7 @@ function NewArticle() {
     axiosClient.get("/article-images/").then(res => {
       console.log('leeeeeeeeeeeength : ', res.data.filter(e => e.article === id).length)
       if (res.data.filter(e => e.article === id)) {
-        window.location.href = '/gestion-articles'
+        // window.location.href = '/gestion-articles'
         console.log('holla');
       }
     })

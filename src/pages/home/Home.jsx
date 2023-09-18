@@ -36,7 +36,7 @@ const Home = () => {
 
 
         <ArticleGridDs />
-        <ArticleGridDsBoosted/>
+        <ArticleGridDsBoosted />
       </LayoutOne>
     </Fragment>
   );
