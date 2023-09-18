@@ -39,7 +39,7 @@ const Cart = () => {
         <Breadcrumb
           pages={[
             { label: "Home", path: process.env.PUBLIC_URL + "/" },
-            { label: "Cart", path: process.env.PUBLIC_URL + pathname }
+            { label: "Panier", path: process.env.PUBLIC_URL + pathname }
           ]}
         />
         <div className="cart-main-area pt-90 pb-100">
@@ -230,7 +230,7 @@ const Cart = () => {
                     <div className="cart-shiping-update-wrapper">
                       <div className="cart-shiping-update">
                         <Link
-                          to={process.env.PUBLIC_URL + "/shop-grid-standard"}
+                          to={process.env.PUBLIC_URL + "/"}
                         >
                           Continuer l'Achat
                         </Link>

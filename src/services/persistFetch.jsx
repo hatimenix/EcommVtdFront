@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchBoosts, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { setBoosts } from '../store/slices/boostSlice';
 import { initFavoris } from '../store/slices/wishlist-slice';
@@ -11,6 +11,8 @@ import { useCurrentUserSelector } from '../store/selectors/selectors';
 import { userChanged } from '../store/slices/userSlice';
 import { setProperties } from '../store/slices/propertiesSlice';
 import { setPackages } from '../store/slices/pkgSlice__';
+import { initCommande } from '../store/slices/commande-slice';
+// import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
   const dispatch = useDispatch();
@@ -112,11 +114,15 @@ const usePersistData = () => {
         dispatch(initCart(panier));
 
         // fetch favoris
-        const favori = await fetchFavori(recs.id);
-        dispatch(initFavoris(favori));
+        const commande = await fetchCommande(recs.id);
+        dispatch(initCommande(commande));
+
 
         const cst = await fetchCst(recs.id);
+
         dispatch(fetchCst(cst));
+
+
       } catch (error) {
         console.error('Error fetching recs:', error);
       }
