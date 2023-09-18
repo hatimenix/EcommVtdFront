@@ -39,7 +39,7 @@ const ArticleGridDsTwo = ({
                     <ArticleGridDsSingleTwo
                         article={article}
                         // categories={categories}
-                        // limit={limit}
+                        limit={limit}
                         spaceBottomClass={spaceBottomClass}
                         colorClass={colorClass}
                         titlePriceClass={titlePriceClass}
