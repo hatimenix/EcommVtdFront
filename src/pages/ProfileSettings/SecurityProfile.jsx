@@ -14,7 +14,7 @@ function SecurityProfile() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState()
 
-   
+
     const isPasswordValid = (password) => {
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*_|èàç()/."';:,?ù])[0-9a-zA-Z@#$%^&+=!*_|èàç()/."';:,?ù]{8,}$/;
         const specialchar = /[@#$%^&+=!*_|èàç()/."';:,?ù]/;
@@ -67,10 +67,10 @@ function SecurityProfile() {
                 confirm_password: confirmPassword
             })
             .then((response) => {
-                if(response.data.success) {
+                if (response.data.success) {
                     toast.success('Mot de passe modifié avec succès', {
                         position: toast.POSITION.TOP_CENTER,
-                        autoClose:5000,
+                        autoClose: 5000,
                     });
                     // setMessage('')
                     // setConfirmPassword('')
@@ -96,14 +96,14 @@ function SecurityProfile() {
                                     <p class="h4" className="mb-0">{user.email}</p>
                                 </div>
                                 <div className="col-sm-4 text-end">
-                                <button type="button" class="btn btn-sm btn-outline-success">Modifier</button>
+                                    <button type="button" class="btn btn-sm btn-outline-success">Modifier</button>
                                 </div>
-                                
+
                             </div>
 
                         </div>
                     </div>
-                    
+
 
                 </div>
             </div>
@@ -111,24 +111,24 @@ function SecurityProfile() {
                 <div className="card-body">
                     <p className="mb-4"><span className="text-primary font-italic me-1">Mot de passe</span></p>
                     {message &&
-                            <div className="alert alert-danger py-2">
-                              <strong className="">Erreur! </strong>{" "+message}
-                            </div>}
+                        <div className="alert alert-danger py-2">
+                            <strong className="">Erreur! </strong>{" " + message}
+                        </div>}
                     <div className="row">
                         <div className="col-sm-4">
                             <p className="mb-0">Ancien mot de passe</p>
                         </div>
                         <div className="col-sm-8">
-                            <input placeholder='Entrez lancien mot de passe' onChange={(e) => setOldPassword(e.target.value)} name='oldPassword' type="password" id="oldPassword" className="form-control-sm h-50" style={{
-                                borderTop: "none",
-                                borderRight: "none",
-                                borderLeft: "none",
-                                borderRadius: "0",
-                                borderBottom: "1px solid lightgray",
-                                outline: "none",
-                                backgroundColor: "#f8f9fa57"
-                            }} 
-                            value={oldPassword}/>
+                            <input
+                                placeholder='Entrez lancien mot de passe' onChange={(e) => setOldPassword(e.target.value)} name='oldPassword' type="password" id="oldPassword" className="form-control-sm h-50" style={{
+                                    borderTop: "none",
+                                    borderRight: "none",
+                                    borderLeft: "none",
+                                    borderRadius: "0",
+                                    borderBottom: "1px solid lightgray",
+                                    outline: "none",
+                                    backgroundColor: "#f8f9fa57"
+                                }} />
                         </div>
                     </div>
                     <br />
@@ -145,8 +145,8 @@ function SecurityProfile() {
                                 borderBottom: "1px solid lightgray",
                                 outline: "none",
                                 backgroundColor: "#f8f9fa57"
-                            }} 
-                            value={newPassword}/>
+                            }}
+                                value={newPassword} />
 
                         </div>
                     </div>
@@ -164,26 +164,26 @@ function SecurityProfile() {
                                 borderBottom: "1px solid lightgray",
                                 outline: "none",
                                 backgroundColor: "#f8f9fa57"
-                            }} 
-                            value={confirmPassword}/>
+                            }}
+                                value={confirmPassword} />
 
                         </div>
-                        
+
                     </div>
 
 
 
 
                 </div>
-                
+
             </div>
             <div className='text-end'>
-                        <button type="button" onClick={handlepwdChange} className="btn btn-sm btn-outline-success mt-2 px-3 py-1 " style={{ position: 'relative' }}>
-                            Enregistrer
-                            <ToastContainer />
-                        </button>
-                    </div>
-            
+                <button type="button" onClick={handlepwdChange} className="btn btn-sm btn-outline-success mt-2 px-3 py-1 " style={{ position: 'relative' }}>
+                    Enregistrer
+                    <ToastContainer />
+                </button>
+            </div>
+
 
         </div>
 

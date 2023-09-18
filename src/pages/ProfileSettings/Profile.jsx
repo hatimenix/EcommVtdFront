@@ -3,16 +3,11 @@ import LayoutOne from '../../layouts/LayoutOne';
 import axiosClient, { linkImage } from '../../axios-client';
 import { useNavigate } from 'react-router-dom';
 import { useStateContext } from '../../context/ContextProvider';
+import defaultImage from '../../../src/assets/image/default-image.png'
 
 
 function Profile() {
     const { user } = useStateContext();
-    const [selectedImage, setSelectedImage] = useState()
-    const [image, setImage] = useState()
-
-
-    
-
     const navigate = useNavigate()
 
     return (
@@ -25,20 +20,29 @@ function Profile() {
 
                         <div className="row">
                             <div className="col-lg-4">
-                                <div className="card mb-4" style={{height:"90%"}}>
+                                <div className="card mb-4" style={{ height: "90%" }}>
                                     <div className="card-body text-center">
-                                        <img src={image ? image : linkImage+user.image} alt="avatar"
-                                            className="rounded-circle img-fluid" style={{ width: "150px", height: '150px' }} />
+                                        <img src={user.image ? linkImage + user.image : defaultImage} alt="avatar"
+                                            className="rounded-circle img-fluid" style={{ width: "150px", height: '150px', objectFit:'cover' }} />
                                         <h5 className="my-3">{user.first_name} {user.last_name}</h5>
-                                        <p className="text-muted mb-1">{user.rue}</p>
-                                        <p className="text-muted mb-4">{`${user.pays}, ${user.ville} ${user.code_postal}`} </p>
+                                        {!user.rue && !user.pays && !user.ville && !user.code_postal
+                                            ?
+                                            <p className=" mb-4" style={{
+                                                color: 'lightgray'
+                                            }}>Adresse non spécifiée</p>
+                                            :
+                                            <>
+                                                <p className="text-muted mb-1">{user.rue}</p>
+                                                <p className="text-muted mb-4">{`${user.pays}, ${user.ville} ${user.code_postal}`} </p>
+                                            </>
+                                        }
 
                                     </div>
                                 </div>
                             </div>
                             <div className="col-lg-8">
-                                <div className="card mb-4" style={{height:"90%"}}>
-                                    <div className="card-body" style={{height:"90%"}}>
+                                <div className="card mb-4" style={{ height: "90%" }}>
+                                    <div className="card-body" style={{ height: "90%" }}>
                                         <div className="row">
                                             <div className="col-sm-3">
                                                 <p className="mb-0">Nom complet</p>
@@ -60,10 +64,12 @@ function Profile() {
                                         <hr />
                                         <div className="row">
                                             <div className="col-sm-3">
-                                                <p className="mb-0">Telephone</p>
+                                                <p className="mb-0">Téléphone</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{user.tel}</p>
+                                                <p className="text-muted mb-0">{user.tel ? user.tel : <span className=" mb-4" style={{
+                                                    color: 'lightgray'
+                                                }}>Téléphone non spécifié</span>}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -72,7 +78,9 @@ function Profile() {
                                                 <p className="mb-0">Date de naissance</p>
                                             </div>
                                             <div className="col-sm-9">
-                                                <p className="text-muted mb-0">{user.birthday}</p>
+                                                <p className="text-muted mb-0">{user.birthday ? user.birthday : <span className=" mb-4" style={{
+                                                    color: 'lightgray'
+                                                }}>Date de naissance non spécifiée</span>}</p>
                                             </div>
                                         </div>
                                         <hr />
@@ -85,7 +93,7 @@ function Profile() {
                                             </div>
                                         </div>
                                         <div className='col-sm-12 text-end'>
-                                            <button type="button" class="btn btn-sm btn-outline-success mb-2" onClick={()=>{
+                                            <button type="button" class="btn btn-sm btn-outline-success mb-2" onClick={() => {
                                                 navigate('/gestion-profil')
                                             }}>Modifier</button>
                                         </div>

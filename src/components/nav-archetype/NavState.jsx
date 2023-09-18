@@ -23,7 +23,6 @@ const NestedNav = () => {
   }
 
   const handleCategoryClick = (categoryId, categoryLevel) => {
-    console.log("okkkk tff")
     if (expandedCategories.includes(categoryId)) {
       setExpandedCategories(expandedCategories.filter((id) => id !== categoryId));
     } else {
@@ -35,7 +34,6 @@ const NestedNav = () => {
       dispatch(fetchArticlesByCategory(categoryId));
       navigate(`/category/${categoryId}`);
       window.location.reload()
-
     }
   };
 
