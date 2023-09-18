@@ -1,15 +1,13 @@
 import cogoToast from 'cogo-toast';
-import axios from 'axios';
+import axiosClient from '../../axios-client';
 
 const id_user = parseInt(localStorage.getItem("cu"))
 
 const { createSlice } = require('@reduxjs/toolkit');
 
-// const favoris = await fetchFavori(1);
-const BASE_URL = 'https://el-bal.ma/';
 const addFavoris = async (dataForm) => {
     try {
-        const response = await axios.post(`${BASE_URL}favoris/`, dataForm);
+        const response = await axiosClient.post(`favoris/`, dataForm);
         return response.data;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -21,7 +19,7 @@ const addFavoris = async (dataForm) => {
 //delete le Favoris
 const deleteFavoris = async (id_pan) => {
     try {
-        const response = await axios.delete(`${BASE_URL}favoris/${id_pan}/`);
+        const response = await axiosClient.delete(`favoris/${id_pan}/`);
         // console.log('updating..............', dataForm);
         return response.data;
     } catch (error) {
@@ -33,7 +31,7 @@ const deleteFavoris = async (id_pan) => {
 //delete le Favoris
 const deleteAllFavoris = async (id_user) => {
     try {
-        const response = await axios.get(`${BASE_URL}favoris/deleteAllFavoris/?customer=${id_user}`);
+        const response = await axiosClient.get(`favoris/deleteAllFavoris/?customer=${id_user}`);
         // console.log('updating..............', dataForm);
         return response.data;
     } catch (error) {
@@ -70,7 +68,7 @@ const wishlistSlice = createSlice({
                 const wlist = action.payload
                 dataForm = {
                     "article": wlist.id_art,
-                    "Customer": id_user
+                    "customer": id_user
                 }
 
                 // ajouter à la liste
@@ -93,7 +91,8 @@ const wishlistSlice = createSlice({
 
         // initialisation du favoris
         initFavoris(state, action) {
-            state.wishlistItems = action.payload
+            const sortedwishlistItems = action.payload.slice().sort((a, b) => b.id_fav - a.id_fav);
+            state.wishlistItems = sortedwishlistItems
         }
 
     },

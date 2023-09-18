@@ -640,7 +640,7 @@ function NewArticle() {
                       }} />
                       :
                       <input
-                        type="number"
+                        type="text"
                         min={0}
                         className="input-lg"
                         name=""
@@ -651,7 +651,18 @@ function NewArticle() {
                           borderBottom: "1px solid gray",
                           background: "#7070700f",
                         }}
-                        onChange={(e) => setStock(e.target.value)}
+                        onChange={(e) => {
+                          let inputValue = e.target.value;
+                          
+                          // Remove any non-numeric characters, including decimal points and commas
+                          inputValue = inputValue.replace(/[^0-9]/g, '');
+                      
+                          // Update the input field value with the sanitized value
+                          e.target.value = inputValue;
+                      
+                          // Update the stock state with the sanitized value
+                          setStock(inputValue);
+                        }}
                       />
                     }
                   </div>
@@ -673,7 +684,7 @@ function NewArticle() {
                       }} />
                       :
                       <input
-                        type="number"
+                        type="text"
                         min={0}
                         className="input-lg"
                         name=""
@@ -684,7 +695,28 @@ function NewArticle() {
                           borderBottom: "1px solid gray",
                           background: "#7070700f",
                         }}
-                        onChange={(e) => setPrix_Vente(e.target.value)}
+                        onChange={(e) => {
+                          let inputValue = e.target.value;
+                          
+                          // Remove any characters that are not digits or dots
+                          inputValue = inputValue.replace(/[^0-9.]/g, '');
+                      
+                          // Replace commas with dots for consistent decimal handling
+                          inputValue = inputValue.replace(/,/g, '.');
+                      
+                          // Limit to two decimal places
+                          const decimalParts = inputValue.split('.');
+                          if (decimalParts.length > 1) {
+                            decimalParts[1] = decimalParts[1].slice(0, 2); // Keep only two decimal places
+                            inputValue = decimalParts.join('.');
+                          }
+                      
+                          // Update the input field value with the sanitized value
+                          e.target.value = inputValue;
+                      
+                          // Update the prix_Vente state with the sanitized value
+                          setPrix_Vente(inputValue);
+                        }}
                       />
                     }
                   </div>

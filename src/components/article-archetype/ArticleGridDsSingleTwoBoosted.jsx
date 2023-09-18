@@ -145,6 +145,7 @@ const ArticleGridDsSingleTwoBoosted = ({
 
     return (
         <Fragment>
+            {article.is_boosted ? <p>boosted</p>   :  <p>null</p>}
             <div
                 className={clsx('product-wrap-2', spaceBottomClass, colorClass, { 'out-of-stock': isOutOfStock })}
                 onMouseEnter={() => setHovered(true)}
@@ -171,7 +172,7 @@ const ArticleGridDsSingleTwoBoosted = ({
                             {article.images.map((image, index) => (
                                 <div key={index} className="slide">
                                     <img style={{ width: "200px", height: "260px" }}
-                                        src={image.image}
+                                        src={"http://127.0.0.1:8000/" +image.image}
                                         alt={article.titre}
                                     />
                                 </div>
@@ -286,6 +287,9 @@ const ArticleGridDsSingleTwoBoosted = ({
                                     )}
 
                                 </Link>
+                                {article.is_boosted && (
+                  <span className="boosted-text">Boosted</span>
+                )}
                             </h3>
 
                             {true && (

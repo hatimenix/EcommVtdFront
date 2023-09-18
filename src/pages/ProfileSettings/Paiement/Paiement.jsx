@@ -5,21 +5,11 @@ import { MdKeyboardArrowRight } from 'react-icons/md'
 import visa from './visa.png'
 import mastercard from './shopping.png'
 import { useStateContext } from '../../../context/ContextProvider';
-import { FaCcMastercard } from 'react-icons/fa';
-import { RiVisaFill } from 'react-icons/ri';
-import { BsFillCreditCard2BackFill } from 'react-icons/bs';
+import { BsFillCreditCard2BackFill, BsTrash } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import axiosClient from '../../../axios-client';
-import axios from 'axios';
-import Stripe from 'stripe';
-import { loadStripe } from '@stripe/stripe-js';
-import PropTypes from "prop-types";
-import { EffectFade, Thumbs } from 'swiper';
-import AnotherLightbox from "yet-another-react-lightbox";
-import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
-import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
-import Swiper, { SwiperSlide } from "../../../components/template/swiper";
+
+import Carousel from 'react-elastic-carousel'
 
 const styles = `
 .my-modal {
@@ -40,12 +30,18 @@ const styles = `
     border: 1px solid #23406f;
     border-radius: 7px;
   }
+`;
+const deletestyles = `
 
+.my-delete-modal {
+    max-width: 550px;
+    margin: 10% auto;
+    padding: 1px
+}
 `;
 function Paiement() {
     const [show, setShow] = useState(false);
     const { user } = useStateContext();
-    const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const navigate = useNavigate()
 
@@ -63,7 +59,6 @@ function Paiement() {
             if (res.data.length > 0) {
                 const paiementData = res.data;
                 setListPaiement(paiementData);
-                console.log(paiementData)
             }
         }
         fetchData();
@@ -139,6 +134,7 @@ function Paiement() {
     // const stripe = loadStripe('pk_test_51NnjDSAGd0ipJgCDa5PtH2fiPZL8MAyGRAafPnYohGjNG1q2GsO3mIs7X6hhKeFiqyP1TSNqVOZVoieCPctD9ti6002uJdkrAP');
 
     const [isCardValid, setIsCardValid] = useState(false)
+    const [errorMessage, setErrorMessage] = useState('')
     const stripe = require('stripe')('pk_test_51NnjDSAGd0ipJgCDa5PtH2fiPZL8MAyGRAafPnYohGjNG1q2GsO3mIs7X6hhKeFiqyP1TSNqVOZVoieCPctD9ti6002uJdkrAP');
     const createPaymentMethod = async (cardNumber, expMonth, expYear, cvc) => {
         try {
@@ -157,6 +153,7 @@ function Paiement() {
         } catch (error) {
             // Handle any errors, e.g., invalid card details
             setIsCardValid(false)
+            setErrorMessage(' Carte invalide')
             return false;
         }
     };
@@ -182,30 +179,45 @@ function Paiement() {
         if (!isCardValid) {
             return;
         } else {
-            const formData = new FormData();
-
-            formData.append("name", name);
-            formData.append("numCard", numCard.replace(/\s/g, ""))
-            formData.append("expDate", expDate.toString())
-            formData.append("securityCode", securityCode)
-            formData.append("customer", user.id)
-            console.log(name, numCard, expDate, securityCode, user.id)
             try {
-                axios.post(`http://localhost:8000/paiement/`, formData).then(() => {
-                    // setMessage('')
-                    // toast.success('Profil modifié avec succès', {
-                    //     position: toast.POSITION.TOP_CENTER,
-                    //     autoClose: 4000,
-                    // });
-                    console.log('ok')
+                const formData = new FormData();
+
+                formData.append("name", name);
+                formData.append("numCard", numCard.replace(/\s/g, ""))
+                formData.append("expDate", expDate.toString())
+                formData.append("securityCode", securityCode)
+                formData.append("customer", user.id)
+                console.log(name, numCard, expDate, securityCode, user.id)
+
+                axiosClient.post(`/paiement/`, formData).then(() => {
+                    axiosClient.get('/paiement/').then((res) => {
+                        setListPaiement(res.data)
+                    })
                 })
             } catch (err) {
 
             }
         }
+        setErrorMessage('')
+        setName('')
+        setCardNumber('')
+        setCardType('')
+        securityCode('')
+        setExpDate('')
+        setShow(false);
 
     };
 
+
+    const handleClose = () => {
+        setErrorMessage('')
+        setName('')
+        setCardNumber('')
+        setCardType('')
+        setSecurityCode('')
+        setExpDate('')
+        setShow(false);
+    };
 
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [index, setIndex] = useState(-1);
@@ -254,6 +266,18 @@ function Paiement() {
             slideToClickedSlide: true,
             navigation: true
         }
+
+
+    const [showTrash, setShowTrash] = useState(false)
+    const [alertDelete, setAlertDelete] = useState(false);
+    const [deletedId, setDeletedId] = useState()
+
+    const deleteCard = (id) => {
+        axiosClient.delete(`/paiement/${id}/`).then(res => {
+            setListPaiement(listPaiement.filter(e => e.id !== id))
+        })
+        setAlertDelete(false);
+    }
     return (
         <div className="col-lg-8">
             <div className="row mb-4" >
@@ -321,60 +345,99 @@ function Paiement() {
                             }
                         </div> */}
 
+                        {listPaiement.length > 0 &&
+                            <div className=" d-flex justify-left-center container px-lg-5 px-xl-5 px-md-5">
 
-                        <div className=" d-flex justify-left-center container " style={{ width: "90%" }}>
+                                <Carousel
+                                    className='d-flex  px-lg-5 px-xl-5 px-md-5'
+                                    pagination={listPaiement.length > 1 ? true : false}
+                                    showArrows={false}
+                                    // enableAutoPlay={true}
+                                    // autoPlaySpeed={2000}
+                                    style={{
+                                        padding: 10
+                                    }}
+                                >
 
-                            {listPaiement.map((val, key) => {
-                                return (
-                                    <>
-                                        <div key={key} className="col-6 px-3 py-1" style={{
-                                            width: "50%",
-                                            color: 'white',
-                                            position: "relative",
-                                            display: 'flex',
-                                            flexDirection: "column",
-                                            wordWrap: "break-word",
-                                            backgroundColor: "#23406f",
-                                            backgroundClip: "border-box",
-                                            border: "1px solid #23406f",
-                                            borderRadius: "7px",
-                                            margin: "5px"
-                                        }}>
-                                            <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
-                                            <div className="d-flex justify-content-between card-details mt-3 mb-3">
-                                                <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
-                                                <div className="d-flex flex-row">
-                                                    <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
-                                                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                                    {listPaiement.map((val, key) => {
+                                        return (
+                                            <>
+                                                <div className='d-flex w-100 px-lg-5 px-xl-5 px-md-5'>
+                                                    <div
+                                                        onMouseEnter={e => {
+                                                            e.target.style.cursor = 'grab'
+                                                            setShowTrash(true)
+                                                        }}
+                                                        onMouseLeave={e => {
+                                                            setShowTrash(false)
+                                                        }}
+                                                        onMouseDown={e => e.target.style.cursor = 'grabbing'}
+                                                        onMouseUp={e => e.target.style.cursor = 'grab'}
+                                                        key={key} className="col-6 px-3 py-1  " style={{
+                                                            width: "100%",
+                                                            color: 'white',
+                                                            position: "relative",
+                                                            display: 'flex',
+                                                            flexDirection: "column",
+                                                            wordWrap: "break-word",
+                                                            background: "linear-gradient(42deg, #001531 0%, rgba(0,54,127,1) 72%, rgba(0,191,177,1) 100%",
+                                                            backgroundClip: "border-box",
+                                                            borderRadius: "7px",
+                                                            margin: "5px",
+                                                            zIndex: 1
+                                                        }}>
+                                                        <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
+                                                        <div className="d-flex justify-content-between card-details mt-3 mb-3">
+                                                            <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
+                                                            <div className="d-flex flex-row">
+                                                                <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
+                                                                <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            className='deleteIcon'
+                                                            style={{
+                                                                position: 'absolute',
+                                                                display: [showTrash ? 'block' : 'none'],
+                                                                top: 5,
+                                                                right: 5,
+                                                                cursor: 'pointer',
+                                                            }}
+                                                            onClick={() => {
+                                                                setDeletedId(val.id);
+                                                                setAlertDelete(true);
+                                                            }}>
+                                                            <BsTrash fontSize={22} color='black' />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        {/* <div key={key} className="col-6 px-3 py-1" style={{
-                                            width: "50%",
-                                            color: 'white',
-                                            position: "relative",
-                                            display: 'flex',
-                                            flexDirection: "column",
-                                            wordWrap: "break-word",
-                                            backgroundColor: "#23406f",
-                                            backgroundClip: "border-box",
-                                            border: "1px solid #23406f",
-                                            borderRadius: "7px",
-                                            margin: "5px"
-                                        }}>
-                                            <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
-                                            <div className="d-flex justify-content-between card-details mt-3 mb-3">
-                                                <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
-                                                <div className="d-flex flex-row">
-                                                    <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
-                                                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
-                                                </div>
-                                            </div>
-                                        </div> */}
-                                    </>
-                                )
-                            })}
-                        </div>
+                                                {/* <div key={key} className="col-6 px-3 py-1" style={{
+                width: "50%",
+                color: 'white',
+                position: "relative",
+                display: 'flex',
+                flexDirection: "column",
+                wordWrap: "break-word",
+                backgroundColor: "#23406f",
+                backgroundClip: "border-box",
+                border: "1px solid #23406f",
+                borderRadius: "7px",
+                margin: "5px"
+            }}>
+                <div className="mt-3"><span className="mr-3" style={{ fontSize: "20px" }}>{val.numCard.replace(/(\d{4})/g, '$1 ')}</span></div>
+                <div className="d-flex justify-content-between card-details mt-3 mb-3">
+                    <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Card Holder</span><span>{val.name}</span></div>
+                    <div className="d-flex flex-row">
+                        <div className="d-flex flex-column" style={{ marginRight: 10 }}><span style={{ fontSize: "11px", color: "#a1a1a1" }}>Expired</span><span>{val.expDate}</span></div>
+                        <div className="d-flex flex-column"><span style={{ fontSize: "11px", color: "#a1a1a1" }}>CVV</span><span>{val.securityCode}</span></div>
+                    </div>
+                </div>
+            </div> */}
+                                            </>
+                                        )
+                                    })}
+                                </Carousel>
+                            </div>}
 
                         {/* <div className="card-body">{listPaiement}</div> */}
 
@@ -439,6 +502,10 @@ function Paiement() {
                     </div>
                     <div className="mx-4 my-2 p-1 mb-4 " style={{ border: "1px solid #ebebeb", borderRadius: "5px" }}>
                         <div>
+                            {errorMessage &&
+                                <div class="alert alert-danger py-2">
+                                    <strong className="">Erreur!</strong>{errorMessage}
+                                </div>}
                             <form>
                                 <div className='p-2'>
                                     <label className='p-2'>Nom figurant sur la carte</label>
@@ -538,7 +605,7 @@ function Paiement() {
 
                     </div>
                     <div className='mb-2'>
-                        <Button onClick={handleSubmit} style={{ width: '100%', backgroundColor: "teal", border: "none" }} >
+                        <Button onClick={handleSubmit} style={{ width: '100%', backgroundColor: "teal", border: "none" }} disabled={!name || !numCard || !expDate || !securityCode}>
                             Utiliser cette carte
                         </Button>
                     </div>
@@ -550,6 +617,39 @@ function Paiement() {
 
                 </Modal.Body>
 
+            </Modal>
+
+
+            <style>{deletestyles}</style>
+            <Modal
+                show={alertDelete}
+                onHide={() => setAlertDelete(false)}
+                keyboard={false}
+                dialogClassName="my-delete-modal"
+
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title id="example-modal-sizes-title-sm">
+                        Supprimer l'article
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    êtes-vous sûr ? Vous ne pourrez pas annuler cette action
+                    ultérieurement.
+                </Modal.Body>
+                <Modal.Footer
+                    style={{
+                        border: "none",
+                    }}
+                >
+                    <Button
+                        size='sm'
+                        className="btn btn-danger"
+                        onClick={() => deleteCard(deletedId)}
+                    >
+                        Supprimer
+                    </Button>
+                </Modal.Footer>
             </Modal>
         </div>
     )

@@ -19,6 +19,10 @@ import ArticlePkg__ from "./components/article-archetype/ArticlePkg__";
 import Wallet from "./pages/ProfileSettings/Paiement/Wallet";
 import AboutUs from "./pages/FooterPages/AboutUs";
 import ArticlePkg from "./components/article-archetype/ArticlePkg";
+import Contact from "./pages/FooterPages/Contact";
+import TermsAndConditions from "./pages/FooterPages/TermsAndConditions";
+import PrivacyPolicy from "./pages/FooterPages/PrivacyPolicy";
+import Commande from "./pages/other/commande";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -124,11 +128,28 @@ const App = () => {
               element={<ArticlePkg />}
             />
 
+
+            <Route
+              path={process.env.PUBLIC_URL + "/commande"}
+              element={<Commande />}
+            />
+
             <Route
               path={process.env.PUBLIC_URL + "/a-propos"}
               element={<AboutUs />}
             />
-
+            <Route
+              path={process.env.PUBLIC_URL + "/contact"}
+              element={<Contact />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/termes-et-conditions"}
+              element={<TermsAndConditions />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/Politique-de-confidentialité"}
+              element={<PrivacyPolicy />}
+            />
 
           </Routes>
         </Suspense>

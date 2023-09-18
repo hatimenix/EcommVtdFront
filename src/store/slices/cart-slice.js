@@ -1,18 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import cogoToast from 'cogo-toast';
 import { fetchPanier, fetchPanierAsync } from '../../services/fetchData';
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-
-
-const BASE_URL = 'https://el-bal.ma/';
-
+import axiosClient from '../../axios-client';
 
 
 const addPanier = async (dataForm) => {
     try {
-        const response = await axios.post(`${BASE_URL}panier/`, dataForm);
+        const response = await axiosClient.post(`panier/`, dataForm);
         return response.data;
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -24,7 +19,7 @@ const addPanier = async (dataForm) => {
 //update le panier
 const updatePanier = (id_pan, dataForm) => {
     try {
-        const response = axios.patch(`${BASE_URL}panier/${id_pan}/`, dataForm);
+        const response = axiosClient.patch(`panier/${id_pan}/`, dataForm);
         console.log('updating..............', response.data);
         return response.data;
     } catch (error) {
@@ -47,7 +42,7 @@ const retrievePanier = (id_user) => {
 const deleteCart = async (id_pan) => {
     // recuperation du panier
     try {
-        const panier = await axios.delete(`${BASE_URL}panier/${id_pan}/`);
+        const panier = await axiosClient.delete(`panier/${id_pan}/`);
         return panier
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -57,7 +52,7 @@ const deleteCart = async (id_pan) => {
 const deleteAllCart = async (id_user) => {
     // recuperation du panier
     try {
-        const panier = await axios.get(`${BASE_URL}panier/deleteAllCart/?customer=${id_user}`);
+        const panier = await axiosClient.get(`panier/deleteAllCart/?customer=${id_user}`);
         return panier
     } catch (error) {
         console.error('Error fetching categories:', error);
@@ -85,7 +80,7 @@ const cartSlice = createSlice({
                     dataForm = {
                         "article": product.id_art,
                         "quantity": product.quantity ? product.quantity : 1,
-                        "Customer": id_user
+                        "customer": id_user
                     }
 
                     // ajouter le panier
@@ -106,7 +101,7 @@ const cartSlice = createSlice({
                             dataForm = {
                                 "article": product.id_art,
                                 "quantity": product.quantity ? item.quantity + product.quantity : item.quantity + 1,
-                                "Customer": id_user
+                                "customer": id_user
                             }
                             console.log("mise à jour de l'article: ", item.id_pan)
 
@@ -123,77 +118,7 @@ const cartSlice = createSlice({
                 }
 
             }
-            // else {
-            //     //else..........
-            //     const cartItem = state.cartItems.find(
-            //         item =>
-            //             item.id_art === product.id_art &&
-            //             product.selectedProductColor &&
-            //             product.selectedProductColor === item.selectedProductColor &&
-            //             product.selectedProductSize &&
-            //             product.selectedProductSize === item.selectedProductSize &&
-            //             (product.cartItemId ? product.cartItemId === item.cartItemId : true)
-            //     );
-            //     if (!cartItem) {
 
-            //         dataForm = {
-            //             "article": product.id_art,
-            //             "quantity": product.quantity ? product.quantity : 1,
-            //             "Customer": id_user
-            //         }
-
-            //         // ajout au panier
-            //         addPanier(dataForm)
-            // state.cartItems = retrievePanier(1)
-
-            //         // state.cartItems.push({
-            //         //     ...product,
-            //         //     quantity: product.quantity ? product.quantity : 1,
-            //         //     cartItemId: uuidv4()
-            //         // });
-
-            //     } else if (cartItem !== undefined && (cartItem.selectedProductColor !== product.selectedProductColor || cartItem.selectedProductSize !== product.selectedProductSize)) {
-
-            //         dataForm = {
-            //             "article": product.id,
-            //             "quantity": product.quantity ? product.quantity : 1,
-            //             "Customer": id_user
-            //         }
-
-            //         // ajout au panier
-            //         addPanier(dataForm)
-            // state.cartItems = retrievePanier(1)
-
-            //         // state.cartItems = [
-            //         //     ...state.cartItems,
-            //         //     {
-            //         //         ...product,
-            //         //         quantity: product.quantity ? product.quantity : 1,
-            //         //         cartItemId: uuidv4()
-            //         //     }
-            //         // ]
-            //     } else {
-            //         state.cartItems = state.cartItems.map(item => {
-            //             if (item.cartItemId === cartItem.cartItemId) {
-
-            //                 dataForm = {
-            //                     "article": product.id,
-            //                     "quantity": product.quantity ? product.quantity : item.quantity + 1,
-            //                     "Customer": id_user
-            //                 }
-
-
-            //                 return {
-            //                     ...item,
-            //                     quantity: product.quantity ? item.quantity + product.quantity : item.quantity + 1,
-            //                     selectedProductColor: product.selectedProductColor,
-            //                     selectedProductSize: product.selectedProductSize
-            //                 }
-            //             }
-            //             return item;
-            //         });
-            //     }
-            // }
 
             cogoToast.success("Added To Cart", { position: "bottom-left" });
         },
@@ -217,7 +142,7 @@ const cartSlice = createSlice({
                 dataForm = {
                     "article": product.id_art,
                     "quantity": product.quantity - 1,
-                    "Customer": id_user
+                    "customer": id_user
                 }
 
                 //mettre à jour le panier
@@ -248,7 +173,8 @@ const cartSlice = createSlice({
         },
 
         initCart(state, action) {
-            state.cartItems = action.payload
+            const sortedCartItems = action.payload.slice().sort((a, b) => b.id_pan - a.id_pan);
+            state.cartItems = sortedCartItems
         }
     },
     // extraReducers: (builder) => {
