@@ -1,5 +1,4 @@
 import cogoToast from 'cogo-toast';
-import { fetchFavori } from '../../services/fetchData';
 import axios from 'axios';
 
 const id_user = parseInt(localStorage.getItem("cu"))
@@ -7,7 +6,7 @@ const id_user = parseInt(localStorage.getItem("cu"))
 const { createSlice } = require('@reduxjs/toolkit');
 
 // const favoris = await fetchFavori(1);
-const BASE_URL = 'http://127.0.0.1:8000/';
+const BASE_URL = 'https://el-bal.ma/';
 const addFavoris = async (dataForm) => {
     try {
         const response = await axios.post(`${BASE_URL}favoris/`, dataForm);

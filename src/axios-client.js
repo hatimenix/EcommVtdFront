@@ -63,7 +63,7 @@ export default axiosClient;
 // import axios from "axios";
 
 // const axiosClient = axios.create({
-//   baseURL: "http://127.0.0.1:8000/",
+//   baseURL: "https://el-bal.ma/",
 // });
 
 // axiosClient.interceptors.request.use((config) => {
@@ -87,7 +87,7 @@ export default axiosClient;
 //     if (error.response && error.response.status === 401 && refreshToken) {
 //       try {
 //         const refreshResponse = await axios.post(
-//           "http://127.0.0.1:8000/token/customer/refresh/",
+//           "https://el-bal.ma/token/customer/refresh/",
 //           { refresh: refreshToken }
 //         );
 

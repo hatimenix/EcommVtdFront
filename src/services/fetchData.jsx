@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { setArticles } from '../store/slices/articlesSlice';
 import axiosClient from '../axios-client';
 
-const BASE_URL = 'http://127.0.0.1:8000/';
+const BASE_URL = 'https://el-bal.ma/';
 
 export const fetchArticlesByCategory = createAsyncThunk(
     'articles/fetchByCategory',
