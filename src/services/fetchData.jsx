@@ -123,6 +123,15 @@ export const fetchCst = createAsyncThunk('seller/fetchCst', async () => {
     return response.data;
 });
 
+export const fetchCstAsyn = async () => {
+    const response = await axiosClient.get(`customers/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
+
+
+
 
 //recuperation du panier
 export const fetchPanier = async (id_user) => {
@@ -158,3 +167,11 @@ export const fetchPackages = async () => {
     return response.data;
 };
 
+
+
+export const fetchLot = async () => {
+    const response = await axios.get(`${BASE_URL}packages/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};

@@ -18,6 +18,7 @@ import midReducer from './slices/articlesRecMidSlice';
 import pkgReducer from './slices/pkgSlice__';
 
 import listPkgReducer from './slices/listPkgSlice';
+import lotReducer from './slices/lotSlice';
 
 
 const store = configureStore({
@@ -37,7 +38,8 @@ const store = configureStore({
         rec: recReducer,
         artmid: midReducer, // Add the new reducer here
         pkg: pkgReducer,
-        lpkg: listPkgReducer
+        lpkg: listPkgReducer,
+        lot: lotReducer
 
 
     },

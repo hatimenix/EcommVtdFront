@@ -37,7 +37,7 @@ const ArticlePkgTwo = ({
         <>
 
             {filteredArticles.map((article) => (
-                <div className="col-xl-3 col-md-6 col-lg-4 col-sm-6" key={article.id_art}>
+                <div className="col-xl-4 col-md-6 col-lg-4 col-sm-6" key={article.id_art}>
                     <ArticlePkgSingleTwo
                         article={article}
                         // categories={categories}

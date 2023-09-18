@@ -187,7 +187,7 @@ const HeaderOne = ({
               </div>
 
 
-              <div className="centered-floating-list">
+              <div className="centexred-floating-list">
                 {/* This container ensures that the cards float above other content */}
 
 
@@ -376,12 +376,12 @@ const HeaderOne = ({
 
           </div>
           {/* mobile menu */}
-          
-            <MobileMenu />
-            <div className={scroll > headerTop && ''}>
-              <NestedNav />
-            </div>
-          
+
+          <MobileMenu />
+          <div className={scroll > headerTop && ''}>
+
+          </div>
+
 
         </div>
       </header>

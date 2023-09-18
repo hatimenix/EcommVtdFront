@@ -15,6 +15,9 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useCurrentUserSelector } from "../../../store/selectors/selectors";
+import { setUser } from "../../../store/slices/userSlice";
+import axiosClient from "../../../axios-client";
 
 const settings = {
   loop: false,
@@ -113,10 +116,12 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
 
   const correspondingSeller = csts ? csts.find(c => c.id === currentArticle.customer_id) : null;
 
+  console.log("correspondingSeller", correspondingSeller);
+
   let lotArticles = null;
 
   if (correspondingSeller !== null) {
-    lotArticles = allArticles ? allArticles.filter(ar => ar.customer_id === correspondingSeller.id) : null;
+    lotArticles = allArticles ? allArticles.filter(ar => (ar.customer_id === correspondingSeller.id) && ar.stock > 0) : null;
   }
   const lotArticlesLength = lotArticles !== null ? lotArticles.length : 0;
 
@@ -163,19 +168,35 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
 
 
 
-  // const articles_lotArray = Array.isArray(csts)
-  //   ? csts.map(cstsItem => {
-  //     const matchingArticle = allArticles.find(article => article.customer_id === cstsItem.id);
-  //     return matchingArticle ? matchingArticle : null;
-  //   })
-  //   : [];
-
-  // console.log("correspondingSeller", correspondingSeller);
-
-  // console.log("Filtered Articles (prods):", filteredArticles);
 
 
   const nav = useNavigate()
+
+  // const currentUser = useCurrentUserSelector()
+
+  // useEffect(() => {
+  //   dispatch(setUser(currentUser));
+
+  // }, [dispatch])
+  const [user, setUser] = useState({});
+  const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+
+
+  useEffect(() => {
+    if (token) {
+      axiosClient
+        .get("auth/user/")
+        .then(({ data }) => {
+          setUser(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [token]);
+
+
+  console.log("currentUser", user);
 
 
 
@@ -185,9 +206,11 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
 
         <>
           {
-            firstMatchingPackage && currentArticle.stock > 0 ?
+            user.id &&
+
+            (firstMatchingPackage && currentArticle.stock > 0 ?
               (
-                <Card sx={{ maxWidth: '100%', display: 'flex', flexDirection: 'column', }}>
+                <Card sx={{ maxWidth: '80%', display: 'flex', flexDirection: 'column', margin: '0 auto', marginBottom: '40px' }}>
                   <CardContent style={{ flex: '1' }}>
                     <Typography color={"gray"} gutterBottom variant="h9" component="div">
                       {lotArticlesLength} Articles disponibles
@@ -206,7 +229,7 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
                   </div>
                 </Card>
 
-              ) : ''
+              ) : '')
 
           }
 

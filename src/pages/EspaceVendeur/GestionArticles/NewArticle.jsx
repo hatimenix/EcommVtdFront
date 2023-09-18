@@ -84,7 +84,7 @@ function NewArticle() {
 
     axiosClient.post("/articles/", formData).then((res) => {
       AddImagesArticle(res.data.id_art)
-      console.log('idddddddddddddd : ',res.data.id_art)
+      console.log('idddddddddddddd : ', res.data.id_art)
     });
   };
 
@@ -133,7 +133,7 @@ function NewArticle() {
     axiosClient.get("/article-images/").then(res => {
       console.log('leeeeeeeeeeeength : ', res.data.filter(e => e.article === id).length)
       if (res.data.filter(e => e.article === id)) {
-        window.location.href = '/gestion-articles'
+        // window.location.href = '/gestion-articles'
         console.log('holla');
       }
     })

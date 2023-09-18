@@ -34,7 +34,7 @@ const Home = () => {
         <HeroSliderTen />
 
 
-        <ArticleGridDs />
+        <ArticleGridDs limit={5} />
       </LayoutOne>
     </Fragment>
   );

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import SectionTitle from "../SectionTitle";
 import { resetSelectedCategory, selectCategory, setCategories } from "../../store/slices/categoriesSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { setArticles } from "../../store/slices/articlesSlice";
+import { setArticles, setLoadedArticles } from "../../store/slices/articlesSlice";
 import { useEffect, useState } from "react";
 import { fetchArticles, fetchArticlesByCategory, fetchCategories, fetchCst, fetchSellers } from "../../services/fetchData";
 import FeatureIconTwo from "../../wrappers/feature-icon/FeatureIconTwo";
@@ -42,6 +42,13 @@ const ArticleGridDs = ({ limit }) => {
 
 
     const __props = usePropsSelectore()
+
+
+
+
+
+
+
 
     console.log("props", __props);
 
@@ -190,7 +197,29 @@ const ArticleGridDs = ({ limit }) => {
     return (
         <div className="product-area pb-60 section-padding-1">
             <div className="container-fluid">
+                {cRoad !== '/' ?
+                    <>
+                        <SectionTitle
+                            titleText={catTitle}
+                            // subTitleText="Latest arrivals & offers "
+                            // positionClass="text-center"
+                            spaceClass="mb-20 mt-40"
+                        />
+                        <div className="row five-column">
+                            <ArticleGridDsTwo
+                                articles={articles}
+                                categories={categories}
+                                csts={csts}
+                                selectedCategory={selectedCategory}
+                                limit={limit}
+                                spaceBottomClass="mb-25"
+                            />
+                        </div>
+                    </>
 
+                    : <></>
+
+                }
 
 
 
@@ -222,29 +251,7 @@ const ArticleGridDs = ({ limit }) => {
                             </>
                         )}
 
-                        {cRoad !== '/' ?
-                            <>
-                                <SectionTitle
-                                    titleText={catTitle}
-                                    // subTitleText="Latest arrivals & offers "
-                                    // positionClass="text-center"
-                                    spaceClass="mb-20 mt-40"
-                                />
-                                <div className="row five-column">
-                                    <ArticleGridDsTwo
-                                        articles={articles}
-                                        categories={categories}
-                                        csts={csts}
-                                        selectedCategory={selectedCategory}
-                                        limit={limit}
-                                        spaceBottomClass="mb-25"
-                                    />
-                                </div>
-                            </>
 
-                            : <></>
-
-                        }
 
 
                         <SectionTitle
