@@ -72,14 +72,6 @@ export const fetchArticleById = createAsyncThunk(
 //   }
 // );
 
-const sendBoostData = async (boostData) => {
-    try {
-        const response = await axiosClient.post(`create_boost/`, boostData);
-        console.log(response.data); // Handle the response from Django if needed
-    } catch (error) {
-        console.error('Error creating boost:', error);
-    }
-}
 
 export const fetchArticlesdetails = async (id_art) => {
     const response = await axiosClient.get(`articles/${id_art}/`, {
@@ -153,15 +145,6 @@ export const fetchCst = createAsyncThunk('seller/fetchCst', async () => {
     return response.data;
 });
 
-export const fetchCstAsyn = async () => {
-    const response = await axiosClient.get(`customers/`, {
-        withCredentials: true,
-    });
-    return response.data;
-};
-
-
-
 
 //recuperation du panier
 export const fetchPanier = async (id_user) => {
@@ -207,11 +190,3 @@ export const fetchPackages = async () => {
     return response.data;
 };
 
-
-
-export const fetchLot = async () => {
-    const response = await axiosClient.get(`packages/`, {
-        withCredentials: true,
-    });
-    return response.data;
-};
