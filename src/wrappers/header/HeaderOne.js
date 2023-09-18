@@ -376,12 +376,12 @@ const HeaderOne = ({
 
           </div>
           {/* mobile menu */}
-          
-            <MobileMenu />
-            <div className={scroll > headerTop && ''}>
-              <NestedNav />
-            </div>
-          
+
+          <MobileMenu />
+          <div className={scroll > headerTop && ''}>
+
+          </div>
+
 
         </div>
       </header>

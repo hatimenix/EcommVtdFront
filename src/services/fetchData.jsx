@@ -72,6 +72,7 @@ export const fetchArticleById = createAsyncThunk(
 //   }
 // );
 
+
 export const fetchArticlesdetails = async (id_art) => {
     const response = await axiosClient.get(`articles/${id_art}/`, {
         withCredentials: true,

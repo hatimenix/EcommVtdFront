@@ -6,12 +6,23 @@ const CstSlice = createSlice({
     initialState: {
         sellers: [], // Initial state for sellers
     },
-    reducers: {},
+    reducers: {
+
+        setCst: (state, action) => {
+            state.csts = action.payload;
+        },
+
+
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchCst.fulfilled, (state, action) => {
             state.csts = action.payload; // Update the sellers array with fetched data
         });
     },
 });
+
+
+
+export const { setCst } = CstSlice.actions;
 
 export default CstSlice.reducer;

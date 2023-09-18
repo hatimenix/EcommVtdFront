@@ -1,11 +1,9 @@
 import cogoToast from 'cogo-toast';
-import { fetchFavori } from '../../services/fetchData';
 import axiosClient from '../../axios-client';
 
 const id_user = parseInt(localStorage.getItem("cu"))
 
 const { createSlice } = require('@reduxjs/toolkit');
-
 
 const addFavoris = async (dataForm) => {
     try {

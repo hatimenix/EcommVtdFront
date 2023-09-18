@@ -22,7 +22,13 @@
     transition: .2s ease-in-out 100ms;
     color: #17b2b0;
 }
-
+.common-style {
+    background-color: #f8f8f8;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 .btn-add:hover {
     background-color: #17b2b0;
     color: white;
