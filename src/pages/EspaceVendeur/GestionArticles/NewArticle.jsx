@@ -59,7 +59,7 @@ function NewArticle() {
   const [titre_Article, setTitre_Article] = useState("");
   const [description, setDescription] = useState("");
   const [idCat, setIdCat] = useState();
-  const [stock, setStock] = useState();
+  const [stock, setStock] = useState('');
   const [prix_Vente, setPrix_Vente] = useState();
   const [colis, setColis] = useState("");
   const [booster, setBooster] = useState(false);
@@ -483,7 +483,7 @@ function NewArticle() {
                 </div>
                 <div
                   className="input col-md-6 "
-                  style={{ position: "relative",cursor:'pointer' }}
+                  style={{ position: "relative", cursor: 'pointer' }}
                 >
                   <AiOutlineExclamationCircle style={{
                     position: 'absolute',
@@ -505,7 +505,7 @@ function NewArticle() {
                       background: "#7070700f",
                       cursor: "pointer",
                       paddingLeft: [!titleCat ? '25px' : '5px'],
-                    }}                  
+                    }}
                     onClick={() => {
                       setOpenCategories(!openCategories);
                       setLevel(0);
@@ -611,7 +611,7 @@ function NewArticle() {
                     display: [!stock ? 'block' : 'none']
                   }} />
                   <input
-                    type="number"
+                    type="text"
                     min={0}
                     className="input-lg"
                     name=""
@@ -620,10 +620,20 @@ function NewArticle() {
                     style={{
                       borderBottom: "1px solid gray",
                       background: "#7070700f",
-                      paddingLeft: [!stock ? '25px' : '5px']
+                      paddingLeft: !stock ? '25px' : '5px'
                     }}
-                    onChange={(e) => setStock(e.target.value)}
-                  // maxLength={5}
+                    onChange={(e) => {
+                      let inputValue = e.target.value;
+                      
+                      // Remove any non-numeric characters, including decimal points and commas
+                      inputValue = inputValue.replace(/[^0-9]/g, '');
+                  
+                      // Update the input field value with the sanitized value
+                      e.target.value = inputValue;
+                  
+                      // Update the stock state with the sanitized value
+                      setStock(inputValue);
+                    }}
                   />
                 </div>
               </div>
@@ -649,7 +659,7 @@ function NewArticle() {
                     display: [!prix_Vente ? 'block' : 'none']
                   }} />
                   <input
-                    type="number"
+                    type="text"
                     min={0}
                     className="input-lg"
                     name=""
@@ -660,7 +670,28 @@ function NewArticle() {
                       background: "#7070700f",
                       paddingLeft: [!prix_Vente ? '25px' : '5px']
                     }}
-                    onChange={(e) => setPrix_Vente(e.target.value)}
+                    onChange={(e) => {
+                      let inputValue = e.target.value;
+                      
+                      // Remove any characters that are not digits or dots
+                      inputValue = inputValue.replace(/[^0-9.]/g, '');
+                  
+                      // Replace commas with dots for consistent decimal handling
+                      inputValue = inputValue.replace(/,/g, '.');
+                  
+                      // Limit to two decimal places
+                      const decimalParts = inputValue.split('.');
+                      if (decimalParts.length > 1) {
+                        decimalParts[1] = decimalParts[1].slice(0, 2); // Keep only two decimal places
+                        inputValue = decimalParts.join('.');
+                      }
+                  
+                      // Update the input field value with the sanitized value
+                      e.target.value = inputValue;
+                  
+                      // Update the prix_Vente state with the sanitized value
+                      setPrix_Vente(inputValue);
+                    }}
                   />
                 </div>
               </div>
