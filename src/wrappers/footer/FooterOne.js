@@ -37,21 +37,21 @@ const FooterOne = ({
           >
             <div className="footer-widget mb-30 ml-30">
               <div className="footer-title">
-                <h3>ABOUT US</h3>
+                <h3>À propos de nous</h3>
               </div>
               <div className="footer-list">
                 <ul>
                   <li>
-                    <Link to={"/a-propos"}>About us</Link>
+                    <Link to={"/a-propos"}>À propos d'Elbal</Link>
                   </li>
                   <li>
                     <Link to={"/"}>
-                      Careers
+                      Notre carière
                     </Link>
                   </li>
                   <li>
                     <Link to={"/contact"}>
-                      Contact us
+                      Contactez-nous
                     </Link>
                   </li>
 
@@ -70,7 +70,7 @@ const FooterOne = ({
                 }`}
             >
               <div className="footer-title">
-                <h3>Further informations</h3>
+                <h3>Plus d'informations</h3>
               </div>
               <div className="footer-list">
                 <ul>
@@ -79,7 +79,7 @@ const FooterOne = ({
                   </li>
                   <li>
                     <Link to={"/Politique-de-confidentialité"}>
-                      Privacy policy
+                      Politique de confidentialité
                     </Link>
                   </li>
 
@@ -98,7 +98,7 @@ const FooterOne = ({
                 }`}
             >
               <div className="footer-title">
-                <h3>FOLLOW US</h3>
+                <h3>Suivez-nous</h3>
               </div>
               <div className=" footer-list" >
                 <ul>

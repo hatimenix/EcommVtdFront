@@ -187,7 +187,7 @@ const HeaderOne = ({
               </div>
 
 
-              <div className="centexred-floating-list">
+              <div className="centered-floating-list">
                 {/* This container ensures that the cards float above other content */}
 
 
