@@ -129,7 +129,7 @@ function AboutUs() {
         </div>
 
 
-        <div className="team-area">
+        <div className="team-area pt-95 pb-70">
           <div className="container">
 
             <div className="section-title-2 text-center mb-60">
@@ -138,7 +138,7 @@ function AboutUs() {
             </div>
 
             <div className="row" >
-              <div className="col-lg-3 col-md-6 col-sm-6" >
+              <div className="col-lg-3 c  ol-md-6 col-sm-6" >
                 <div className="team-wrapper mb-30">
                   <div className="team-img">
                     <img
@@ -175,6 +175,9 @@ function AboutUs() {
                     <span>position </span>
                   </div>
                 </div>
+                </div>
+
+                <div className="col-lg-3 c  ol-md-6 col-sm-6" >
                 <div className="team-wrapper mb-30">
                   <div className="team-img">
                     <img
@@ -211,6 +214,8 @@ function AboutUs() {
                     <span>position </span>
                   </div>
                 </div>
+                </div>
+                <div className="col-lg-3 c  ol-md-6 col-sm-6" >
                 <div className="team-wrapper mb-30">
                   <div className="team-img">
                     <img
@@ -247,6 +252,8 @@ function AboutUs() {
                     <span>position </span>
                   </div>
                 </div>
+                </div>
+                <div className="col-lg-3 c  ol-md-6 col-sm-6" >
                 <div className="team-wrapper mb-30">
                   <div className="team-img">
                     <img
@@ -283,7 +290,8 @@ function AboutUs() {
                     <span>position </span>
                   </div>
                 </div>
-              </div>
+                </div>
+              
             </div>
           </div>
         </div>
