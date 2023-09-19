@@ -18,6 +18,8 @@ import { Image } from "react-bootstrap";
 import { Dropdown } from 'react-bootstrap';
 import { useStateContext } from "../../../context/ContextProvider";
 import { BiUser } from "react-icons/bi";
+import defaultImage from '../../../assets/image/default-image.png'
+
 
 const styles = `
 .my-modal {
@@ -194,11 +196,12 @@ const IconGroup = ({ iconWhiteClass }) => {
           <div className="d-none d-lg-block d-md-block " style={{ marginRight: "6%" }} >
             <Dropdown style={{ height: '10px' }} >
               <Dropdown.Toggle variant="none" id="dropdown-basic" style={{ border: "none", boxShadow: "none", padding: 0 }}>
-                <Image roundedCircle
-                  src={image ? image : linkImage + user.image}
+              <Image roundedCircle
+                  src={user.image ? linkImage + user.image : defaultImage}
                   alt="avatar"
-                  style={{ width: '30px', height: '30px' }}
+                  style={{ width: '30px', height: '30px',objectFit:'cover' }}
                 />
+
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ fontSize: 12, padding: "1px" }} >

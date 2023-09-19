@@ -3,6 +3,8 @@ import clsx from "clsx";
 import { Link } from "react-router-dom";
 import FooterCopyright from "../../components/template/footer/FooterCopyright";
 import FooterNewsletter from "../../components/template/footer/FooterNewsletter";
+import { FaFacebook, FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import { BsTwitter } from "react-icons/bs";
 
 
 const FooterOne = ({
@@ -20,7 +22,7 @@ const FooterOne = ({
       <div className={`${containerClass ? containerClass : "container"}`}>
         <div className="row">
           <div
-            className={`${sideMenu ? "col-xl-2 col-sm-4" : "col-lg-2 col-sm-4"
+            className={`${sideMenu ? "col-xl-3 col-sm-4" : "col-lg-2 col-sm-4"
               }`}
           >
             {/* footer copyright */}
@@ -35,28 +37,24 @@ const FooterOne = ({
           >
             <div className="footer-widget mb-30 ml-30">
               <div className="footer-title">
-                <h3>ABOUT US</h3>
+                <h3>À propos de nous</h3>
               </div>
               <div className="footer-list">
                 <ul>
                   <li>
-                    <Link to={process.env.PUBLIC_URL + "/about"}>About us</Link>
+                    <Link to={"/a-propos"}>À propos d'Elbal</Link>
                   </li>
                   <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>
-                      Store location
+                    <Link to={"/"}>
+                      Notre carière
                     </Link>
                   </li>
                   <li>
-                    <Link to={process.env.PUBLIC_URL + "/contact"}>
-                      Contact
+                    <Link to={"/contact"}>
+                      Contactez-nous
                     </Link>
                   </li>
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>
-                      Orders tracking
-                    </Link>
-                  </li>
+
                 </ul>
               </div>
             </div>
@@ -72,24 +70,19 @@ const FooterOne = ({
                 }`}
             >
               <div className="footer-title">
-                <h3>USEFUL LINKS</h3>
+                <h3>Plus d'informations</h3>
               </div>
               <div className="footer-list">
                 <ul>
                   <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>Returns</Link>
+                    <Link to={"/termes-et-conditions"}>Terms & conditions</Link>
                   </li>
                   <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>
-                      Support Policy
+                    <Link to={"/Politique-de-confidentialité"}>
+                      Politique de confidentialité
                     </Link>
                   </li>
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>Size guide</Link>
-                  </li>
-                  <li>
-                    <Link to={process.env.PUBLIC_URL + "#/"}>FAQs</Link>
-                  </li>
+
                 </ul>
               </div>
             </div>
@@ -105,44 +98,55 @@ const FooterOne = ({
                 }`}
             >
               <div className="footer-title">
-                <h3>FOLLOW US</h3>
+                <h3>Suivez-nous</h3>
               </div>
-              <div className="footer-list">
+              <div className=" footer-list" >
                 <ul>
-                  <li>
+                  <li style={{marginRight:7}}>
                     <a
                       href="//www.facebook.com"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Facebook
+                      <div style={{ backgroundColor: "white", borderRadius: "50%", width: "30px", height: "30px", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+                        <FaFacebookF />
+                      </div>
                     </a>
                   </li>
-                  <li>
+                  <li style={{ marginRight:7}}> 
                     <a
                       href="//www.twitter.com"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Twitter
+                      <div style={{ backgroundColor: "white", borderRadius: "50%", width: "30px", height: "30px", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+                        <BsTwitter />
+                      </div>
                     </a>
                   </li>
-                  <li>
+                  <li style={{ marginRight:7}}>
                     <a
                       href="//www.instagram.com"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Instagram
+                      <div style={{ backgroundColor: "white", borderRadius: "50%", width: "30px", height: "30px", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+                        <FaInstagram />
+                      </div>
                     </a>
                   </li>
-                  <li>
+                  <li style={{ marginRight:7}}>
                     <a
                       href="//www.youtube.com"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Youtube
+                      <div style={{ backgroundColor: "white", borderRadius: "50%", width: "30px", height: "30px", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <FaYoutube />
+                      </div>
                     </a>
                   </li>
                 </ul>
@@ -153,7 +157,6 @@ const FooterOne = ({
             className={`${sideMenu ? "col-xl-3 col-sm-8" : "col-lg-4 col-sm-6"
               }`}
           >
-            {/* footer newsletter */}
             <FooterNewsletter
               spaceBottomClass="mb-30"
               spaceLeftClass="ml-70"
@@ -161,6 +164,8 @@ const FooterOne = ({
             />
           </div>
         </div>
+
+
       </div>
     </footer>
   );

@@ -25,7 +25,7 @@ const listPkgSlice = createSlice({
 
             }
 
-            cogoToast.success("Added To List", { position: "bottom-right" });
+            // cogoToast.success("Added To List", { position: "bottom-right" });
 
         },
 
@@ -34,7 +34,7 @@ const listPkgSlice = createSlice({
             state.lpackages = state.lpackages.filter(item => item.id_art !== action.payload);
             console.log("remove.....................", action.payload);
 
-            cogoToast.error("Removed From List", { position: "bottom-right" });
+            // cogoToast.error("Removed From List", { position: "bottom-right" });
 
         }
     }

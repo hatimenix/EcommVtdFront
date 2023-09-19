@@ -21,6 +21,7 @@ import { Button } from 'react-bootstrap';
 import { fetchUser } from '../../store/slices/userSlice';
 import { useCurrentUserSelector } from '../../store/selectors/selectors';
 import { addToList, deleteFromList } from '../../store/slices/listPkgSlice';
+import { fetchCst } from '../../services/fetchData';
 
 
 const ArticlePkgSingleTwo = ({
@@ -55,6 +56,14 @@ const ArticlePkgSingleTwo = ({
 
     const csts = useSelector((state) => state.cst.csts);
 
+    useEffect(() => {
+        // Fetch CST data
+        dispatch(fetchCst());
+
+
+
+
+    }, [dispatch]);
 
     const toggleLike = () => {
         if (heartSolid) {
@@ -66,7 +75,7 @@ const ArticlePkgSingleTwo = ({
     };
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/article-likes-count/`)
+        axios.get(`https://el-bal.ma/article-likes-count/`)
             .then(response => {
                 const likesCounts = response.data;
                 if (article.id_art in likesCounts) {
@@ -91,7 +100,22 @@ const ArticlePkgSingleTwo = ({
 
     const isOutOfStock = article.stock <= 0;
 
-    const correspondingSeller = csts.find(c => c.id === article.customer_id);
+
+
+    const storedCstsString = localStorage.getItem("csts");
+    let parsedCsts
+
+    if (storedCstsString) {
+        parsedCsts = JSON.parse(storedCstsString);
+        console.log("csts parsed", parsedCsts);
+    } else {
+        console.log("csts is not stored in localStorage");
+    }
+
+    console.log("cstrsttststtss", storedCstsString);
+
+
+    const correspondingSeller = parsedCsts.find(c => c.id === article.customer_id);
 
     if (!correspondingSeller) {
         return null;
@@ -137,7 +161,7 @@ const ArticlePkgSingleTwo = ({
 
     // Function to track the clicked article
     function trackArticleClick(articleId, customerId) {
-        fetch(`http://127.0.0.1:8000/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
+        fetch(`https://el-bal.ma/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
             .then((response) => {
                 if (response.status === 200) {
                     console.log('Article click tracked successfully');
@@ -184,7 +208,7 @@ const ArticlePkgSingleTwo = ({
 
 
         <>
-            <Fragment>
+            <Fragment >
 
 
 
@@ -193,11 +217,11 @@ const ArticlePkgSingleTwo = ({
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
                 >
-                    <div style={avatarStyle}>
+                    {/* <div style={avatarStyle}>
                         <img src={correspondingSeller.image} alt={correspondingSeller.name} width="40" height="40" />
 
                     </div>
-                    <div style={sellerNameStyle}>{correspondingSeller.first_name}</div>
+                    <div style={sellerNameStyle}>{correspondingSeller.first_name}</div> */}
 
                     <div style={{ marginTop: '50px' }} className="product-img">
                         <Link to={process.env.PUBLIC_URL + '/articles/' + article.id_art} onClick={() => trackArticleClick(article.id_art, currentUser.id)}>
