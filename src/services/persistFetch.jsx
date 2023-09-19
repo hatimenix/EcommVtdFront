@@ -11,125 +11,126 @@ import { useCurrentUserSelector } from '../store/selectors/selectors';
 import { userChanged } from '../store/slices/userSlice';
 import { setProperties } from '../store/slices/propertiesSlice';
 import { setPackages } from '../store/slices/pkgSlice__';
+import { setCst } from '../store/slices/CstSlice';
 import { initCommande } from '../store/slices/commande-slice';
 // import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const articles = await fetchArticles();
-        dispatch(setArticles(articles));
-      } catch (error) {
-        console.error('Error fetching articles:', error);
-      }
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const articles = await fetchArticles();
+                dispatch(setArticles(articles));
+            } catch (error) {
+                console.error('Error fetching articles:', error);
+            }
 
-      try {
-        const categories = await fetchCategories();
-        dispatch(setCategories(categories));
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
+            try {
+                const categories = await fetchCategories();
+                dispatch(setCategories(categories));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
 
-      try {
-        const panier = await fetchPanier(2);
-        dispatch(initCart(panier));
-      } catch (error) {
-        console.error('Error fetching panier:', error);
-      }
+            try {
+                const panier = await fetchPanier(2);
+                dispatch(initCart(panier));
+            } catch (error) {
+                console.error('Error fetching panier:', error);
+            }
 
-      try {
-        const favori = await fetchFavori(2);
-        dispatch(initFavoris(favori));
-      } catch (error) {
-        console.error('Error fetching favori:', error);
-      }
+            try {
+                const favori = await fetchFavori(2);
+                dispatch(initFavoris(favori));
+            } catch (error) {
+                console.error('Error fetching favori:', error);
+            }
 
-      try {
-        const recs = await fetchArticlesRec();
-        dispatch(setArticleRec(recs));
-      } catch (error) {
-        console.error('Error fetching recs:', error);
-      }
+            try {
+                const recs = await fetchArticlesRec();
+                dispatch(setArticleRec(recs));
+            } catch (error) {
+                console.error('Error fetching recs:', error);
+            }
 
-      try {
-        const boosts = await fetchBoosts();
-        dispatch(setBoosts(boosts));
-      } catch (error) {
-        console.error('Error fetching boosts:', error);
-      }
+            try {
+                const boosts = await fetchBoosts();
+                dispatch(setBoosts(boosts));
+            } catch (error) {
+                console.error('Error fetching boosts:', error);
+            }
 
-      try {
-        const prp = await fetchProperties();
-        dispatch(setProperties(prp));
-      } catch (error) {
-        console.error('Error fetching props:', error);
-      }
+            try {
+                const prp = await fetchProperties();
+                dispatch(setProperties(prp));
+            } catch (error) {
+                console.error('Error fetching props:', error);
+            }
 
-      try {
-        const pkg = await fetchPackages();
-        dispatch(setPackages(pkg));
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-      }
+            try {
+                const pkg = await fetchPackages();
+                dispatch(setPackages(pkg));
+            } catch (error) {
+                console.error('Error fetching packages:', error);
+            }
 
-      // fetch user and initialize cart and favoris
-      try {
-        const recs = await fetchUser();
-        dispatch(userChanged(recs));
-        localStorage.setItem('cu', recs.id);
-        console.log('user identifier:', recs.id);
+            // fetch user and initialize cart and favoris
+            try {
+                const recs = await fetchUser();
+                dispatch(userChanged(recs));
+                localStorage.setItem('cu', recs.id);
+                console.log('user identifier:', recs.id);
 
-        // fetch panier
-        const panier = await fetchPanier(recs.id);
-        dispatch(initCart(panier));
+                // fetch panier
+                const panier = await fetchPanier(recs.id);
+                dispatch(initCart(panier));
 
-        // fetch favoris
-        const favori = await fetchFavori(recs.id);
-        dispatch(initFavoris(favori));
-      } catch (error) {
-        console.error('Error fetching user and initializing cart and favoris:', error);
-      }
+                // fetch favoris
+                const favori = await fetchFavori(recs.id);
+                dispatch(initFavoris(favori));
+            } catch (error) {
+                console.error('Error fetching user and initializing cart and favoris:', error);
+            }
 
-      try {
-        const pkg = await fetchPackages();
-        dispatch(setPackages(pkg));
-        localStorage.setItem("pkgs", JSON.stringify(pkg));
-        console.log("persist pkg", pkg);
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-      }
+            try {
+                const pkg = await fetchPackages();
+                dispatch(setPackages(pkg));
+                localStorage.setItem("pkgs", JSON.stringify(pkg));
+                console.log("persist pkg", pkg);
+            } catch (error) {
+                console.error('Error fetching packages:', error);
+            }
 
-      // fetch user and initialize cart and favoris
-      try {
-        const recs = await fetchUser();
-        dispatch(userChanged(recs));
-        localStorage.setItem("cu", recs.id);
-        console.log("user identifier:", recs.id);
+            // fetch user and initialize cart and favoris
+            try {
+                const recs = await fetchUser();
+                dispatch(userChanged(recs));
+                localStorage.setItem("cu", recs.id);
+                console.log("user identifier:", recs.id);
 
-        // fetch panier
-        const panier = await fetchPanier(recs.id);
-        dispatch(initCart(panier));
+                // fetch panier
+                const panier = await fetchPanier(recs.id);
+                dispatch(initCart(panier));
 
-        // fetch favoris
-        const commande = await fetchCommande(recs.id);
-        dispatch(initCommande(commande));
-
-
-        const cst = await fetchCst(recs.id);
-
-        dispatch(fetchCst(cst));
+                // fetch favoris
+                const commande = await fetchCommande(recs.id);
+                dispatch(initCommande(commande));
 
 
-      } catch (error) {
-        console.error('Error fetching recs:', error);
-      }
-    };
+                const cst = await fetchCst(recs.id);
 
-    fetchData();
-  }, [dispatch]);
+                dispatch(fetchCst(cst));
+
+
+            } catch (error) {
+                console.error('Error fetching recs:', error);
+            }
+        };
+
+        fetchData();
+    }, [dispatch]);
 };
 
 export default usePersistData;

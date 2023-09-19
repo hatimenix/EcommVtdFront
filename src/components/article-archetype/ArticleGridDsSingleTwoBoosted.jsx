@@ -58,7 +58,7 @@ const ArticleGridDsSingleTwoBoosted = ({
     };
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/article-likes-count/`)
+        axios.get(`https://el-bal.ma/article-likes-count/`)
             .then(response => {
                 const likesCounts = response.data;
                 if (article.id_art in likesCounts) {
@@ -129,7 +129,7 @@ const ArticleGridDsSingleTwoBoosted = ({
 
     // Function to track the clicked article
     function trackArticleClick(articleId, customerId) {
-        fetch(`http://127.0.0.1:8000/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
+        fetch(`https://el-bal.ma/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
             .then((response) => {
                 if (response.status === 200) {
                     console.log('Article click tracked successfully');
@@ -145,6 +145,7 @@ const ArticleGridDsSingleTwoBoosted = ({
 
     return (
         <Fragment>
+            {article.is_boosted ? <p>boosted</p>   :  <p>null</p>}
             <div
                 className={clsx('product-wrap-2', spaceBottomClass, colorClass, { 'out-of-stock': isOutOfStock })}
                 onMouseEnter={() => setHovered(true)}
@@ -171,7 +172,7 @@ const ArticleGridDsSingleTwoBoosted = ({
                             {article.images.map((image, index) => (
                                 <div key={index} className="slide">
                                     <img style={{ width: "200px", height: "260px" }}
-                                        src={image.image}
+                                        src={"http://127.0.0.1:8000/" +image.image}
                                         alt={article.titre}
                                     />
                                 </div>
@@ -286,6 +287,9 @@ const ArticleGridDsSingleTwoBoosted = ({
                                     )}
 
                                 </Link>
+                                {article.is_boosted && (
+                  <span className="boosted-text">Boosted</span>
+                )}
                             </h3>
 
                             {true && (
