@@ -85,6 +85,8 @@ const ArticleGridDsSingleTwo = ({
 
     const correspondingSeller = csts.find(c => c.id === article.customer_id);
 
+    console.log("correspondingSellercorrespondingSeller", correspondingSeller);
+
     if (!correspondingSeller) {
         return null;
     }
