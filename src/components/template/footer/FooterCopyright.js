@@ -19,7 +19,7 @@ const FooterCopyright = ({ footerLogo, spaceBottomClass, colorClass }) => {
         >
           EL-BAL
         </a>
-        .<br /> All Rights Reserved
+        .<br /> Tous droits réservés
       </p>
     </div>
   );

@@ -726,11 +726,18 @@ const Checkout = () => {
                       <div className="payment-method"></div>
                     </div>
                     <div className="place-order mt-25">
-                      <button onClick={() => {
-                        Commander(cartTotalPrice.toFixed(2))
+                      {
+                        (!nom || !prenom || !pays || !ville || !codePostal || !telephone || !addresse || !email)
+                          ?
+                          <button title="Veuillez remplir tous les champs obligatoires"
+                            className="btn-hover" disabled>Passer la commande</button>
+                          :
+                          <button onClick={() => {
+                            Commander(cartTotalPrice.toFixed(2))
+                          }
+                          }
+                            className="btn-hover">Passer la commande</button>
                       }
-                      }
-                        className="btn-hover">Passer la commande</button>
                     </div>
                   </div>
                 </div>

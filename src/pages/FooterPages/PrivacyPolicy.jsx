@@ -11,7 +11,7 @@ function PrivacyPolicy() {
         description="About page of flone react minimalist eCommerce template."
       />
       <LayoutOne>
-        <div className="container mb-50 mt-50 px-lg-5 ">
+        <div className="container mb-50 mt-40 px-lg-5 ">
           <div className="text-left px-lg-5 p-3" >
             <div className="px-lg-5 p-3 pt-5" style={{ backgroundColor: "#f6f6f8", borderRadius: 5 }}>
               <h3>Elbal  Politique de confidentialité</h3>

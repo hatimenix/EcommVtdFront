@@ -5,9 +5,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosClient from '../../axios-client';
 
 
-
-
-
 const addPanier = async (dataForm) => {
     try {
         const response = await axiosClient.post(`panier/`, dataForm);
@@ -121,77 +118,7 @@ const cartSlice = createSlice({
                 }
 
             }
-            // else {
-            //     //else..........
-            //     const cartItem = state.cartItems.find(
-            //         item =>
-            //             item.id_art === product.id_art &&
-            //             product.selectedProductColor &&
-            //             product.selectedProductColor === item.selectedProductColor &&
-            //             product.selectedProductSize &&
-            //             product.selectedProductSize === item.selectedProductSize &&
-            //             (product.cartItemId ? product.cartItemId === item.cartItemId : true)
-            //     );
-            //     if (!cartItem) {
 
-            //         dataForm = {
-            //             "article": product.id_art,
-            //             "quantity": product.quantity ? product.quantity : 1,
-            //             "Customer": id_user
-            //         }
-
-            //         // ajout au panier
-            //         addPanier(dataForm)
-            // state.cartItems = retrievePanier(1)
-
-            //         // state.cartItems.push({
-            //         //     ...product,
-            //         //     quantity: product.quantity ? product.quantity : 1,
-            //         //     cartItemId: uuidv4()
-            //         // });
-
-            //     } else if (cartItem !== undefined && (cartItem.selectedProductColor !== product.selectedProductColor || cartItem.selectedProductSize !== product.selectedProductSize)) {
-
-            //         dataForm = {
-            //             "article": product.id,
-            //             "quantity": product.quantity ? product.quantity : 1,
-            //             "Customer": id_user
-            //         }
-
-            //         // ajout au panier
-            //         addPanier(dataForm)
-            // state.cartItems = retrievePanier(1)
-
-            //         // state.cartItems = [
-            //         //     ...state.cartItems,
-            //         //     {
-            //         //         ...product,
-            //         //         quantity: product.quantity ? product.quantity : 1,
-            //         //         cartItemId: uuidv4()
-            //         //     }
-            //         // ]
-            //     } else {
-            //         state.cartItems = state.cartItems.map(item => {
-            //             if (item.cartItemId === cartItem.cartItemId) {
-
-            //                 dataForm = {
-            //                     "article": product.id,
-            //                     "quantity": product.quantity ? product.quantity : item.quantity + 1,
-            //                     "Customer": id_user
-            //                 }
-
-
-            //                 return {
-            //                     ...item,
-            //                     quantity: product.quantity ? item.quantity + product.quantity : item.quantity + 1,
-            //                     selectedProductColor: product.selectedProductColor,
-            //                     selectedProductSize: product.selectedProductSize
-            //                 }
-            //             }
-            //             return item;
-            //         });
-            //     }
-            // }
 
             cogoToast.success("Added To Cart", { position: "bottom-left" });
         },
