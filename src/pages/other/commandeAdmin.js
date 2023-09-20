@@ -114,11 +114,11 @@ const CommandeAdmin = () => {
                                                                                 <div >
                                                                                     {cmd}
                                                                                 </div>
-
-                                                                                <div >
-                                                                                    X {commandeListItem.quantite[`${commandeListItem.article[ky]}`]}
-                                                                                </div>
                                                                             </Link>
+                                                                            <div >
+                                                                                X {commandeListItem.quantite[`${commandeListItem.article[ky]}`]}
+                                                                            </div>
+
                                                                         </div>
                                                                     })}
 

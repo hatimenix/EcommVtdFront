@@ -342,7 +342,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                     <div className="pro-details-wishlist">
                                         <button
                                             className={wishlistItem !== undefined ? "active" : ""}
-                                            disabled={wishlistItem !== undefined || !localStorage.getItem('cu')}
+                                            disabled={wishlistItem !== undefined || !localStorage.getItem("cu")}
                                             title={
                                                 wishlistItem !== undefined
                                                     ? "Added to wishlist"
@@ -350,11 +350,12 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
                                             }
                                             onClick={() => {
                                                 dispatch(addToWishlist(product))
-
                                                 // actualiser le favoris
+
                                                 setTimeout(() => {
                                                     getfav()
                                                 }, 500);
+                                                // window.location.reload();
                                             }}
                                         >
                                             <i className="pe-7s-like" />
