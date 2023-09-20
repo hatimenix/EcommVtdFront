@@ -10,7 +10,7 @@ const ProductImageDescriptionSticky = ({ spaceTopClass, spaceBottomClass, produc
   const { cartItems } = useSelector((state) => state.cart);
   const { wishlistItems } = useSelector((state) => state.wishlist);
   const { compareItems } = useSelector((state) => state.compare);
-  const wishlistItem = wishlistItems.find(item => item.id === product.id);
+  const wishlistItem = wishlistItems.find(item => item.article === product.id_art);
   const compareItem = compareItems.find(item => item.id === product.id);
 
   const discountedPrice = getDiscountPrice(product.price, product.discount);
