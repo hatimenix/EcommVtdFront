@@ -77,6 +77,11 @@ const IconGroup = ({ iconWhiteClass }) => {
 
   commandeList = commandeList.filter(item => item.etat === false);
 
+  const cmdList = commandeList.filter(item => item.vendeur === parseInt(localStorage.getItem('cu')))
+  // console.log('cmnd list: ', cmdList);
+
+  // const cmdList = []
+
   return (
     <div className={clsx("header-right-wrap", iconWhiteClass)} >
       {/* <div className="same-style header-search d-none d-lg-block">
@@ -96,7 +101,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         <>
           <div className="d-flex text-end justify-content-end d-lg-block d-md-block d-none" style={{ width: "100%" }}>
             <Button onClick={handleShow} className="col-6" style={{ fontSize: "12px", width: "fit-content", color: "teal", borderColor: "teal", backgroundColor: "transparent" }} size="sm" >S'inscrire | Se connecter</Button>
-            <Button className="col-6 " style={{ fontSize: "12px", width: "fit-content", marginLeft: 5, backgroundColor: "teal", border: "none" }} size="sm" onClick={()=>{
+            <Button className="col-6 " style={{ fontSize: "12px", width: "fit-content", marginLeft: 5, backgroundColor: "teal", border: "none" }} size="sm" onClick={() => {
               setIsSeller(true)
               handleShow()
             }}>Vendre maintenant</Button>
@@ -104,26 +109,26 @@ const IconGroup = ({ iconWhiteClass }) => {
           <div className=" d-flex justify-content-end d-lg-none d-md-none d-block" style={{ marginRight: "6%" }} >
             <Dropdown style={{ height: '10px' }} >
               <Dropdown.Toggle variant="none" id="dropdown-basic" style={{ border: "none", boxShadow: "none", padding: 0 }}>
-                <BiUser style={{marginBottom:3}} size={23}/>
+                <BiUser style={{ marginBottom: 3 }} size={23} />
               </Dropdown.Toggle>
 
               <Dropdown.Menu style={{ fontSize: 12, padding: "1px" }} >
                 {/* Dropdown menu items */}
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
                   <Link onClick={handleShow}>
-                  S'inscrire | Se connecter
+                    S'inscrire | Se connecter
                   </Link>
                 </Dropdown.Item >
                 <Dropdown.Item style={{ backgroundColor: "transparent" }}>
-                  <Link onClick={()=>{
-              setIsSeller(true)
-              handleShow()
-            }}>
-                  Vends tes articles
+                  <Link onClick={() => {
+                    setIsSeller(true)
+                    handleShow()
+                  }}>
+                    Vends tes articles
                   </Link>
                 </Dropdown.Item >
 
-              
+
               </Dropdown.Menu>
             </Dropdown>
             {/* <button
@@ -152,10 +157,10 @@ const IconGroup = ({ iconWhiteClass }) => {
         <>
           <div className="d-flex  mt-2" style={{ marginRight: "6%" }}>
             <div className="same-style header-compare d-none d-lg-block d-md-block">
-              <Link to={process.env.PUBLIC_URL + "/compare"}>
+              <Link to={process.env.PUBLIC_URL + "/mesVentes"}>
                 <i className="pe-7s-chat" />
                 <span className="count-style">
-                  {compareItems && compareItems.length ? compareItems.length : 0}
+                  {cmdList && cmdList.length ? cmdList.length : 0}
                 </span>
               </Link>
             </div>
@@ -196,10 +201,10 @@ const IconGroup = ({ iconWhiteClass }) => {
           <div className="d-none d-lg-block d-md-block " style={{ marginRight: "6%" }} >
             <Dropdown style={{ height: '10px' }} >
               <Dropdown.Toggle variant="none" id="dropdown-basic" style={{ border: "none", boxShadow: "none", padding: 0 }}>
-              <Image roundedCircle
+                <Image roundedCircle
                   src={user.image ? linkImage + user.image : defaultImage}
                   alt="avatar"
-                  style={{ width: '30px', height: '30px',objectFit:'cover' }}
+                  style={{ width: '30px', height: '30px', objectFit: 'cover' }}
                 />
 
               </Dropdown.Toggle>
@@ -251,7 +256,7 @@ const IconGroup = ({ iconWhiteClass }) => {
         </div> */}
           </div>
           <div className="row  d-none d-lg-block d-md-block" style={{ width: "100%%" }}>
-            <Button className="col-6 " style={{ fontSize: "12px", minWidth: "70px" ,width:"fit-content", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" onClick={()=>{
+            <Button className="col-6 " style={{ fontSize: "12px", minWidth: "70px", width: "fit-content", height: "fit-content", marginLeft: 6, backgroundColor: "teal", border: "none" }} size="sm" onClick={() => {
               navigate('/nouveau-article')
             }}>Vends tes articles</Button>
           </div>

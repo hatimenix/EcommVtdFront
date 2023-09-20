@@ -20,7 +20,9 @@ import fadeAnimationHandler from './animationHandler/fadeAnimationHandler';
 import { Button } from 'react-bootstrap';
 import { fetchUser } from '../../store/slices/userSlice';
 import { useCurrentUserSelector } from '../../store/selectors/selectors';
+import axiosClient, { linkImage } from '../../axios-client';
 
+const server = linkImage
 
 const ArticleGridDsSingleTwo = ({
     article,
@@ -46,6 +48,7 @@ const ArticleGridDsSingleTwo = ({
 
 
     const csts = useSelector((state) => state.cst.csts);
+    // console.log("le csts", csts);
 
 
     const toggleLike = () => {
@@ -58,7 +61,7 @@ const ArticleGridDsSingleTwo = ({
     };
 
     useEffect(() => {
-        axios.get(`https://el-bal.ma/article-likes-count/`)
+        axiosClient.get(`/article-likes-count/`)
             .then(response => {
                 const likesCounts = response.data;
                 if (article.id_art in likesCounts) {
@@ -83,7 +86,10 @@ const ArticleGridDsSingleTwo = ({
 
     const isOutOfStock = article.stock <= 0;
 
-    const correspondingSeller = csts.find(c => c.id === article.customer_id);
+    const correspondingSeller = csts ? csts.find(c => c.id === article.customer_id) : null;
+
+    console.log("le csts", csts);
+    console.log("correspondingSellercorrespondingSeller", correspondingSeller);
 
     if (!correspondingSeller) {
         return null;
@@ -129,7 +135,7 @@ const ArticleGridDsSingleTwo = ({
 
     // Function to track the clicked article
     function trackArticleClick(articleId, customerId) {
-        fetch(`https://el-bal.ma/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
+        fetch(`${server}/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
             .then((response) => {
                 if (response.status === 200) {
                     console.log('Article click tracked successfully');
@@ -150,11 +156,11 @@ const ArticleGridDsSingleTwo = ({
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >
-                <div style={avatarStyle}>
+                {correspondingSeller !== null && <> <div style={avatarStyle}>
                     <img src={correspondingSeller.image} alt={correspondingSeller.name} width="40" height="40" />
 
                 </div>
-                <div style={sellerNameStyle}>{correspondingSeller.first_name}</div>
+                    <div style={sellerNameStyle}>{correspondingSeller.first_name}</div></>}
 
                 <div style={{ marginTop: '50px' }} className="product-img">
                     <Link to={process.env.PUBLIC_URL + '/articles/' + article.id_art} onClick={() => trackArticleClick(article.id_art, currentUser.id)}>
