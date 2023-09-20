@@ -9,7 +9,7 @@ import { Parallax } from 'react-parallax';
 import mission from '../../assets/image/mission.png';
 import vision from '../../assets/image/vision.png';
 import goal from '../../assets/image/goal.png';
-
+import logo from '../../assets/image/logo__.png';
 // import CountUp from "react-countup";
 // import VisibilitySensor from "react-visibility-sensor";
 // import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
@@ -99,8 +99,8 @@ function AboutUs() {
                   <div className="" style={{ display: 'flex', alignItems: "start", alignContent: "center" }}>
                     <img style={{ width: "46px", marginRight: 15 }} src={vision}></img>
                     <div>
-                      <h3 style={{ margin: 0, marginBottom: 10, marginTop: 5 }}>Our Vision</h3>
-                      <p>Flone provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.</p>
+                      <h3 style={{ margin: 0, marginBottom: 10, marginTop: 5 }}>Notre Vision</h3>
+                      <p style={{ textAlign: 'justify' }} >Nous visons à devenir la principale plateforme en ligne pour l'achat et la vente d'articles d'occasion, favorisant la réutilisation pour réduire le gaspillage et encourager une consommation responsable, dans l'objectif de créer une société plus durable où les objets usagés ont autant de valeur que les neufs.</p>
                     </div>
 
                   </div>
@@ -112,8 +112,8 @@ function AboutUs() {
                   <div className="" style={{ display: 'flex', alignItems: "start", alignContent: "center" }}>
                     <img style={{ width: "36px", marginRight: 15 }} src={mission}></img>
                     <div>
-                      <h3 style={{ margin: 0, marginBottom: 10, marginTop: 5 }}>Our Mission</h3>
-                      <p>Flone provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.</p>
+                      <h3 style={{ margin: 0, marginBottom: 10, marginTop: 5 }}>Notre Mission</h3>
+                      <p style={{ textAlign: 'justify' }}>Notre mission est de donner une nouvelle vie aux objets oubliés et de créer une plateforme où chacun peut vendre et acheter des trésors d'occasion. Nous croyons en la durabilité, en offrant aux articles déjà aimés une seconde chance, et en permettant à nos utilisateurs de gagner de l'argent tout en réduisant leur empreinte carbone.</p>
                     </div>
 
                   </div>
@@ -125,8 +125,8 @@ function AboutUs() {
                   <div className="" style={{ display: 'flex', alignItems: "start", alignContent: "center" }}>
                     <img style={{ width: "36px", marginRight: 15 }} src={goal}></img>
                     <div>
-                      <h3 style={{ margin: 0, marginBottom: 10, marginTop: 5 }}>Our Goal</h3>
-                      <p>Flone provide how all this mistaken idea of denounc pleasure and sing pain was born an will give you a ete account of the system, and expound the actual teangs the eat explorer of the truth.</p>
+                      <h3 style={{ margin: 0, marginBottom: 10, marginTop: 5 }}>Notre Objectif</h3>
+                      <p style={{ textAlign: 'justify' }}>Notre objectif principal est de simplifier le processus d'achat et de vente d'articles d'occasion, en créant une plateforme conviviale qui encourage la réutilisation, réduisant ainsi le gaspillage et contribuant à la préservation de l'environnement.</p>
                     </div>
 
                   </div>
@@ -201,7 +201,7 @@ function AboutUs() {
           <div className="container">
             <div className="section-title-2 text-center mb-60">
               <h2>Notre équipe</h2>
-              <p>subtitle</p>
+              <p>Découvrez notre équipe engagée dans la réalisation de notre vision commune.</p>
             </div>
             <div className="row" >
               <div className="col-lg-3 c  ol-md-6 col-sm-6" >
@@ -370,32 +370,32 @@ function AboutUs() {
               <Swiper options={settings}>
                 <SwiperSlide >
                   <div className="single-brand-logo mb-30">
-                    {/* <img src={process.env.PUBLIC_URL } alt="" /> */}
-                    <BsLamp />
+                    <img style={{ width: "55px" }} src={logo} alt="" />
+                    {/* <BsLamp /> */}
                   </div>
                 </SwiperSlide>
                 <SwiperSlide >
                   <div className="single-brand-logo mb-30">
-                    {/* <img src={process.env.PUBLIC_URL } alt="" /> */}
-                    <BsLamp />
+                    <img style={{ width: "55px" }} src={logo} alt="" />
+                    {/* <BsLamp /> */}
                   </div>
                 </SwiperSlide>
                 <SwiperSlide >
                   <div className="single-brand-logo mb-30">
-                    {/* <img src={process.env.PUBLIC_URL } alt="" /> */}
-                    <BsLamp />
+                    <img style={{ width: "55px" }} src={logo} alt="" />
+                    {/* <BsLamp /> */}
                   </div>
                 </SwiperSlide>
                 <SwiperSlide >
                   <div className="single-brand-logo mb-30">
-                    {/* <img src={process.env.PUBLIC_URL } alt="" /> */}
-                    <BsLamp />
+                    <img style={{ width: "55px" }} src={logo} alt="" />
+                    {/* <BsLamp /> */}
                   </div>
                 </SwiperSlide>
                 <SwiperSlide >
                   <div className="single-brand-logo mb-30">
-                    {/* <img src={process.env.PUBLIC_URL  } alt="" /> */}
-                    <BsLamp />
+                    <img style={{ width: "55px" }} src={logo} alt="" />
+                    {/* <BsLamp /> */}
                   </div>
                 </SwiperSlide>
               </Swiper>
