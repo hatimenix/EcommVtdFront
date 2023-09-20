@@ -14,6 +14,9 @@ function SecurityProfile() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState()
 
+    useEffect(()=>{
+        window.scrollTo(0,0)
+    },[])
 
     const isPasswordValid = (password) => {
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*_|èàç()/."';:,?ù])[0-9a-zA-Z@#$%^&+=!*_|èàç()/."';:,?ù]{8,}$/;
