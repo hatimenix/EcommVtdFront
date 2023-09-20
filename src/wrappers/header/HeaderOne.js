@@ -150,7 +150,10 @@ const HeaderOne = ({
           )}
         >
           <div >
-            <div className="row">
+            <div style={{
+              display:'flex',
+              flexDirection:'row'
+            }}>
               <div className="col-xl-2 col-lg-2 col-md-3 col-sm-3 col-4 p-3">
                 {/* header logo */}
                 <Logo imageUrl={process.env.PUBLIC_URL + "/assets/img/logo/logo__.png"} logoClass="logo" />

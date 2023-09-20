@@ -33,3 +33,29 @@
 @import "my-account";
 @import "404";
 @import "video-popup";
+
+
+
+/* width */
+::-webkit-scrollbar {
+    margin-top: 10px;
+    width: 11px;
+    height: 11px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: rgb(204, 210, 204); 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(166, 165, 165); 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: gray; 
+  }
