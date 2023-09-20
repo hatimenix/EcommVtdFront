@@ -100,7 +100,6 @@ function NewArticle() {
     axiosClient.post("/articles/", formData).then((res) => {
       AddImagesArticle(res.data.id_art)
       Boosting && addBoosting(res.data.id_art)
-      console.log('idddddddddddddd : ', res.data.id_art)
     });
   };
 
@@ -192,10 +191,8 @@ function NewArticle() {
     // });
 
     axiosClient.get("/article-images/").then(res => {
-      console.log('leeeeeeeeeeeength : ', res.data.filter(e => e.article === id).length)
       if (res.data.filter(e => e.article === id)) {
-        // window.location.href = '/gestion-articles'
-        console.log('holla');
+        window.location.href = '/gestion-articles'
       }
     })
   }
@@ -303,7 +300,7 @@ function NewArticle() {
     // Fetch the boosting attribute from the backend
     const fetchBoostingValue = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/boosts/', {
+        const response = await axios.get('https://api.el-bal.ma/boosts/', {
           withCredentials: true,
         });
         const data = response.data;
