@@ -107,6 +107,8 @@ const ArticleGridDs = ({ limit }) => {
 
 
     const csts = useSelector((state) => state.cst.csts);
+
+
     const location = useLocation();
 
 
@@ -198,9 +200,17 @@ const ArticleGridDs = ({ limit }) => {
     localStorage.getItem("number")
 
 
+
+
+    const parf_cat = articles.filter((art) => art.categorie_id === 7)
+
+    console.log("parf_catparf_cat", parf_cat);
+
+
     return (
         <div className="product-area pb-60 section-padding-1">
-            <div className="container-fluid">
+
+            {csts && <div className="container-fluid">
                 {cRoad !== '/' ?
                     <>
                         <SectionTitle
@@ -209,6 +219,9 @@ const ArticleGridDs = ({ limit }) => {
                             // positionClass="text-center"
                             spaceClass="mb-20 mt-40"
                         />
+
+
+
                         <div className="row five-column">
                             <ArticleGridDsTwo
                                 articles={articles}
@@ -297,7 +310,8 @@ const ArticleGridDs = ({ limit }) => {
 
 
                 }
-            </div>
+            </div>}
+
         </div>
     );
 };

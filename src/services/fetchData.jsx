@@ -21,6 +21,7 @@ export const fetchArticlesByCategory = createAsyncThunk(
         }
     }
 );
+
 export const fetchArticles = async () => {
     const response = await axiosClient.get(`articles/`, {
         withCredentials: true,

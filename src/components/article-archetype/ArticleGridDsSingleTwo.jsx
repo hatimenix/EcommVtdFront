@@ -73,7 +73,7 @@ const ArticleGridDsSingleTwo = ({
             .catch(error => {
                 console.error('Error fetching likes count:', error);
             });
-    }, [article.id_art]);
+    }, []);
 
 
 
@@ -193,7 +193,7 @@ const ArticleGridDsSingleTwo = ({
 
 
                     <div className="product-action-2">
-                        {'product.affiliateLink' ? (
+                        {/* {'product.affiliateLink' ? (
                             <a
                                 rel="noopener noreferrer"
                                 target="_blank"
@@ -229,12 +229,12 @@ const ArticleGridDsSingleTwo = ({
                             <button disabled className="active" title="Out of stock">
                                 <i className="fa fa-shopping-cart"></i>
                             </button>
-                        )}
+                        )} */}
 
                         <button onClick={() => setModalShow(true)} title="Quick View">
                             <i className="fa fa-eye"></i>
                         </button>
-
+                        {/* 
                         <button
                             className={compareItem !== undefined ? "active" : ""}
                             disabled={compareItem !== undefined}
@@ -246,7 +246,7 @@ const ArticleGridDsSingleTwo = ({
                             onClick={() => console.log()}
                         >
                             <i className="fa fa-retweet"></i>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
