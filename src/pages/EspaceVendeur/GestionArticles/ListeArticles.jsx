@@ -81,7 +81,10 @@ function ListeArticles() {
           ]} 
         /> */}
         <div className="cart-main-area pt-90 pb-100">
-          <div className="container">
+          <div className="" style={{
+            paddingRight:'5%',
+            paddingLeft:'5%'
+          }}>
             <Fragment>
               <div
                 className="d-flex justify-content-end"
