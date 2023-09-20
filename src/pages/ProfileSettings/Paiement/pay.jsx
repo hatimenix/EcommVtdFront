@@ -157,7 +157,7 @@ function Paiement() {
             formData.append("customer", user.id)
             console.log(name, numCard, expDate, securityCode, user.id)
             try {
-                axios.post(`http://localhost:8000/paiement/`, formData).then(() => {
+                axios.post(`https://api.el-bal.ma/paiement/`, formData).then(() => {
                     // setMessage('')
                     // toast.success('Profil modifié avec succès', {
                     //     position: toast.POSITION.TOP_CENTER,

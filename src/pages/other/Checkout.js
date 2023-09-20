@@ -265,9 +265,7 @@ const Checkout = () => {
 
     }
 
-    // console.log("idarticle: ", articl);
-
-
+    formData.append("vendeur", cartItems[0].vendeur);
     formData.append("quantite", JSON.stringify(quantite))
     formData.append("prenom", prenom);
     formData.append("nom", nom);

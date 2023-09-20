@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// export const linkImage = 'https://api.el-bal.ma'
-export const linkImage = 'http://localhost:8000'
+ export const linkImage = 'https://api.el-bal.ma'
+//export const linkImage = 'https://api.el-bal.ma'
 
 
 const axiosClient = axios.create({
-  // baseURL: "https://api.el-bal.ma/",
-  baseURL: "http://localhost:8000",
+  baseURL: "https://api.el-bal.ma/",
+   //baseURL: "https://api.el-bal.ma",
 
 });
 
@@ -41,7 +41,7 @@ axiosClient.interceptors.response.use(
 
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/token/refresh/",
+          "https://api.el-bal.ma/api/token/refresh/",
           { refresh: refreshToken }
         );
         const accessToken = response.data.access;
@@ -63,7 +63,7 @@ export default axiosClient;
 // import axios from "axios";
 
 // const axiosClient = axios.create({
-//   baseURL: "https://el-bal.ma/",
+//   baseURL: "https://api.el-bal.ma/",
 // });
 
 // axiosClient.interceptors.request.use((config) => {
@@ -87,7 +87,7 @@ export default axiosClient;
 //     if (error.response && error.response.status === 401 && refreshToken) {
 //       try {
 //         const refreshResponse = await axios.post(
-//           "https://el-bal.ma/token/customer/refresh/",
+//           "https://api.el-bal.ma/token/customer/refresh/",
 //           { refresh: refreshToken }
 //         );
 
