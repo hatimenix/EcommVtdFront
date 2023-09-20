@@ -58,7 +58,7 @@ const ArticleGridDsSingleTwoBoosted = ({
     };
 
     useEffect(() => {
-        axios.get(`https://el-bal.ma/article-likes-count/`)
+        axios.get(`https://api.el-bal.ma/article-likes-count/`)
             .then(response => {
                 const likesCounts = response.data;
                 if (article.id_art in likesCounts) {
@@ -129,7 +129,7 @@ const ArticleGridDsSingleTwoBoosted = ({
 
     // Function to track the clicked article
     function trackArticleClick(articleId, customerId) {
-        fetch(`https://el-bal.ma/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
+        fetch(`https://api.el-bal.ma/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
             .then((response) => {
                 if (response.status === 200) {
                     console.log('Article click tracked successfully');
@@ -172,7 +172,7 @@ const ArticleGridDsSingleTwoBoosted = ({
                             {article.images.map((image, index) => (
                                 <div key={index} className="slide">
                                     <img style={{ width: "200px", height: "260px" }}
-                                        src={"http://127.0.0.1:8000/" +image.image}
+                                        src={"https://api.el-bal.ma/" +image.image}
                                         alt={article.titre}
                                     />
                                 </div>

@@ -27,7 +27,6 @@ const server = linkImage
 const ArticleGridDsSingleTwo = ({
     article,
     cartItem,
-    wishlistItem,
     compareItem,
     spaceBottomClass,
     colorClass,
@@ -41,6 +40,9 @@ const ArticleGridDsSingleTwo = ({
     const [likeCount, setLikeCount] = useState(0);
     const [heartSolid, setHeartSolid] = useState(true);
     const currentUser = useCurrentUserSelector()
+
+    const { wishlistItems } = useSelector((state) => state.wishlist);
+    const wishlistItem = wishlistItems.find(item => item.article === article.id_art);
 
     useEffect(() => {
         dispatch(fetchUser());
@@ -331,6 +333,7 @@ const ArticleGridDsSingleTwo = ({
                 onHide={() => setModalShow(false)}
                 article={article}
                 product={article}
+                wishlistItem={wishlistItem}
 
             />
         </Fragment>
