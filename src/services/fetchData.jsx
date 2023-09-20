@@ -200,7 +200,7 @@ export const fetchCstAsyn = async () => {
 };
 
 export const fetchLot = async () => {
-    const response = await axios.get(`packages/`, {
+    const response = await axiosClient.get(`packages/`, {
         withCredentials: true,
     });
     return response.data;

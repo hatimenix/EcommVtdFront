@@ -13,6 +13,7 @@ import { setProperties } from '../store/slices/propertiesSlice';
 import { setPackages } from '../store/slices/pkgSlice__';
 import { setCst } from '../store/slices/CstSlice';
 import { initCommande } from '../store/slices/commande-slice';
+import { setLots } from '../store/slices/lotSlice';
 // import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
@@ -90,7 +91,7 @@ const usePersistData = () => {
 
             try {
                 const lot = await fetchLot();
-                dispatch(setCst(lot));
+                dispatch(setLots(lot));
                 localStorage.setItem("lots", JSON.stringify(lot))
 
                 // localStorage.setItem("lo", JSON.stringify(cs))
@@ -143,9 +144,9 @@ const usePersistData = () => {
                 dispatch(initCommande(commande));
 
 
-                const cst = await fetchCst(recs.id);
+                fetchCst(recs.id);
 
-                dispatch(fetchCst(cst));
+                // dispatch(fetchCst(cst));
 
 
             } catch (error) {
