@@ -114,9 +114,13 @@ const ArticleGridDs = ({ limit }) => {
 
 
     const str = location.pathname;
+
     const arr = str.split('/');
     const lastSubstring = arr[arr.length - 1];
-    const lastCharacter = parseInt(lastSubstring.slice(-1));
+    const lastCharacter = parseInt(lastSubstring);
+
+
+    console.log("lastCharacter", lastCharacter);
 
 
 
@@ -126,7 +130,7 @@ const ArticleGridDs = ({ limit }) => {
         dispatch(fetchCst());
 
 
-        if (str === '/') {
+        if (lastCharacter === '/') {
             localStorage.removeItem('selectedCategory');
             dispatch(resetSelectedCategory()); // Reset the selected category in the store as well
         } else
@@ -163,17 +167,17 @@ const ArticleGridDs = ({ limit }) => {
 
     const cLoc = useLocation()
     const cRoad = cLoc.pathname
-    const [catTitle, setCatTitle] = useState("");
+    const [catTitle, setCatTitle] = useState(undefined);
 
 
 
 
     useEffect(() => {
-        if (selectedCat == undefined) {
-            setCatTitle("Catégorie Undefined ")
-        } else {
+        if (selectedCat !== undefined) {
             setCatTitle(selectedCat.titre)
         }
+
+
     }, [selectedCat]);
     console.log(catTitle);
 
@@ -214,7 +218,7 @@ const ArticleGridDs = ({ limit }) => {
                 {cRoad !== '/' ?
                     <>
                         <SectionTitle
-                            titleText={catTitle}
+                            titleText={catTitle ? catTitle : null}
                             // subTitleText="Latest arrivals & offers "
                             // positionClass="text-center"
                             spaceClass="mb-20 mt-40"
