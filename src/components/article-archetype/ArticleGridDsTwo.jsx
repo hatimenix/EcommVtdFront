@@ -18,15 +18,16 @@ const ArticleGridDsTwo = ({
         }
 
         const isCategoryMatch = !selectedCategory || article.categorie_id === selectedCategory.id_cat;
+
+
+
+        console.log("cstststststststst", csts);
+
+
         const isCsMatch = !csts || csts.some(cs => cs.id === article.customer_id);
 
         return isCategoryMatch && isCsMatch;
     });
-
-
-
-
-
 
 
 
