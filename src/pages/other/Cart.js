@@ -42,8 +42,6 @@ const Cart = () => {
 
   }
 
-  console.log('new main ab: ', cartItems);
-
 
   function abilityFunction() {
     let trigger = true
