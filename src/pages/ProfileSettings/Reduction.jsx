@@ -17,6 +17,7 @@ function Reduction() {
 
 
     useEffect(() => {
+        window.scrollTo(0,0)
         async function fetchData() {
 
             const res = await axiosClient.get(`/reduction/?search=${user.id}`);

@@ -21,6 +21,7 @@ export const fetchArticlesByCategory = createAsyncThunk(
         }
     }
 );
+
 export const fetchArticles = async () => {
     const response = await axiosClient.get(`articles/`, {
         withCredentials: true,
@@ -199,7 +200,7 @@ export const fetchCstAsyn = async () => {
 };
 
 export const fetchLot = async () => {
-    const response = await axios.get(`packages/`, {
+    const response = await axiosClient.get(`packages/`, {
         withCredentials: true,
     });
     return response.data;

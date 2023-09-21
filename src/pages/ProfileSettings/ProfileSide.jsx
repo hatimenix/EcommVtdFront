@@ -21,7 +21,7 @@ const LinkItems = [
     { name: "Paiements", icon: MdPayment, path: "/paiement" },
     { name: "Réduction sur les lots", icon: BiTrendingDown, path: "/réduction-sur-les-lots" },
 
-]; 
+];
 
 
 
@@ -49,8 +49,8 @@ function ProfileSide() {
     }, [selectedImage]);
 
     const [uploaded, setUploaded] = useState(null)
-    const [reloadPage, setReloadPage]=useState(false)
-    const saveImage = () => {    
+    const [reloadPage, setReloadPage] = useState(false)
+    const saveImage = () => {
         const formData = new FormData()
         formData.append('image', selectedImage)
         axiosClient.put('/user_image_update/' + user.id + '/', formData, {
@@ -58,16 +58,16 @@ function ProfileSide() {
                 setUploaded(Math.round((data.loaded / data.total) * 100));
             },
         })
-        .then(() => {
-            // axiosClient.get('/customers/' + user.id + '/').then(res => {
-            //     setImage(res.data.image)
-            //     setUploaded(null)
-            // })
-            
-        setSelectedImage()
+            .then(() => {
+                // axiosClient.get('/customers/' + user.id + '/').then(res => {
+                //     setImage(res.data.image)
+                //     setUploaded(null)
+                // })
 
-        window.location.reload()
-        })
+                setSelectedImage()
+
+                window.location.reload()
+            })
     }
 
     const handleLinkClick = (path) => {
@@ -126,7 +126,7 @@ function ProfileSide() {
                                             position: 'relative'
                                         }}>
                                             <img src={image ? image : user.image ? linkImage + user.image : defaultImage} alt="avatar"
-                                                className="rounded-circle img-fluid" style={{ width: "150px", height: '150px',objectFit:'cover' }} />
+                                                className="rounded-circle img-fluid" style={{ width: "150px", height: '150px', objectFit: 'cover' }} />
                                             {selectedImage && image &&
                                                 <div
                                                     className="close"
@@ -166,8 +166,8 @@ function ProfileSide() {
                                                 </button>}
                                             {selectedImage &&
                                                 <div style={{ marginLeft: 5 }}>
-                                                    <button className="btn btn-sm btn-outline-success" onClick={saveImage}>
-                                                        <AiOutlineCheck />
+                                                    <button className="btn btn-sm btn-success" onClick={saveImage}>
+                                                        <span style={{ fontSize: "12px" }}>Enregistrer</span> <AiOutlineCheck />
                                                     </button>
                                                 </div>
                                             }
