@@ -18,9 +18,20 @@ import { useStateContext } from "../../../context/ContextProvider";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import Paiement from './pay'; // Adjust the path to the Paiement component file as needed
+import visa from '../../other/visa.png'
+import mastercard from '../../other/shopping.png'
+import { MdKeyboardArrowRight } from 'react-icons/md'
+import { Button, InputGroup, Modal } from 'react-bootstrap';
+import { AiOutlineLock } from 'react-icons/ai';
+import { BsFillCreditCard2BackFill } from 'react-icons/bs';
+
 
 function NewArticle() {
   const { user } = useStateContext();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+
+  const handleShow = () => setShow(true);
 
   const navigate = useNavigate()
 
@@ -76,13 +87,144 @@ function NewArticle() {
   const [to, setTo] = useState(0)
   const [idArticle, setIdArticle] = useState()
 
-  const [name, setname] = useState()
-  const [numCard, setnumCard] = useState()
-  const [expDate, setexpDate] = useState()
-  const [securityCode, setsecurityCode] = useState()
+  const [name, setName] = useState()
+  const [numCard, setNumCard] = useState()
+  const [expDate, setExpDate] = useState()
+  const [securityCode, setSecurityCode] = useState()
   const [customer, setcustomer] = useState()
 
+  const handleCardNumberChange = (e) => {
+    const input = e.target;
+    const value = input.value;
 
+    // Remove non-numeric characters and spaces
+    const numericValue = value.replace(/\D/g, '');
+
+    // Add a space after every 4 digits
+    const formattedValue = numericValue.replace(/(\d{4})(?=\d)/g, '$1 ');
+
+    // Limit the input to 19 characters (16 digits + 3 spaces)
+    if (formattedValue.length > 24) {
+      setCardNumber(formattedValue.slice(0, 24));
+    } else {
+      setCardNumber(formattedValue);
+    }
+
+    // Detect card type based on the first four digits
+    detectCardType(numericValue.slice(0, 4));
+  };
+  function formatMonthYear(e) {
+    const input = e.target;
+    let value = input.value;
+
+    // Remove any characters that are not numbers or slashes
+    value = value.replace(/[^0-9/]/g, '');
+
+    // Ensure that there's a slash after two digits for the month
+    if (value.length >= 2 && value.indexOf('/') === -1) {
+      value = value.slice(0, 2) + '/' + value.slice(2);
+    }
+
+    // Limit the input to "mm/yyyy" format
+    if (value.length > 7) {
+      value = value.slice(0, 7);
+    }
+
+    input.value = value;
+  }
+  function validateInput(e) {
+    const input = e.target;
+    const value = input.value;
+
+    // Remove any non-numeric characters
+    const numericValue = value.replace(/[^0-9]/g, '');
+
+    // Limit the input to exactly 4 digits
+    if (numericValue.length > 4) {
+      input.value = numericValue.slice(0, 4);
+    } else {
+      input.value = numericValue;
+    }
+  }
+  const [cardNumber, setCardNumber] = useState('');
+  const [cardType, setCardType] = useState('');
+  const detectCardType = (firstFourDigits) => {
+    if (firstFourDigits.startsWith('4')) {
+      setCardType('Visa');
+    } else if (firstFourDigits.startsWith('5')) {
+      setCardType('MasterCard');
+    } else {
+      setCardType('');
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const userId = localStorage.getItem("cu")
+    const dateParts = expDate.split('/');
+    const month = dateParts[0]; // This will be "09"
+    const year = dateParts[1];
+
+    // const { error } = await stripe.createPaymentMethod({
+    //     type: 'card',
+    //     card: {
+    //         number: numCard,
+    //         exp_month: month,
+    //         exp_year: year,
+    //         cvc: securityCode,
+    //     },
+    // });
+    createPaymentMethod(numCard, month, year, securityCode);
+
+    if (!isCardValid) {
+      return;
+    } else {
+      const formData = new FormData();
+
+      formData.append("name", name);
+      formData.append("numCard", numCard.replace(/\s/g, ""))
+      formData.append("expDate", expDate.toString())
+      formData.append("securityCode", securityCode)
+      formData.append("customer", userId)
+      console.log(name, numCard, expDate, securityCode, userId)
+      try {
+        axiosClient.post(`paiement/`, formData).then(() => {
+          // setMessage('')
+          // toast.success('Profil modifié avec succès', {
+          //     position: toast.POSITION.TOP_CENTER,
+          //     autoClose: 4000,
+          // });
+          console.log('ok')
+        })
+      } catch (err) {
+
+      }
+    }
+
+  };
+  const [isCardValid, setIsCardValid] = useState(false)
+  const stripe = require('stripe')('pk_test_51NnjDSAGd0ipJgCDa5PtH2fiPZL8MAyGRAafPnYohGjNG1q2GsO3mIs7X6hhKeFiqyP1TSNqVOZVoieCPctD9ti6002uJdkrAP');
+  const createPaymentMethod = async (cardNumber, expMonth, expYear, cvc) => {
+    try {
+      const paymentMethod = await stripe.paymentMethods.create({
+        type: 'card',
+        card: {
+          number: cardNumber,
+          exp_month: expMonth,
+          exp_year: expYear,
+          cvc: cvc,
+        },
+      });
+
+      setIsCardValid(true)
+      return true;
+    } catch (error) {
+      // Handle any errors, e.g., invalid card details
+      setIsCardValid(false)
+      return false;
+    }
+  };
   const AddArticle = () => {
     // setUploaded(true)
     const formData = new FormData();
@@ -100,6 +242,8 @@ function NewArticle() {
     axiosClient.post("/articles/", formData).then((res) => {
       AddImagesArticle(res.data.id_art)
       Boosting && addBoosting(res.data.id_art)
+
+      console.log('idddddddddddddd : ', res.data.id_art)
     });
   };
 
@@ -296,24 +440,24 @@ function NewArticle() {
     console.log();
   }
 
-  useEffect(() => {
-    // Fetch the boosting attribute from the backend
-    const fetchBoostingValue = async () => {
-      try {
-        const response = await axios.get('https://api.el-bal.ma/boosts/', {
-          withCredentials: true,
-        });
-        const data = response.data;
-        // Set the boosting state based on the fetched value
-        setBoosting(data.boosting);
-      } catch (error) {
-        console.error('Error fetching boosting value:', error);
-      }
-    };
+  // useEffect(() => {
+  //   // Fetch the boosting attribute from the backend
+  //   const fetchBoostingValue = async () => {
+  //     try {
+  //       const response = await axios.get('http://127.0.0.1:8000/boosts/', {
+  //         withCredentials: true,
+  //       });
+  //       const data = response.data;
+  //       // Set the boosting state based on the fetched value
+  //       setBoosting(data.boosting);
+  //     } catch (error) {
+  //       console.error('Error fetching boosting value:', error);
+  //     }
+  //   };
 
-    // Call the fetchBoostingValue function to fetch the value
-    fetchBoostingValue();
-  }, []); // Run this effect only once on component mount
+  //   // Call the fetchBoostingValue function to fetch the value
+  //   fetchBoostingValue();
+  // }, []); // Run this effect only once on component mount
 
   const [selectedLink, setSelectedLink] = useState("/nouveau-article");
 
@@ -936,8 +1080,9 @@ function NewArticle() {
             </div>
           </div>
 
+
           {/* Booster */}
-          <div className="common-style">
+          <div className="bg-gray p-4 m-3 rounded">
             <div className="mb-3 font-mono">
               <span style={{ fontFamily: "cursive", color: "gray" }}>
                 Booster votre produit
@@ -959,7 +1104,9 @@ function NewArticle() {
                       type="checkbox"
                       style={{ height: "30px", accentColor: "#a46cdc" }}
                       onChange={() => setBoosting(!Boosting)}
+                      checked={Boosting}
                     />
+
                   </div>
                 </div>
               </div>
@@ -968,55 +1115,242 @@ function NewArticle() {
 
           {/* Boost Fields */}
           {Boosting && (
-            <div className="common-style">
-              {/* Render the fields for Boost */}
-              <div className="form-group">
-                <label htmlFor="boost_type">Boost Type</label>
-                <input
-                  onChange={(e) => setboost_type(e.target.value)}
-                  type="text"
-                  className="form-control"
-                  id="boost_type"
-                // Add other props and handlers as needed
-                />
+            <div className="bg-gray p-4 m-3 rounded">
+              <div className="container">
+                {/* Render the fields for Boost */}
+                <div className="form-group row mb-3">
+                  <label htmlFor="boost_type" className="col-sm-4 col-form-label text-right">
+                    Boost Type:
+                  </label>
+                  <div className="col-sm-8">
+                    <select
+                      onChange={(e) => setboost_type(e.target.value)}
+                      value={boost_type}
+                      className="form-control"
+                      id="boost_type"
+                      style={{
+                        background: "#7070700f",
+                        border: "none", // Remove the border
+                        borderBottom: "1px solid gray", // Add the borderBottom
+                        paddingLeft: "25px", // Add padding
+                      }}
+                    >
+                      <option value="">Select Boost Type</option>
+                      <option value="Performance">Performance</option>
+                      <option value="Manual">Manual</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="form-group row mb-3">
+                  <label htmlFor="start_date" className="col-sm-4 col-form-label text-right">
+                    Start Date:
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      onChange={(e) => setstart_date(e.target.value)}
+                      type="datetime-local"
+                      className="form-control"
+                      id="start_date"
+                      value={start_date}
+                      placeholder="Start Date"
+                      style={{
+                        background: "#7070700f",
+                        border: "none", // Remove the border
+                        borderBottom: "1px solid gray", // Add the borderBottom
+                        paddingLeft: "25px", // Add padding
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className="form-group row mb-3">
+                  <label htmlFor="end_date" className="col-sm-4 col-form-label text-right">
+                    End Date:
+                  </label>
+                  <div className="col-sm-8">
+                    <input
+                      onChange={(e) => setend_date(e.target.value)}
+                      type="datetime-local"
+                      className="form-control"
+                      id="end_date"
+                      value={end_date}
+                      placeholder="End Date"
+                      style={{
+                        background: "#7070700f",
+                        border: "none", // Remove the border
+                        borderBottom: "1px solid gray", // Add the borderBottom
+                        paddingLeft: "25px", // Add padding
+                      }}
+                    />
+                  </div>
+                </div>
+                {/* Add more Boost fields as needed */}
               </div>
-              <div className="form-group">
-                <label htmlFor="start_date">Start Date</label>
-                <input
-                  onChange={(e) => setstart_date(e.target.value)}
-                  type="date"
-                  className="form-control"
-                  id="start_date"
-                // Add other props and handlers as needed
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="end_date">End Date</label>
-                <input
-                  onChange={(e) => setend_date(e.target.value)}
-                  type="date"
-                  className="form-control"
-                  id="end_date"
-                // Add other props and handlers as needed
-                />
-              </div>
-              {/* Add more Boost fields as needed */}
             </div>
           )}
+
 
           {/* Payment Fields */}
-          {Boosting && (
-            <div className="common-style">
-              {/* Render the fields for Payment */}
-              <div>
-                <h1>Paiement</h1>
-                {/* Include the Paiement component with the common style */}
-                <Paiement />
-              </div>
-              {/* Add more Payment fields as needed */}
-            </div>
-          )}
+          {(boost_type && Boosting) && (
+            <div className="bg-gray p-4 m-3 rounded">
+              <div className="billing-info mb-20">
 
+                <div className="card-body" onClick={handleShow} style={{ cursor: 'pointer' }}>
+                  <br></br>
+                  <div className='row'>
+                    <div className="col-sm-9">
+                      <p class="h4" className="mb-0">Ajoute une méthode de paiement</p>
+                      <img style={{ width: '30px', marginRight: 4 }} src={visa} />
+                      <img style={{ width: '30px' }} src={mastercard} />
+
+                    </div>
+                    <div className="col-sm-3 text-end">
+                      <MdKeyboardArrowRight style={{ fontSize: "20px" }} />
+                    </div>
+                  </div>
+
+                </div>
+                <Modal
+                  show={show}
+                  onHide={handleClose}
+                  backdrop="static"
+                  keyboard={false}
+                  dialogClassName="my-modal"
+                >
+                  <Modal.Header style={{ borderBottom: 'none', justifyContent: 'center', position: 'relative' }} closeButton>
+                    <Modal.Title >Informations de paiement</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body >
+
+                    <div className='row p-2'>
+                      <h3>Détails de la carte</h3>
+                      <div className="col-sm-11">
+
+                        <p class="h4" className="mb-0">Les informations liées à ta carte sont chiffrées de manière sécurisée</p>
+
+                        <img style={{ width: '30px', marginRight: 4 }} src={visa} />
+                        <img style={{ width: '30px' }} src={mastercard} />
+
+                      </div>
+                      <div className="col-sm-1 text-end">
+                        <AiOutlineLock style={{ fontSize: "20px", color: "gray" }} />
+                      </div>
+                    </div>
+                    <div className="mx-4 my-2 p-1 mb-4 " style={{ border: "1px solid #ebebeb", borderRadius: "5px" }}>
+                      <div>
+                        <form>
+                          <div className='p-2'>
+                            <label className='p-2'>Nom figurant sur la carte</label>
+                            <input onChange={(e) => setName(e.target.value)} placeholder='Saisis votre nom et prénom' type="text" className="form-control-sm h-50" style={{
+                              borderTop: "none",
+                              borderRight: "none",
+                              borderLeft: "none",
+                              borderRadius: "0",
+                              borderBottom: "1px solid lightgray",
+                              outline: "none",
+                              backgroundColor: "#f8f9fa57",
+                              "::placeholder": {
+                                color: "lightgray",
+                              }
+                            }} />
+                          </div>
+                          <div className='p-2'>
+                            <label className='p-2'>Numéro de carte bancaire</label>
+                            <div style={{ position: 'relative' }}>
+                              <input
+                                onChange={(e) => {
+                                  setNumCard(e.target.value);
+                                  handleCardNumberChange(e);
+                                }}
+                                placeholder='Par ex : 1234 1234 1234 1234'
+                                type="text"
+                                className="form-control-sm h-50"
+                                style={{
+                                  borderTop: "none",
+                                  borderRight: "none",
+                                  borderLeft: "none",
+                                  borderRadius: "0",
+                                  borderBottom: "1px solid lightgray",
+                                  outline: "none",
+                                  backgroundColor: "#f8f9fa57",
+                                  "::placeholder": {
+                                    color: "lightgray",
+                                  }
+                                }}
+                                value={cardNumber}
+                              />
+
+                              <span style={{ position: 'absolute', right: 10, top: 2, fontSize: 20 }}>
+                                {cardType === "Visa" ? <img style={{ width: '25px' }} src={visa} />
+                                  : cardType === 'MasterCard'
+                                    ? <img style={{ width: '25px' }} src={mastercard} />
+                                    : <BsFillCreditCard2BackFill style={{ color: "lightgray" }} />}
+                              </span>
+                            </div>
+
+                          </div>
+                          <div className='row p-2 mb-2'>
+                            <div className='col-6'>
+                              <label className='p-2'>Date d'expiration</label>
+                              <input type="text"
+                                placeholder="mm/yyyy"
+                                className="form-control-sm h-50" style={{
+                                  borderTop: "none",
+                                  borderRight: "none",
+                                  borderLeft: "none",
+                                  borderRadius: "0",
+                                  borderBottom: "1px solid lightgray",
+                                  outline: "none",
+                                  backgroundColor: "#f8f9fa57",
+                                  "::placeholder": {
+                                    color: "lightgray",
+                                  }
+                                }}
+                                onChange={(e) => setExpDate(e.target.value)}
+                                onInput={(e) => formatMonthYear(e)}
+                              />
+                            </div>
+                            <div className='col-6'>
+                              <label className='p-2'>Code de sécurité</label>
+                              <input
+                                placeholder='Par ex : 123 ' pattern="[0-9]{4}" type="text" className="form-control-sm h-50" style={{
+                                  borderTop: "none",
+                                  borderRight: "none",
+                                  borderLeft: "none",
+                                  borderRadius: "0",
+                                  borderBottom: "1px solid lightgray",
+                                  outline: "none",
+                                  backgroundColor: "#f8f9fa57",
+                                  "::placeholder": {
+                                    color: "lightgray",
+                                  }
+                                }}
+                                onChange={(e) => setSecurityCode(e.target.value)}
+                                onInput={(e) => validateInput(e)} />
+                            </div>
+
+                          </div>
+
+
+                        </form>
+                      </div>
+
+                    </div>
+                    <div className='mb-2'>
+                      <Button onClick={handleSubmit} style={{ width: '100%', backgroundColor: "teal", border: "none" }} >
+                        Utiliser cette carte
+                      </Button>
+                    </div>
+                    <div>
+                      <Button size='' style={{ width: '100%', color: "teal", backgroundColor: "transparent", border: "none" }} onClick={handleClose}>
+                        Annuler
+                      </Button>
+                    </div>
+
+                  </Modal.Body>
+
+                </Modal>
+              </div>
+            </div>)}
           {/*  */}
           <div className="m-3" style={{
             display: 'flex',
@@ -1034,7 +1368,11 @@ function NewArticle() {
                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
                 : <button className="btn-add" onClick={() => {
+
+
                   AddArticle()
+
+
                 }}>
                   Ajouter
                 </button>

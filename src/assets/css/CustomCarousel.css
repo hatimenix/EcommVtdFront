@@ -86,7 +86,11 @@
     height: 800px;
     /* Adjust to your desired height */
 }
-
+.boosted-text {
+    position: absolute;
+    right: 0; /* Adjust the value as needed to move it to the desired position */
+    bottom: 0;
+}
 .price-sell{
     color: #20bfaa;
 }
