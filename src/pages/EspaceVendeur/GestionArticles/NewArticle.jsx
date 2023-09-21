@@ -296,24 +296,24 @@ function NewArticle() {
     console.log();
   }
 
-  useEffect(() => {
-    // Fetch the boosting attribute from the backend
-    const fetchBoostingValue = async () => {
-      try {
-        const response = await axios.get('https://api.el-bal.ma/boosts/', {
-          withCredentials: true,
-        });
-        const data = response.data;
-        // Set the boosting state based on the fetched value
-        setBoosting(data.boosting);
-      } catch (error) {
-        console.error('Error fetching boosting value:', error);
-      }
-    };
+  // useEffect(() => {
+  //   // Fetch the boosting attribute from the backend
+  //   const fetchBoostingValue = async () => {
+  //     try {
+  //       const response = await axios.get('https://api.el-bal.ma/boosts/', {
+  //         withCredentials: true,
+  //       });
+  //       const data = response.data;
+  //       // Set the boosting state based on the fetched value
+  //       setBoosting(data.boosting);
+  //     } catch (error) {
+  //       console.error('Error fetching boosting value:', error);
+  //     }
+  //   };
 
-    // Call the fetchBoostingValue function to fetch the value
-    fetchBoostingValue();
-  }, []); // Run this effect only once on component mount
+  //   // Call the fetchBoostingValue function to fetch the value
+  //   fetchBoostingValue();
+  // }, []); // Run this effect only once on component mount
 
   const [selectedLink, setSelectedLink] = useState("/nouveau-article");
 
