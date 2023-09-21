@@ -120,7 +120,16 @@ const ArticleGridDs = ({ limit }) => {
     const lastCharacter = parseInt(lastSubstring);
 
 
-    console.log("lastCharacter", lastCharacter);
+    console.log("str", str);
+
+    const categoryReg = /^\/category\/\d+$/;
+
+
+
+    // Check if location.pathname matches the pattern
+    if (categoryReg.test(location.pathname)) {
+        console.log('true');
+    }
 
 
 
@@ -215,7 +224,7 @@ const ArticleGridDs = ({ limit }) => {
         <div className="product-area pb-60 section-padding-1">
 
             {csts && <div className="container-fluid">
-                {cRoad !== '/' ?
+                {categoryReg.test(location.pathname) ?
                     <>
                         <SectionTitle
                             titleText={catTitle ? catTitle : null}
@@ -244,76 +253,81 @@ const ArticleGridDs = ({ limit }) => {
 
 
 
-                {/* <FeatureIconTwo spaceTopClass="pt-70" spaceBottomClass="pb-60" /> */}
-
-
-                {true ?
-
-
-                    <>
-                        {userHasTargetedArticles && userHasClickedOnArticle && (
-                            <>
-                                <SectionTitle
-                                    titleText="Recommandé pour toi"
-                                    // subTitleText="Latest arrivals & offers "
-                                    // positionClass="text-center"
-                                    spaceClass="mb-20 mt-80"
-                                />
-                                <div className="row five-column">
-                                    <ArticleGridDsTwo
-                                        articles={articlesWithSameCategory}
-                                        // categories={iCategories}
-                                        csts={csts}
-                                        limit={limit}
-                                        spaceBottomClass="mb-25"
-                                    />
-                                </div>
-
-                            </>
-                        )}
 
 
 
 
-                        <SectionTitle
-                            titleText="Recherche par marque"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-20 mt-30"
-                        />
 
-                        <div className="row five-column">
-                            <ArticleMarqueGrid />
-                        </div>
-
-
-                        <SectionTitle
-                            titleText="Fil d'actu"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-50 mt-30"
-                        />
-
-                        <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={iArticles}
-                                categories={iCategories}
-                                csts={csts}
-                                limit={limit}
-                                spaceBottomClass="mb-25 "
+                <>
+                    {location.pathname === '/' && userHasTargetedArticles && userHasClickedOnArticle && (
+                        <>
+                            <SectionTitle
+                                titleText="Recommandé pour toi"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-20 mt-80"
                             />
-                        </div>
+                            <div className="row five-column">
+                                <ArticleGridDsTwo
+                                    articles={articlesWithSameCategory}
+                                    // categories={iCategories}
+                                    csts={csts}
+                                    limit={limit}
+                                    spaceBottomClass="mb-25"
+                                />
+                            </div>
+
+                        </>
+                    )}
+
+
+                    {location.pathname === '/' &&
+                        <>
+
+
+                            <SectionTitle
+                                titleText="Fil d'actu"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-50 mt-30"
+                            />
+
+                            <div className="row five-column">
+                                <ArticleGridDsTwo
+                                    articles={iArticles}
+                                    categories={iCategories}
+                                    csts={csts}
+                                    limit={limit}
+                                    spaceBottomClass="mb-25 "
+                                />
+                            </div>
+
+                            <SectionTitle
+                                titleText="Recherche par marque"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-20 mt-30"
+                            />
+
+                            <div className="row five-column">
+                                <ArticleMarqueGrid />
+                            </div>
 
 
 
-                    </>
-                    : <p>ijsi</p>
+                        </>
+                    }
+
+
+
+                </>
 
 
 
 
 
-                }
+
+
             </div>}
 
         </div>
