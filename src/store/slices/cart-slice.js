@@ -125,6 +125,7 @@ const cartSlice = createSlice({
         deleteFromCart(state, action) {
             deleteCart(action.payload)
             state.cartItems = state.cartItems.filter(item => item.id_pan !== action.payload);
+            console.log("item:", state.cartItems);
             cogoToast.error("Removed From Cart", { position: "bottom-left" });
         },
         decreaseQuantity(state, action) {

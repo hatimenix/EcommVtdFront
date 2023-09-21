@@ -5,10 +5,11 @@ import SEO from "../../components/seo";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import { addToCart, decreaseQuantity, deleteFromCart, deleteAllFromCart } from "../../store/slices/cart-slice";
+import { addToCart, decreaseQuantity, deleteFromCart, deleteAllFromCart, initCart } from "../../store/slices/cart-slice";
 import { cartItemStock } from "../../helpers/product";
 import { fetchPanier } from "../../services/fetchData";
-import { linkImage } from "../../axios-client";
+import axiosClient, { linkImage } from "../../axios-client";
+import { Button } from "react-bootstrap";
 
 
 
@@ -19,11 +20,49 @@ const Cart = () => {
   const [quantityCount] = useState(1);
   const dispatch = useDispatch();
   let { pathname } = useLocation();
+  const [ability, setAbility] = useState(true)
 
   const server = linkImage
 
   const currency = useSelector((state) => state.currency);
-  const { cartItems } = useSelector((state) => state.cart);
+  let { cartItems } = useSelector((state) => state.cart);
+
+
+  function getpan() {
+    try {
+      // fetch panier
+      axiosClient.get(`panier/?search=${localStorage.getItem("cu")}`)
+        .then((res) => {
+          dispatch(initCart(res.data))
+        });
+
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+
+  }
+
+  console.log('new main ab: ', cartItems);
+
+
+  function abilityFunction() {
+    let trigger = true
+    cartItems.map((item, key) => {
+      if (key > 0 && cartItems[key - 1].vendeur !== item.vendeur) {
+        setAbility(false)
+        trigger = false
+      }
+    })
+
+    if (trigger) {
+      setAbility(true)
+    }
+  }
+
+
+  useEffect(() => {
+    abilityFunction()
+  }, [cartItems])
   // console.log('image: ', cartItems);
 
 
@@ -210,8 +249,13 @@ const Cart = () => {
 
                                 <td className="product-remove">
                                   <button
-                                    onClick={() =>
+                                    onClick={() => {
                                       dispatch(deleteFromCart(cartItem.id_pan))
+                                      // actualiser panier
+                                      // setTimeout(() => {
+                                      //   abilityFunction()
+                                      // }, 1000);
+                                    }
                                     }
                                   >
                                     <i className="fa fa-times"></i>
@@ -328,9 +372,15 @@ const Cart = () => {
                           {currency.currencySymbol + cartTotalPrice.toFixed(2)}
                         </span>
                       </h4>
-                      <Link to={process.env.PUBLIC_URL + "/checkout"}>
-                        Commander
-                      </Link>
+
+                      {!ability ?
+                        <Button onClick={() => {
+                          alert("Vous ne pouvez commander, ensemble, que des articles d'un meme vendeur. Veuillez commander les artilces par vendeur.")
+
+                        }}>Commander</Button>
+                        : <Link to={process.env.PUBLIC_URL + "/checkout"}>
+                          Commander
+                        </Link>}
                     </div>
                   </div>
                 </div>
