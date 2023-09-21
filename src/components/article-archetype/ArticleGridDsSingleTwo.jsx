@@ -22,12 +22,11 @@ import { fetchUser } from '../../store/slices/userSlice';
 import { useCurrentUserSelector } from '../../store/selectors/selectors';
 import axiosClient, { linkImage } from '../../axios-client';
 
-const server = linkImage;
+const server = linkImage
 
 const ArticleGridDsSingleTwo = ({
     article,
     cartItem,
-    wishlistItem,
     compareItem,
     spaceBottomClass,
     colorClass,
@@ -41,11 +40,15 @@ const ArticleGridDsSingleTwo = ({
     const [heartSolid, setHeartSolid] = useState(true);
     const currentUser = useCurrentUserSelector();
 
+    const { wishlistItems } = useSelector((state) => state.wishlist);
+    const wishlistItem = wishlistItems.find(item => item.article === article.id_art);
+
     useEffect(() => {
         dispatch(fetchUser());
     }, [dispatch]);
 
     const csts = useSelector((state) => state.cst.csts);
+    // console.log("le csts", csts);
 
     const toggleLike = () => {
         if (heartSolid) {
@@ -57,9 +60,8 @@ const ArticleGridDsSingleTwo = ({
     };
 
     useEffect(() => {
-        axiosClient
-            .get(`/article-likes-count/`)
-            .then((response) => {
+        axiosClient.get(`/article-likes-count/`)
+            .then(response => {
                 const likesCounts = response.data;
                 if (article.id_art in likesCounts) {
                     setLikeCount(likesCounts[article.id_art]);
@@ -68,7 +70,7 @@ const ArticleGridDsSingleTwo = ({
             .catch((error) => {
                 console.error('Error fetching likes count:', error);
             });
-    }, [article.id_art]);
+    }, []);
 
     const handleLikeClick = () => {
         setIsLiked((prevLiked) => !prevLiked);
@@ -79,7 +81,14 @@ const ArticleGridDsSingleTwo = ({
 
     const isOutOfStock = article.stock <= 0;
 
-    const correspondingSeller = csts ? csts.find((c) => c.id === article.customer_id) : null;
+    const correspondingSeller = csts ? csts.find(c => c.id === article.customer_id) : null;
+
+    console.log("le csts", csts);
+    console.log("correspondingSellercorrespondingSeller", correspondingSeller);
+
+    if (!correspondingSeller) {
+        return null;
+    }
 
     const avatarStyle = {
         position: 'absolute',
@@ -133,14 +142,11 @@ const ArticleGridDsSingleTwo = ({
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >
-                {correspondingSeller !== null && (
-                    <>
-                        <div style={avatarStyle}>
-                            <img src={correspondingSeller.image} alt={correspondingSeller.name} width="40" height="40" />
-                        </div>
-                        <div style={sellerNameStyle}>{correspondingSeller.first_name}</div>
-                    </>
-                )}
+                {correspondingSeller !== null && <> <div style={avatarStyle}>
+                    <img src={correspondingSeller.image} alt={correspondingSeller.name} width="40" height="40" />
+
+                </div>
+                    <div style={sellerNameStyle}>{correspondingSeller.first_name}</div></>}
 
                 <div style={{ marginTop: '50px' }} className="product-img">
                     <Link
@@ -166,10 +172,14 @@ const ArticleGridDsSingleTwo = ({
                     </Link>
 
                     <div className="product-action-2">
-                        {'product.affiliateLink' ? (
-                            <a rel="noopener noreferrer" target="_blank" title="Buy now">
-                                {' '}
-                                <i className="fa fa-shopping-cart"></i>{' '}
+                        {/* {'product.affiliateLink' ? (
+                            <a
+                                rel="noopener noreferrer"
+                                target="_blank"
+                                title="Buy now"
+                            >
+                                {" "}
+                                <i className="fa fa-shopping-cart"></i>{" "}
                             </a>
                         ) : 'product.variation' && 1 >= 1 ? (
                             <Link
@@ -198,12 +208,12 @@ const ArticleGridDsSingleTwo = ({
                             <button disabled className="active" title="Out of stock">
                                 <i className="fa fa-shopping-cart"></i>
                             </button>
-                        )}
+                        )} */}
 
                         <button onClick={() => setModalShow(true)} title="Quick View">
                             <i className="fa fa-eye"></i>
                         </button>
-
+                        {/* 
                         <button
                             className={compareItem !== undefined ? 'active' : ''}
                             disabled={compareItem !== undefined}
@@ -215,7 +225,7 @@ const ArticleGridDsSingleTwo = ({
                             onClick={() => console.log()}
                         >
                             <i className="fa fa-retweet"></i>
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 
@@ -296,6 +306,8 @@ const ArticleGridDsSingleTwo = ({
                 onHide={() => setModalShow(false)}
                 article={article}
                 product={article}
+                wishlistItem={wishlistItem}
+
             />
         </Fragment>
     );

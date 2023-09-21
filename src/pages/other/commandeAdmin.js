@@ -7,20 +7,19 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { linkImage } from "../../axios-client";
 
 
-
-const Commande = () => {
+const CommandeAdmin = () => {
     const dispatch = useDispatch();
     let { pathname } = useLocation();
     const server = linkImage
 
     const currency = useSelector((state) => state.currency);
-    const commandeList = useSelector((state) => state.commandeList.commandeListItem);
+    let commandeList = useSelector((state) => state.commandeList.commandeListItem);
+    commandeList = commandeList.filter(item => item.vendeur === parseInt(localStorage.getItem('cu')))
     const articles = useSelector((state) => state.article.articles);
-    // console.log("commandeList", articles);
+    // console.log("commandeList", commandeList);
 
 
     function convertDate(dateString) {
-
         // Create a Date object from the given string
         const date = new Date(dateString);
 
@@ -56,7 +55,7 @@ const Commande = () => {
                     <div className="container">
                         {commandeList && commandeList.length >= 1 ? (
                             <Fragment>
-                                <h3 className="cart-page-title">Votre liste de commandes</h3>
+                                <h3 className="cart-page-title">Votre liste de ventes</h3>
                                 <div className="row">
                                     <div className="col-12">
                                         <div className="table-content table-responsive cart-table-content">
@@ -74,7 +73,7 @@ const Commande = () => {
 
                                                         const cmdID = commandeListItem.article[0]
                                                         const art = articles.find(item => item.id_art === cmdID)
-                                                        // console.log("le log:", art);
+                                                        // console.log("le log:", commandeListItem);
 
                                                         return (
                                                             <tr key={key}>
@@ -194,8 +193,8 @@ const Commande = () => {
                     </div>
                 </div>
             </LayoutOne>
-        </Fragment>
+        </Fragment >
     );
 };
 
-export default Commande;
+export default CommandeAdmin;

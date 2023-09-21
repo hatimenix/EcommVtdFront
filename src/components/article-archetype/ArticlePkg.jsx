@@ -277,6 +277,7 @@ const ArticlePkg = ({ limit }) => {
 
     console.log("listPkg", listPkg, currentUser.first_name);
 
+    console.log("parsedLotsparsedLots", parsedLots);
 
     const sendPkg = (event) => {
         console.log("listPkg", listPkg, currentUser.first_name);
@@ -350,7 +351,7 @@ const ArticlePkg = ({ limit }) => {
                         </div>
 
 
-                        {pkgSellers ? <div className="container-fluid">
+                        {pkgSellers && <div className="container-fluid">
                             {/* <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}> */}
 
                             <div className="row five-column">
@@ -398,7 +399,7 @@ const ArticlePkg = ({ limit }) => {
 
                             </div>
 
-                        </div> : <span></span>}
+                        </div>}
                     </div>
                 </div >
             </LayoutPkg>

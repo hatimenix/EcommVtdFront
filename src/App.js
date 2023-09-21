@@ -23,6 +23,7 @@ import Contact from "./pages/FooterPages/Contact";
 import TermsAndConditions from "./pages/FooterPages/TermsAndConditions";
 import PrivacyPolicy from "./pages/FooterPages/PrivacyPolicy";
 import Commande from "./pages/other/commande";
+import CommandeAdmin from "./pages/other/commandeAdmin";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -132,6 +133,13 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + "/commande"}
               element={<Commande />}
+            />
+
+
+
+            <Route
+              path={process.env.PUBLIC_URL + "/mesVentes"}
+              element={<CommandeAdmin />}
             />
 
             <Route

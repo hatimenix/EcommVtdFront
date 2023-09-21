@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import HeaderOne from "../wrappers/header/HeaderOne";
 import FooterOne from "../wrappers/footer/FooterOne";
 import ScrollToTop from "../components/template/scroll-to-top"
+import HeaderPkg from "../wrappers/header/HeaderPkg";
 
 const LayoutPkg = ({
     children,
@@ -13,7 +14,7 @@ const LayoutPkg = ({
 }) => {
     return (
         <Fragment>
-            <HeaderOne
+            <HeaderPkg
                 layout={headerContainerClass}
                 top={headerTop}
                 headerPaddingClass={headerPaddingClass}

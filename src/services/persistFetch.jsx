@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts, fetchCstAsyn, fetchLot } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { setBoosts } from '../store/slices/boostSlice';
 import { initFavoris } from '../store/slices/wishlist-slice';
@@ -13,6 +13,7 @@ import { setProperties } from '../store/slices/propertiesSlice';
 import { setPackages } from '../store/slices/pkgSlice__';
 import { setCst } from '../store/slices/CstSlice';
 import { initCommande } from '../store/slices/commande-slice';
+import { setLots } from '../store/slices/lotSlice';
 // import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
@@ -23,6 +24,8 @@ const usePersistData = () => {
             try {
                 const articles = await fetchArticles();
                 dispatch(setArticles(articles));
+                localStorage.setItem("articles", JSON.stringify(articles))
+
             } catch (error) {
                 console.error('Error fetching articles:', error);
             }
@@ -76,6 +79,28 @@ const usePersistData = () => {
                 console.error('Error fetching packages:', error);
             }
 
+            try {
+                const cs = await fetchCstAsyn();
+                dispatch(setCst(cs));
+                localStorage.setItem("csts", JSON.stringify(cs))
+
+                console.log("persist csts", cs);
+            } catch (error) {
+                console.error('Error fetching csts:', error);
+            }
+
+            try {
+                const lot = await fetchLot();
+                dispatch(setLots(lot));
+                localStorage.setItem("lots", JSON.stringify(lot))
+
+                // localStorage.setItem("lo", JSON.stringify(cs))
+
+                console.log("persist lots", lot);
+            } catch (error) {
+                console.error('Error fetching lots:', error);
+            }
+
             // fetch user and initialize cart and favoris
             try {
                 const recs = await fetchUser();
@@ -119,9 +144,9 @@ const usePersistData = () => {
                 dispatch(initCommande(commande));
 
 
-                const cst = await fetchCst(recs.id);
+                fetchCst(recs.id);
 
-                dispatch(fetchCst(cst));
+                // dispatch(fetchCst(cst));
 
 
             } catch (error) {

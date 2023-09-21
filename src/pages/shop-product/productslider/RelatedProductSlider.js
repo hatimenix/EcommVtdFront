@@ -206,7 +206,7 @@ const RelatedProductSlider = ({ spaceBottomClass, product }) => {
 
         <>
           {
-            user.id &&
+            user.id && maxPercentage &&
 
             (firstMatchingPackage && currentArticle.stock > 0 ?
               (
