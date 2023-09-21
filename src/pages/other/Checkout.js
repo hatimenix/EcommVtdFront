@@ -414,13 +414,13 @@ const Checkout = () => {
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Telephone</label>
-                          <input onChange={(e) => setTelephone(e.target.value)} type="text" />
+                          <input onChange={(e) => setTelephone(e.target.value)} type='number' />
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Addresse Email</label>
-                          <input onChange={(e) => setEmail(e.target.value)} type="text" />
+                          <input type="email" onChange={(e) => setEmail(e.target.value)} />
                         </div>
                       </div>
 
