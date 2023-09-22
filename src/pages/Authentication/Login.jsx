@@ -13,7 +13,7 @@ import GoogleLogin from "react-google-login";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { MdKeyboardArrowDown } from "react-icons/md";
 
-const Login = ({ isSeller }) => {
+const Login = ({ isSeller,contactUs }) => {
 
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
@@ -46,7 +46,10 @@ const Login = ({ isSeller }) => {
         localStorage.setItem("REFRESH_TOKEN", data.refresh)
         localStorage.setItem("ACCESS_TOKEN", data.access)
 
-        isSeller ? navigate('/nouveau-article') : window.location.reload()
+        isSeller && !contactUs && navigate('/nouveau-article')
+        contactUs && !isSeller && navigate('/contact')
+        !contactUs && !isSeller && window.location.reload()
+
 
       })
       .catch((err) => {
