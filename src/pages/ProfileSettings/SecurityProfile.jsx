@@ -18,6 +18,21 @@ function SecurityProfile() {
         window.scrollTo(0,0)
     },[])
 
+    const EditMail = ev => {
+        ev.preventDefault();
+        axiosClient.get('edit_email/', { params: { email: user.email } })
+        .then((response) => {
+            toast.success("Un email a été envoyé pour procéder à la modification de votre adresse email.", {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 5000, // Adjust as needed
+                closeButton: true,
+              });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    }
+    
     const isPasswordValid = (password) => {
         const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!*_|èàç()/."';:,?ù])[0-9a-zA-Z@#$%^&+=!*_|èàç()/."';:,?ù]{8,}$/;
         const specialchar = /[@#$%^&+=!*_|èàç()/."';:,?ù]/;
@@ -99,7 +114,7 @@ function SecurityProfile() {
                                     <p class="h4" className="mb-0">{user.email}</p>
                                 </div>
                                 <div className="col-sm-4 text-end">
-                                    <button type="button" class="btn btn-sm btn-outline-success">Modifier</button>
+                                    <button type="button" onClick={EditMail} class="btn btn-sm btn-outline-success">Modifier</button>
                                 </div>
 
                             </div>

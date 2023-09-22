@@ -22,6 +22,9 @@ import commandeSliceReducer from './slices/commande-slice';
 import listPkgReducer from './slices/listPkgSlice';
 import lotReducer from './slices/lotSlice';
 
+import ratingsReducer from './slices/ratingSlice';
+
+
 
 const store = configureStore({
         reducer: {
@@ -37,7 +40,7 @@ const store = configureStore({
                 replie: replieReducer,
                 propertie: propertiesReducer,
                 boost: boostReducer,
-
+                rating: ratingsReducer, // Add this line to combine the new reducer
                 user: userReducer,
                 rec: recReducer,
                 artmid: midReducer, // Add the new reducer here

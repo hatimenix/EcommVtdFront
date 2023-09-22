@@ -288,7 +288,7 @@ const IconGroup = ({ iconWhiteClass }) => {
 
         <Modal.Body  >
           <Modal.Header style={{ border: 'none' }} closeButton />
-          <Login isSeller={isSeller} />
+          <Login isSeller={isSeller} contactUs={false} />
         </Modal.Body>
       </Modal>
     </div>

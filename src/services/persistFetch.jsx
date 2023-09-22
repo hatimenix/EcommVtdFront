@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts, fetchCstAsyn, fetchLot } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts, fetchCstAsyn, fetchLot, fetchRatings } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { setBoosts } from '../store/slices/boostSlice';
 import { initFavoris } from '../store/slices/wishlist-slice';
@@ -14,6 +14,7 @@ import { setPackages } from '../store/slices/pkgSlice__';
 import { setCst } from '../store/slices/CstSlice';
 import { initCommande } from '../store/slices/commande-slice';
 import { setLots } from '../store/slices/lotSlice';
+import { setRatings } from '../store/slices/ratingSlice';
 // import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
@@ -126,6 +127,13 @@ const usePersistData = () => {
                 console.log("persist pkg", pkg);
             } catch (error) {
                 console.error('Error fetching packages:', error);
+            }
+            try {
+                const rt = await fetchRatings();
+                dispatch(setRatings(rt));
+                console.log("persist rt", rt);
+            } catch (error) {
+                console.error('Error fetching ratings:', error);
             }
 
             // fetch user and initialize cart and favoris
