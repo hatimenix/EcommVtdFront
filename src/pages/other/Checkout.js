@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getDiscountPrice } from "../../helpers/product";
@@ -185,7 +185,7 @@ const Checkout = () => {
       formData.append("expDate", expDate.toString())
       formData.append("securityCode", securityCode)
       formData.append("customer", userId)
-      console.log(name, numCard, expDate, securityCode, userId)
+      // console.log(name, numCard, expDate, securityCode, userId)
       try {
         axiosClient.post(`paiement/`, formData).then(() => {
           // setMessage('')
@@ -193,7 +193,7 @@ const Checkout = () => {
           //     position: toast.POSITION.TOP_CENTER,
           //     autoClose: 4000,
           // });
-          console.log('ok')
+          // console.log('ok')
         })
       } catch (err) {
 
@@ -232,6 +232,7 @@ const Checkout = () => {
 
 
   //commande data
+  const [ability, setAbility] = useState(true)
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [pays, setPays] = useState("");
@@ -324,6 +325,30 @@ const Checkout = () => {
     // console.log("le formdata: ", formData);
   };
 
+
+  function abilityFunction() {
+    let trigger = true
+    cartItems.map((item, key) => {
+      // console.log("vendeur non different.........: ", item);
+      if (key > 0 && cartItems[key - 1].vendeur !== item.vendeur) {
+        // console.log("vendeur different: ", cartItems);
+        setAbility(false)
+        trigger = false
+      }
+    })
+
+    if (trigger) {
+      setAbility(true)
+    }
+  }
+
+
+  useEffect(() => {
+    // console.log("vendeur different: ", cartItems);
+    abilityFunction()
+  }, [cartItems])
+  // console.log('image: ', cartItems);
+
   return (
     <Fragment>
       <SEO
@@ -414,13 +439,13 @@ const Checkout = () => {
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Telephone</label>
-                          <input onChange={(e) => setTelephone(e.target.value)} type="text" />
+                          <input onChange={(e) => setTelephone(e.target.value)} type='number' />
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Addresse Email</label>
-                          <input onChange={(e) => setEmail(e.target.value)} type="text" />
+                          <input type="email" onChange={(e) => setEmail(e.target.value)} />
                         </div>
                       </div>
 
@@ -730,11 +755,19 @@ const Checkout = () => {
                           <button title="Veuillez remplir tous les champs obligatoires"
                             className="btn-hover" disabled>Passer la commande</button>
                           :
-                          <button onClick={() => {
-                            Commander(cartTotalPrice.toFixed(2))
-                          }
-                          }
-                            className="btn-hover">Passer la commande</button>
+
+                          (
+                            !ability ?
+                              <Button onClick={() => {
+                                alert("Vous ne pouvez commander, ensemble, que des articles d'un meme vendeur. Veuillez commander les artilces par vendeur.")
+
+                              }}>Commander</Button>
+                              : <button onClick={() => {
+                                Commander(cartTotalPrice.toFixed(2))
+                              }
+                              }
+                                className="btn-hover">Passer la commande</button>
+                          )
                       }
                     </div>
                   </div>

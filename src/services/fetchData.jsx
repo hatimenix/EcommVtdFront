@@ -73,6 +73,14 @@ export const fetchArticleById = createAsyncThunk(
 //   }
 // );
 
+// const sendBoostData = async (boostData) => {
+//     try {
+//         const response = await axios.post(`${BASE_URL}create_boost/`, boostData);
+//         console.log(response.data); // Handle the response from Django if needed
+//     } catch (error) {
+//         console.error('Error creating boost:', error);
+//     }
+// }
 
 export const fetchArticlesdetails = async (id_art) => {
     const response = await axiosClient.get(`articles/${id_art}/`, {
@@ -200,7 +208,7 @@ export const fetchCstAsyn = async () => {
 };
 
 export const fetchLot = async () => {
-    const response = await axios.get(`packages/`, {
+    const response = await axiosClient.get(`packages/`, {
         withCredentials: true,
     });
     return response.data;

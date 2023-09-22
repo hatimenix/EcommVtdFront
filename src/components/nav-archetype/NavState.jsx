@@ -85,21 +85,21 @@ const NestedNav = () => {
         </ul>
         {/* <ul style={{ display: "flex", flexDirection: "column", margin: '5px 0px 5px 10px', width: '80%' }}> */}
 
-          <li style={{width:"70%"}}  className='text-left' >
-            {getCategories(catId ? catId : test_id).map((val, key) => {
-              return (
-                <li style={{width:"50%"}}>
-                  <Link onClick={() => handleCategoryClick(val.id_cat, val.level)} style={{ color: "#555252" }}>
+        <li style={{ width: "70%" }} className='text-left' >
+          {getCategories(catId ? catId : test_id).map((val, key) => {
+            return (
+              <li style={{ width: "50%" }}>
+                <Link onClick={() => handleCategoryClick(val.id_cat, val.level)} style={{ color: "#555252" }}>
 
-                    {val.titre}
-                  </Link>
-                </li>
-              )
-            })}
-          </li>
+                  {val.titre}
+                </Link>
+              </li>
+            )
+          })}
+        </li>
 
 
-          {/* {subcategories.map((subcategory) => (
+        {/* {subcategories.map((subcategory) => (
           <li
 
             key={subcategory.id_cat}

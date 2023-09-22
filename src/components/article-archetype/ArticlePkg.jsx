@@ -277,6 +277,7 @@ const ArticlePkg = ({ limit }) => {
 
     console.log("listPkg", listPkg, currentUser.first_name);
 
+    console.log("parsedLotsparsedLots", parsedLots);
 
     const sendPkg = (event) => {
         console.log("listPkg", listPkg, currentUser.first_name);

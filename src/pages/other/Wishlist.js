@@ -254,9 +254,9 @@ const Wishlist = () => {
                       <i className="pe-7s-like"></i>
                     </div>
                     <div className="item-empty-area__text">
-                      No items found in wishlist <br />{" "}
-                      <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
-                        Add Items
+                      Aucun article trouvé dans la liste de souhaits <br />{" "}
+                      <Link to={process.env.PUBLIC_URL + "/"}>
+                        Ajoutez des articles maintenant
                       </Link>
                     </div>
                   </div>

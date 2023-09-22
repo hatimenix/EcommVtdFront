@@ -48,7 +48,7 @@ const CommandeAdmin = () => {
                 <Breadcrumb
                     pages={[
                         { label: "Home", path: process.env.PUBLIC_URL + "/" },
-                        { label: "Commande", path: process.env.PUBLIC_URL + pathname }
+                        { label: "Mes ventes", path: process.env.PUBLIC_URL + pathname }
                     ]}
                 />
                 <div className="cart-main-area pt-90 pb-100">
@@ -181,10 +181,8 @@ const CommandeAdmin = () => {
                                             <i className="pe-7s-like"></i>
                                         </div>
                                         <div className="item-empty-area__text">
-                                            No items found in wishlist <br />{" "}
-                                            <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
-                                                Add Items
-                                            </Link>
+                                            Aucun article trouvé dans la liste des aricles vendus <br />{" "}
+
                                         </div>
                                     </div>
                                 </div>
