@@ -24,6 +24,8 @@ import TermsAndConditions from "./pages/FooterPages/TermsAndConditions";
 import PrivacyPolicy from "./pages/FooterPages/PrivacyPolicy";
 import Commande from "./pages/other/commande";
 import CommandeAdmin from "./pages/other/commandeAdmin";
+import RequireAuth from "./hooks/RequireAuth";
+import EditMail from "./pages/ProfileSettings/Edit_mail/EditMail";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -56,7 +58,8 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/espace-vendeur"}
-              element={<Dash />}
+              element={<RequireAuth element={<Dash />}/>}
+
             />
             <Route
               path={process.env.PUBLIC_URL + "/gestion-articles"}
@@ -64,11 +67,12 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/gestion-profil"}
-              element={<ProfileSide />}
+              element={<RequireAuth element={<ProfileSide />}/>}
+
             />
             <Route
               path={process.env.PUBLIC_URL + "/profil"}
-              element={<Profile />}
+              element={<RequireAuth element={<Profile />}/>}
             />
             <Route
               path={process.env.PUBLIC_URL + "/articles/:articleId"}
@@ -94,19 +98,22 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/gestion-articles"}
-              element={<ListeArticles />}
+              element={<RequireAuth element={<ListeArticles />}/>}
+
             />
             <Route
               path={process.env.PUBLIC_URL + "/nouveau-article"}
-              element={<NewArticle />}
+              element={<RequireAuth element={<NewArticle />}/>}
             />
             <Route
               path={process.env.PUBLIC_URL + "/details-article"}
-              element={<DetailsArticle />}
+              element={<RequireAuth element={<DetailsArticle />}/>}
+
             />
             <Route
               path={process.env.PUBLIC_URL + "/edit-article"}
-              element={<EditArticle />}
+              element={<RequireAuth element={<EditArticle />}/>}
+
             />
 
 
@@ -157,6 +164,10 @@ const App = () => {
             <Route
               path={process.env.PUBLIC_URL + "/Politique-de-confidentialité"}
               element={<PrivacyPolicy />}
+            />
+            <Route
+              path={process.env.PUBLIC_URL + "/modification_mail/:userId/:token/:expires"}
+              element={<EditMail />}
             />
 
           </Routes>
