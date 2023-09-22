@@ -19,7 +19,7 @@ const ArticlePkg__ = ({ limit }) => {
     const { bundleId } = useParams();
 
 
-    console.log("bundle Id", bundleId);
+    //$& 
 
     const location = useLocation();
 

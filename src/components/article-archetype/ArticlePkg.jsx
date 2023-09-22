@@ -71,7 +71,7 @@ const ArticlePkg = ({ limit }) => {
 
     }, [dispatch]);
 
-    console.log("csts gsgs", csts);
+    //$& 
 
     const pkgs = useSelector((state) => state.pkg.pkgs);
 
@@ -82,16 +82,16 @@ const ArticlePkg = ({ limit }) => {
 
 
     const iArticles = useSelector((state) => state.article.articles);
-    // console.log("lots", lots);
+    // //$& 
 
     const storedLotsString = localStorage.getItem("lots");
     let parsedLots
 
     if (storedLotsString) {
         parsedLots = JSON.parse(storedLotsString);
-        console.log("lots", parsedLots);
+        //$& 
     } else {
-        console.log("lots is not stored in localStorage");
+        //$& 
     }
 
 
@@ -104,25 +104,25 @@ const ArticlePkg = ({ limit }) => {
     const arr = str.split('/');
     const lastSubstring = arr[arr.length - 1];
     const lastCharacter = parseInt(lastSubstring.slice(-1));
-    console.log("lastCharacter Id", lastCharacter);
+    //$& 
 
 
 
     // const pkgs = useSelector((state) => state.pkg.pkgs);
-    // console.log("pkgs", pkgs);
+    // //$& 
 
 
-    console.log("pkgs", localStorage.getItem("pkgs"));
+    //$& 
 
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa", localStorage.getItem("articles"));
+    //$& 
     const storedPkgsString = localStorage.getItem("pkgs");
     let parsedPkgs
 
     if (storedPkgsString) {
         parsedPkgs = JSON.parse(storedPkgsString);
-        console.log("pkgs", parsedPkgs);
+        //$& 
     } else {
-        console.log("pkgs is not stored in localStorage");
+        //$& 
     }
 
 
@@ -131,9 +131,9 @@ const ArticlePkg = ({ limit }) => {
 
     if (storedArtsString) {
         parsedArts = JSON.parse(storedArtsString);
-        console.log("articles", parsedArts);
+        //$& 
     } else {
-        console.log("articles is not stored in localStorage");
+        //$& 
     }
 
 
@@ -143,12 +143,12 @@ const ArticlePkg = ({ limit }) => {
 
     if (storedCstsString) {
         parsedCsts = JSON.parse(storedCstsString);
-        console.log("csts parsed", parsedCsts);
+        //$& 
     } else {
-        console.log("csts is not stored in localStorage");
+        //$& 
     }
 
-    console.log("cstrsttststtss", storedCstsString);
+    //$& 
 
 
 
@@ -160,9 +160,9 @@ const ArticlePkg = ({ limit }) => {
     //     const parsedPkgs = JSON.parse(pkgs);
 
     //     // Now, you can access the object properties and log them
-    //     console.log("pkgs parsed", parsedPkgs);
+    //     //$& 
     // } else {
-    //     console.log("pkgs is not stored in localStorage");
+    //     //$& 
     // }
 
 
@@ -171,10 +171,10 @@ const ArticlePkg = ({ limit }) => {
 
     const currentPkg = parsedPkgs ? parsedPkgs.find(pkg => (pkg.id_red === lastCharacter)) : null
 
-    console.log("currentPkg", currentPkg);
+    //$& 
 
     const cstPkg = parsedCsts ? parsedCsts.find(cst => (cst.id === currentPkg.seller)) : null
-    console.log("cstPkg", cstPkg);
+    //$& 
     let pkgSellers = null
     if (cstPkg) {
         pkgSellers = parsedArts ? parsedArts.filter(article => (article.customer_id === cstPkg.id) && (article.stock != 0)) : null
@@ -183,17 +183,17 @@ const ArticlePkg = ({ limit }) => {
 
 
 
-    console.log("cstPkg", cstPkg);
-    console.log("iArticles", iArticles);
-    console.log("pkgSellers", pkgSellers);
+    //$& 
+    //$& 
+    //$& 
 
 
     const listPkg = useSelector((state) => state.lpkg.lpackages)
     const ar_set = listPkg.map(item => item.id_art);
 
-    console.log("listPkg", listPkg);
+    //$& 
 
-    console.log("ar_set", ar_set);
+    //$& 
 
 
     const currentUser = useCurrentUserSelector()
@@ -205,10 +205,10 @@ const ArticlePkg = ({ limit }) => {
 
 
 
-    console.log("lot_length", lot_length);
+    //$& 
 
 
-    console.log(" pkgSellers[0].customer_id", pkgSellers[0].customer_id);
+    //$& 
 
 
 
@@ -217,11 +217,11 @@ const ArticlePkg = ({ limit }) => {
     const filteredPkgs = parsedPkgs.filter(pkg => pkg.seller === pkgSellers[0].customer_id);
 
 
-    console.log("filteredPkgs", filteredPkgs);
+    //$& 
 
     const reductions = filteredPkgs[0].reduction
 
-    console.log("reductions", reductions);
+    //$& 
 
     const red2 = reductions.find(reduction => reduction.nbr_article === 2);
     const red3 = reductions.find(reduction => reduction.nbr_article === 3);
@@ -229,7 +229,7 @@ const ArticlePkg = ({ limit }) => {
 
 
 
-    console.log("Reduction with nbr_article = 2:", red2);
+    //$& 
 
 
     let red_apply, red = 0
@@ -248,7 +248,7 @@ const ArticlePkg = ({ limit }) => {
 
 
 
-            console.log("red2222222222222222222", red);
+            //$& 
         }
 
 
@@ -258,7 +258,7 @@ const ArticlePkg = ({ limit }) => {
 
             red = red_value - red_apply
 
-            console.log("red333333333333333333", red);
+            //$& 
 
 
         } else if (listPkg.length === 5) {
@@ -268,19 +268,19 @@ const ArticlePkg = ({ limit }) => {
             red = red_value - red_apply
 
 
-            console.log("red5555555555555555", red);
+            //$& 
 
         } else {
             red = red_value
         }
     }
 
-    console.log("listPkg", listPkg, currentUser.first_name);
+    //$& 
 
-    console.log("parsedLotsparsedLots", parsedLots);
+    //$& 
 
     const sendPkg = (event) => {
-        console.log("listPkg", listPkg, currentUser.first_name);
+        //$& 
 
 
         event.preventDefault();
@@ -311,7 +311,7 @@ const ArticlePkg = ({ limit }) => {
 
         if (isMatchingPackage) {
             // Stop the click event if a matching package is found
-            console.log("Matching package found, click event stopped.");
+            //$& 
             return;
         }
 
