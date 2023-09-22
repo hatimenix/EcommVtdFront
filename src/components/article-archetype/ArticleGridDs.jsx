@@ -50,17 +50,22 @@ const ArticleGridDs = ({ limit }) => {
 
 
 
-    console.log("props", __props);
+    // console.log("props", __props);
 
     const uniqueArticles = new Set(); // Create a Set to store unique articles
     const targetedCategories = new Set(); // Create a Set to store unique targeted categories
-
+    let correspondingArticle
     // If __recs is an array
     if (Array.isArray(__recs)) {
         __recs.forEach(rec => {
             __props.forEach(prop => {
 
-                const correspondingArticle = __articlesRec.find(article => (article.id_art === rec.article) || (article.id_art === prop.article));
+                // correspondingArticle = __articlesRec.find(article => (article.id_art === rec.article) || (article.id_art === prop.article));
+
+                correspondingArticle = __articlesRec.find(article => (article.id_art === rec.article));
+
+
+
 
                 if (correspondingArticle) {
                     // Add the article's id or a unique identifier to the Set
@@ -75,7 +80,7 @@ const ArticleGridDs = ({ limit }) => {
     }
 
 
-
+    console.log("correspondingArticle", correspondingArticle);
 
 
 
@@ -90,7 +95,34 @@ const ArticleGridDs = ({ limit }) => {
     });
 
 
-    console.log("articlesWithSameCategory", articlesWithSameCategory);
+
+    // Assuming you have already filtered your articles and stored them in the 'articlesWithSameCategory' array
+
+    // Function to shuffle an array
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+
+
+    const [randomArticles, setRandomArticles] = useState([]);
+
+    useEffect(() => {
+        const shuffledArticles = [...articlesWithSameCategory];
+        shuffleArray(shuffledArticles);
+
+        const numberOfRandomArticles = 5; // Change this number to your desired value
+        const randomArticlesSubset = shuffledArticles.slice(0, numberOfRandomArticles);
+
+        setRandomArticles(randomArticlesSubset);
+    }, []);
+
+
+    // console.log("randomArticle", randomArticles);
+    // console.log("articlesWithSameCategory", articlesWithSameCategory);
 
     // const correspondingArticle = __articlesRec.find(article => article.id_art === __recs.article);
 
@@ -120,7 +152,16 @@ const ArticleGridDs = ({ limit }) => {
     const lastCharacter = parseInt(lastSubstring);
 
 
-    console.log("lastCharacter", lastCharacter);
+    // console.log("str", str);
+
+    const categoryReg = /^\/category\/\d+$/;
+
+
+
+    // Check if location.pathname matches the pattern
+    if (categoryReg.test(location.pathname)) {
+        // console.log('true');
+    }
 
 
 
@@ -146,7 +187,6 @@ const ArticleGridDs = ({ limit }) => {
 
 
     }, [dispatch, selectedCategory, lastCharacter]);
-
 
 
 
@@ -190,7 +230,7 @@ const ArticleGridDs = ({ limit }) => {
     // console.log('current user status ', currentUser.is_seller);
 
 
-    console.log('TargetedARticles ', targetedArticles);
+    // console.log('TargetedARticles ', targetedArticles);
 
 
 
@@ -204,22 +244,22 @@ const ArticleGridDs = ({ limit }) => {
     localStorage.getItem("number")
 
     const boostedARticles = iArticles.filter((i) => i.Boosting === true)
-    console.log("iartivles", iArticles);
+    // console.log("iartivles", iArticles);
 
-    console.log("boostedARticles", boostedARticles);
+    // console.log("boostedARticles", boostedARticles);
 
 
 
     const parf_cat = articles.filter((art) => art.categorie_id === 7)
 
-    console.log("parf_catparf_cat", parf_cat);
+    // console.log("parf_catparf_cat", parf_cat);
 
 
     return (
         <div className="product-area pb-60 section-padding-1">
 
             {csts && <div className="container-fluid">
-                {cRoad !== '/' ?
+                {categoryReg.test(location.pathname) ?
                     <>
                         <SectionTitle
                             titleText={catTitle ? catTitle : null}
@@ -248,92 +288,99 @@ const ArticleGridDs = ({ limit }) => {
 
 
 
-                {/* <FeatureIconTwo spaceTopClass="pt-70" spaceBottomClass="pb-60" /> */}
 
 
-                {true ?
 
 
-                    <>
-                        {userHasTargetedArticles && userHasClickedOnArticle && (
-                            <>
-                                <SectionTitle
-                                    titleText="Recommandé pour toi"
-                                    // subTitleText="Latest arrivals & offers "
-                                    // positionClass="text-center"
-                                    spaceClass="mb-20 mt-80"
+
+                <>
+                    {location.pathname === '/' && userHasTargetedArticles && userHasClickedOnArticle && (
+                        <>
+                            <SectionTitle
+                                titleText="Recommandé pour toi"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-20 mt-80"
+                            />
+                            <div className="row five-column">
+                                <ArticleGridDsTwo
+                                    articles={articlesWithSameCategory}
+                                    // categories={iCategories}
+                                    csts={csts}
+                                    limit={limit}
+                                    spaceBottomClass="mb-25"
                                 />
-                                <div className="row five-column">
-                                    <ArticleGridDsTwo
-                                        articles={articlesWithSameCategory}
-                                        // categories={iCategories}
-                                        csts={csts}
-                                        limit={limit}
-                                        spaceBottomClass="mb-25"
-                                    />
-                                </div>
-
-                            </>
-                        )}
+                            </div>
 
 
-
-
-                        <SectionTitle
-                            titleText="Recherche par marque"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-20 mt-30"
-                        />
-
-                        <div className="row five-column">
-                            <ArticleMarqueGrid />
-                        </div>
-
-
-                        <SectionTitle
-                            titleText="Fil d'actu"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-50 mt-30"
-                        />
-
-                        <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={iArticles}
-                                categories={iCategories}
-                                csts={csts}
-                                limit={limit}
-                                spaceBottomClass="mb-25 "
+                            <SectionTitle
+                                titleText="Articles Populaires"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-50 mt-30"
                             />
-                        </div>
-                        <SectionTitle
-                            titleText="Articles Populaires"
-                            // subTitleText="Latest arrivals & offers "
-                            // positionClass="text-center"
-                            spaceClass="mb-50 mt-30"
-                        />
 
-                        <div className="row five-column">
-                            <ArticleGridDsTwo
-                                articles={boostedARticles}
-                                categories={iCategories}
-                                csts={csts}
-                                limit={limit}
-                                spaceBottomClass="mb-25 "
+                            <div className="row five-column">
+                                <ArticleGridDsTwo
+                                    articles={boostedARticles}
+                                    categories={iCategories}
+                                    csts={csts}
+                                    limit={limit}
+                                    spaceBottomClass="mb-25 "
+                                />
+                            </div>
+
+                        </>
+                    )}
+
+
+                    {location.pathname === '/' &&
+                        <>
+
+
+                            <SectionTitle
+                                titleText="Fil d'actu"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-50 mt-30"
                             />
-                        </div>
+
+                            <div className="row five-column">
+                                <ArticleGridDsTwo
+                                    articles={iArticles}
+                                    categories={iCategories}
+                                    csts={csts}
+                                    limit={limit}
+                                    spaceBottomClass="mb-25 "
+                                />
+                            </div>
+
+                            <SectionTitle
+                                titleText="Recherche par marque"
+                                // subTitleText="Latest arrivals & offers "
+                                // positionClass="text-center"
+                                spaceClass="mb-20 mt-30"
+                            />
+
+                            <div className="row five-column">
+                                <ArticleMarqueGrid />
+                            </div>
 
 
 
-                    </>
-                    : <p>ijsi</p>
+                        </>
+                    }
+
+
+
+                </>
 
 
 
 
 
-                }
+
+
             </div>}
 
         </div>

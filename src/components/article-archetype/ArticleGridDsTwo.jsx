@@ -21,7 +21,7 @@ const ArticleGridDsTwo = ({
 
 
 
-        console.log("cstststststststst", csts);
+        //$& 
 
 
         const isCsMatch = !csts || csts.some(cs => cs.id === article.customer_id);

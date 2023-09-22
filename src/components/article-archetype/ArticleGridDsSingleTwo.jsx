@@ -79,7 +79,7 @@ const ArticleGridDsSingleTwo = ({
     }, [dispatch]);
 
     const csts = useSelector((state) => state.cst.csts);
-    // console.log("le csts", csts);
+    // //$& 
 
     const toggleLike = () => {
         if (heartSolid) {
@@ -125,8 +125,8 @@ const ArticleGridDsSingleTwo = ({
 
     const correspondingSeller = csts ? csts.find(c => c.id === article.customer_id) : null;
 
-    console.log("le csts", csts);
-    console.log("correspondingSellercorrespondingSeller", correspondingSeller);
+    //$& 
+    //$& 
 
     if (!correspondingSeller) {
         return null;
@@ -166,7 +166,7 @@ const ArticleGridDsSingleTwo = ({
         fetch(`${server}/tracked-articles/track_article_click/?article_id=${articleId}&customer_id=${customerId}`)
             .then((response) => {
                 if (response.status === 200) {
-                    console.log('Article click tracked successfully');
+                    //$& 
                 } else {
                     console.error('Error tracking article click');
                 }

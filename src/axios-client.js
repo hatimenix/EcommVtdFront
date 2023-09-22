@@ -6,7 +6,7 @@ export const linkImage = 'https://api.el-bal.ma'
 
 const axiosClient = axios.create({
   // baseURL: "http://127.0.0.1:8000/",
-   baseURL: "https://api.el-bal.ma",
+  baseURL: "https://api.el-bal.ma",
 
 });
 

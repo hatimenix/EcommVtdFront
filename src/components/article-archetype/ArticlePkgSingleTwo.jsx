@@ -188,7 +188,7 @@ const ArticlePkgSingleTwo = ({
         } else {
             // If it's not added, add it to the list
             setIsAdded(true);
-            // console.log("article", article);
+            console.log("article", article);
             dispatch(addToList(article))
 
         }
@@ -201,7 +201,7 @@ const ArticlePkgSingleTwo = ({
     const addArticle = (article) => {
         setList((prevList) => [...prevList, article]);
     };
-    // console.log("list", list);
+    console.log("list", list);
 
     // console.log("listPkg", listPkg[0].arPkg);
     return (
