@@ -1,15 +1,15 @@
 import axios from "axios";
 
-export const linkImage = 'https://api.el-bal.ma'
-// export const linkImage = 'http://localhost:8000/'
+// export const linkImage = 'https://api.el-bal.ma'
+export const linkImage = 'http://localhost:8000/'
 
 
 const axiosClient = axios.create({
-  baseURL: "https://api.el-bal.ma/",
+  // baseURL: "https://api.el-bal.ma/",
 
 
 
-  // baseURL: "http://localhost:8000/",
+  baseURL: "http://localhost:8000/",
 
 });
 
