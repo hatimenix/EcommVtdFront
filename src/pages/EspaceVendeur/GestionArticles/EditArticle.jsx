@@ -47,8 +47,14 @@ function NewArticle() {
   const [stock, setStock] = useState();
   const [prix_Vente, setPrix_Vente] = useState();
   const [colis, setColis] = useState("");
-  const [booster, setBooster] = useState();
+  const [Boosting, setBoosting] = useState();
   const [boosters, setBoosters] = useState();
+  const [listboost, setlistboost] = useState();
+
+  const [boost_type, setboost_type] = useState();
+  const [start_date, setstart_date] = useState();
+  const [end_date, setend_date] = useState();
+
 
   const [isLoadingImages, setIsLoadingImages] = useState(true)
   const [loadingInputs, setLoadingInputs] = useState(true)
@@ -64,11 +70,11 @@ function NewArticle() {
       axiosClient.get(`/articles/${location.state.id_art}/`).then((res) => {
         setListArticles(res.data);
         setColis(res.data.forme_colis);
-        setBoosters(res.data?.is_booster)
+        setBoosters(res.data?.Boosting)
         setLoadingInputs(false)
 
       });
-      setBooster(boosters)
+      setBoosting(boosters)
     }
   }, [boosters, user.id]);
 
@@ -85,6 +91,28 @@ function NewArticle() {
         }
         setIsLoadingImages(false)
       });
+  }, [])
+
+  const [idBoost, setIdBoost] = useState(undefined)
+
+  useEffect(() => {
+    axiosClient.get(`/boosts/`).then((res) => {
+      if (res.data.filter(e => e.article === location.state.id_art).length !== 0) {
+        const bst = res.data.filter(e => e.article === location.state.id_art)[0].id
+        setIdBoost(bst)
+        console.log("le boost: ", bst);
+
+        setlistboost(res.data.filter(e => e.article === location.state.id_art));
+        setboost_type(res.data.filter(e => e.article === location.state.id_art)[0].boost_type)
+
+        const date1 = new Date(res.data.filter(e => e.article === location.state.id_art)[0].start_date);
+        setstart_date(date1.toISOString().replace("T", " ").slice(0, 19))
+
+        const date2 = new Date(res.data.filter(e => e.article === location.state.id_art)[0].end_date);
+        setend_date(date2.toISOString().replace("T", " ").slice(0, 19))
+        console.log('boost data : ', res.data.filter(e => e.article === location.state.id_art));
+      }
+    });
   }, [])
 
   const handleChangeImage = (e) => {
@@ -109,6 +137,41 @@ function NewArticle() {
   // };
 
 
+  const BoostArtic = () => {
+    const formData = new FormData();
+    if (boost_type) {
+      formData.append("boost_type", boost_type);
+    }
+    if (start_date) {
+      formData.append("start_date", start_date);
+    }
+    if (end_date) {
+      formData.append("end_date", end_date);
+    }
+
+    formData.append("article", location.state.id_art);
+
+
+    if (user.id) {
+      formData.append("user", user.id);
+    }
+
+    try {
+      if (idBoost === undefined) {
+        axiosClient.post(`/boosts/`, formData)
+          .then((res) => {
+            console.log("data posted", res.data);
+            setIdBoost(res.data.id)
+          })
+      }
+      else { axiosClient.patch(`/boosts/${idBoost}/`, formData); }
+    }
+    catch (error) {
+      console.error('Error fetching boosting value:', error);
+    }
+
+  }
+
   const changeImageArticl = () => {
     const formData = new FormData();
 
@@ -131,12 +194,28 @@ function NewArticle() {
     if (colis) {
       formData.append("forme_colis", colis);
     }
-    if (booster?.toString()) {
-      formData.append("is_booster", booster);
+    if (Boosting?.toString()) {
+      formData.append("Boosting", Boosting);
     }
     formData.append("customer_id", user.id);
 
-    axiosClient.patch(`/articles/${location.state.id_art}/`, formData);
+    try {
+      axiosClient.patch(`/articles/${location.state.id_art}/`, formData);
+    }
+    catch (error) {
+      console.error('Error fetching boosting value:', error);
+    }
+
+    Boosting && BoostArtic()
+
+    if (Boosting?.toString() === "false") {
+      try {
+        axiosClient.delete(`/boosts/${idBoost}/`)
+      }
+      catch (error) {
+        console.error('Error fetching boosting value:', error);
+      }
+    }
 
     axiosClient
       .get(`/article-images/?search=${location.state.id_art}`)
@@ -197,6 +276,7 @@ function NewArticle() {
         //   }
       });
   };
+
 
 
   const checkParentId = (id) => {
@@ -295,6 +375,7 @@ function NewArticle() {
     imageListe
     //   .map((val)=>(val.id))
   );
+
 
   return (
     <Fragment>
@@ -445,7 +526,7 @@ function NewArticle() {
                   </button>
                 </div>
               )}
-              
+
             </div>
           </div>
 
@@ -653,13 +734,13 @@ function NewArticle() {
                         }}
                         onChange={(e) => {
                           let inputValue = e.target.value;
-                          
+
                           // Remove any non-numeric characters, including decimal points and commas
                           inputValue = inputValue.replace(/[^0-9]/g, '');
-                      
+
                           // Update the input field value with the sanitized value
                           e.target.value = inputValue;
-                      
+
                           // Update the stock state with the sanitized value
                           setStock(inputValue);
                         }}
@@ -697,23 +778,23 @@ function NewArticle() {
                         }}
                         onChange={(e) => {
                           let inputValue = e.target.value;
-                          
+
                           // Remove any characters that are not digits or dots
                           inputValue = inputValue.replace(/[^0-9.]/g, '');
-                      
+
                           // Replace commas with dots for consistent decimal handling
                           inputValue = inputValue.replace(/,/g, '.');
-                      
+
                           // Limit to two decimal places
                           const decimalParts = inputValue.split('.');
                           if (decimalParts.length > 1) {
                             decimalParts[1] = decimalParts[1].slice(0, 2); // Keep only two decimal places
                             inputValue = decimalParts.join('.');
                           }
-                      
+
                           // Update the input field value with the sanitized value
                           e.target.value = inputValue;
-                      
+
                           // Update the prix_Vente state with the sanitized value
                           setPrix_Vente(inputValue);
                         }}
@@ -953,7 +1034,7 @@ function NewArticle() {
                             type="checkbox"
                             defaultChecked={boosters}
                             style={{ height: "30px", accentColor: "#a46cdc" }}
-                            onClick={(e) => setBooster(!booster)}
+                            onClick={(e) => setBoosting(!Boosting)}
                           />
                         }</span>
                     </div>
@@ -961,6 +1042,84 @@ function NewArticle() {
                 </div>
               </div>
             </div>
+
+            {/* Render the fields for Boost */}
+            {Boosting && (
+              <div className="bg-gray p-4 m-3 rounded">
+                <div className="container">
+                  <div className="form-group row mb-3">
+                    <label htmlFor="boost_type" className="col-sm-4 col-form-label text-right">
+                      Boost Type:
+                    </label>
+                    <div className="col-sm-8">
+                      <select
+                        onChange={(e) => setboost_type(e.target.value)}
+                        value={boost_type}
+                        className="form-control"
+                        id="boost_type"
+                        style={{
+                          background: "#7070700f",
+                          border: "none",
+                          borderBottom: "1px solid gray",
+                          paddingLeft: "25px",
+                        }}
+                        required // Make this field required
+                      >
+                        <option value="Default">------------------------------------</option>
+                        <option value="Performance">Performance</option>
+                        <option value="Manual">Manual</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="form-group row mb-3">
+                    <label htmlFor="start_date" className="col-sm-4 col-form-label text-right">
+                      Start Date:
+                    </label>
+                    <div className="col-sm-8">
+                      <input
+                        onChange={(e) => setstart_date(e.target.value)}
+                        type="datetime-local"
+                        className="form-control"
+                        id="start_date"
+                        value={start_date}
+                        placeholder="Start Date"
+                        style={{
+                          background: "#7070700f",
+                          border: "none",
+                          borderBottom: "1px solid gray",
+                          paddingLeft: "25px",
+                        }}
+                        required // Make this field required
+                      />
+                    </div>
+                  </div>
+                  <div className="form-group row mb-3">
+                    <label htmlFor="end_date" className="col-sm-4 col-form-label text-right">
+                      End Date:
+                    </label>
+                    <div className="col-sm-8">
+                      <input
+                        onChange={(e) => setend_date(e.target.value)}
+                        type="datetime-local"
+                        className="form-control"
+                        id="end_date"
+                        value={end_date}
+                        placeholder="End Date"
+                        style={{
+                          background: "#7070700f",
+                          border: "none",
+                          borderBottom: "1px solid gray",
+                          paddingLeft: "25px",
+                        }}
+                        required // Make this field required
+                      />
+                    </div>
+                  </div>
+                  {/* Add more Boost fields as needed */}
+                </div>
+              </div>
+            )}
+
           </>
 
           {/*  */}
@@ -970,14 +1129,18 @@ function NewArticle() {
             justifyContent: 'right',
           }}>
             {(selectedImageList.length === 0)
-              ?
-              <button className="btn-add" disabled>
-                Modifier
-              </button>
-              :
-              <button className="btn-add" onClick={changeImageArticl}>
-                Modifier
-              </button>}
+              ? (
+                <button className="btn-add" disabled>
+                  Modifier
+                </button>
+              )
+              : (
+                <button className="btn-add" onClick={changeImageArticl}>
+                  Modifier
+                </button>
+              )
+            }
+
           </div>
         </div>
       </LayoutOne>

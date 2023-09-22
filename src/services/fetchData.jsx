@@ -111,6 +111,12 @@ export const fetchReviews = async () => {
 };
 
 
+export const fetchRatings = async () => {
+    const response = await axiosClient.get(`ratings/`, {
+        withCredentials: true,
+    });
+    return response.data;
+};
 export const fetchProperties = async () => {
     try {
         const response = await axiosClient.get(`properties/`, {

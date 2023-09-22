@@ -52,7 +52,12 @@
 }
 
 
+.heart-pos{
+    position: absolute;
+    right: 5px;
+    left: 250px; /* Adjust the value as needed to move it to the desired position */
 
+}
 
 
 
@@ -87,8 +92,10 @@
     /* Adjust to your desired height */
 }
 .boosted-text {
+    color: #333;
     position: absolute;
-    right: 0; /* Adjust the value as needed to move it to the desired position */
+    right: 5px;
+    left: 215px; /* Adjust the value as needed to move it to the desired position */
     bottom: 0;
 }
 .price-sell{

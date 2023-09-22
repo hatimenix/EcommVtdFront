@@ -10,6 +10,10 @@ import { setProperties } from "../../store/slices/propertiesSlice";
 import { fetchFavori, fetchProperties } from "../../services/fetchData";
 import { Link } from "react-router-dom"; // Add this import
 import axiosClient from "../../axios-client";
+import setRatings from '../../store/slices/ratingSlice';
+import { fetchRatings } from "../../services/fetchData";
+import ArticleRating from '../../components/article-archetype/article-features/ArticleRating';
+
 
 const ProductDescriptionInfo = ({
   product,
@@ -73,6 +77,8 @@ const ProductDescriptionInfo = ({
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [productStock, setProductStock] = useState(product.stock);
   const [quantityCount, setQuantityCount] = useState(1);
+  const [totalratingcount, settotalratingcount] = useState(0);
+  const ratings = useSelector((state) => state.rating.ratings);
 
   const productCartQty = getProductCartQuantity(
     cartItems,
@@ -123,7 +129,18 @@ const ProductDescriptionInfo = ({
 
   // Get the grouped properties
   const groupedProps = groupProperties();
-
+  useEffect(() => {
+    axiosClient.get(`/article-ratings-count/`)
+        .then(response => {
+            const totalratingcount = response.data;
+            if (product.id_art in totalratingcount) {
+                settotalratingcount(totalratingcount[product.id_art]);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching total ratings count:', error);
+        });
+}, []);
   return (
     <div className="product-details-content ml-70">
       <h2>{product.titre}</h2>
@@ -139,6 +156,12 @@ const ProductDescriptionInfo = ({
           <span>{currency.currencySymbol + product.price} </span>
         )}
       </div>
+      <div>
+                            <div className="ratings">
+
+                                <ArticleRating ratingValue={product.average_rating} /> &nbsp; ({totalratingcount})
+
+                            </div></div>
       {product.rating && product.rating > 0 ? (
         <div className="pro-details-rating-wrap">
           <div className="pro-details-rating">
