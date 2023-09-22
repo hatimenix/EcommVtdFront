@@ -46,7 +46,9 @@ const Cart = () => {
   function abilityFunction() {
     let trigger = true
     cartItems.map((item, key) => {
+      // console.log("vendeur non different.........: ", item);
       if (key > 0 && cartItems[key - 1].vendeur !== item.vendeur) {
+        // console.log("vendeur different: ", cartItems);
         setAbility(false)
         trigger = false
       }
@@ -59,6 +61,7 @@ const Cart = () => {
 
 
   useEffect(() => {
+    // console.log("vendeur different: ", cartItems);
     abilityFunction()
   }, [cartItems])
   // console.log('image: ', cartItems);
@@ -391,9 +394,9 @@ const Cart = () => {
                       <i className="pe-7s-cart"></i>
                     </div>
                     <div className="item-empty-area__text">
-                      No items found in cart <br />{" "}
-                      <Link to={process.env.PUBLIC_URL + "/shop-grid-standard"}>
-                        Shop Now
+                      Aucun article trouvé dans le panier <br />{" "}
+                      <Link to={process.env.PUBLIC_URL + "/"}>
+                        Ajoutez des articles maintenant
                       </Link>
                     </div>
                   </div>

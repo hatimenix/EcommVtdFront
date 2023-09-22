@@ -444,7 +444,7 @@ function NewArticle() {
   //   // Fetch the boosting attribute from the backend
   //   const fetchBoostingValue = async () => {
   //     try {
-  //       const response = await axios.get('http://127.0.0.1:8000/boosts/', {
+  //       const response = await axios.get('https://api.el-bal.ma/boosts/', {
   //         withCredentials: true,
   //       });
   //       const data = response.data;
