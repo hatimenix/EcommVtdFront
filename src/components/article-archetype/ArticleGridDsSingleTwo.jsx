@@ -21,6 +21,9 @@ import { Button } from 'react-bootstrap';
 import { fetchUser } from '../../store/slices/userSlice';
 import { useCurrentUserSelector } from '../../store/selectors/selectors';
 import axiosClient, { linkImage } from '../../axios-client';
+import setRatings from '../../store/slices/ratingSlice';
+import { fetchRatings } from "../../services/fetchData";
+import ArticleRating from './article-features/ArticleRating';
 
 const server = linkImage
 
@@ -37,11 +40,39 @@ const ArticleGridDsSingleTwo = ({
     const dispatch = useDispatch();
 
     const [likeCount, setLikeCount] = useState(0);
+    const [totalratingcount, settotalratingcount] = useState(0);
+
     const [heartSolid, setHeartSolid] = useState(true);
     const currentUser = useCurrentUserSelector();
 
     const { wishlistItems } = useSelector((state) => state.wishlist);
     const wishlistItem = wishlistItems.find(item => item.article === article.id_art);
+    const ratings = useSelector((state) => state.rating.ratings);
+    const [count, setCount] = useState(0)
+
+    // useEffect(() => {
+    //     fetchRatings()
+    //         .then((rt) => {
+    //             dispatch(setRatings(rt));
+    //             setCount(rt.length)
+
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error fetching ratings:', error);
+    //         });
+
+    // }, [dispatch]);
+
+
+    console.log("ratings:", ratings);
+    // {
+    //     ratings.map((rating, index) => (
+    //         <div key={index}>
+    //             <p>Rating {index + 1}:</p>
+    //             <p>{rating.score}</p>
+    //         </div>
+    //     ))
+    // }
 
     useEffect(() => {
         dispatch(fetchUser());
@@ -71,7 +102,18 @@ const ArticleGridDsSingleTwo = ({
                 console.error('Error fetching likes count:', error);
             });
     }, []);
-
+    useEffect(() => {
+        axiosClient.get(`/article-ratings-count/`)
+            .then(response => {
+                const totalratingcount = response.data;
+                if (article.id_art in totalratingcount) {
+                    settotalratingcount(totalratingcount[article.id_art]);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching total ratings count:', error);
+            });
+    }, []);
     const handleLikeClick = () => {
         setIsLiked((prevLiked) => !prevLiked);
         likeCount++;
@@ -134,6 +176,8 @@ const ArticleGridDsSingleTwo = ({
             });
     }
 
+
+    console.log("total:", article.total_ratings);
     return (
         <Fragment>
 
@@ -263,7 +307,7 @@ const ArticleGridDsSingleTwo = ({
                                 </Link>
                             </h3>
 
-                            <div className="heart-count-container">
+                            <div className="heart-pos">
                                 <FontAwesomeIcon
                                     icon={heartSolid ? regIc : solIc}
                                     className="heart-icon"
@@ -287,7 +331,12 @@ const ArticleGridDsSingleTwo = ({
                                 <span>Boosted</span>
                             )}
                         </div>
+                        <div>
+                            <div className="ratings">
 
+                                <ArticleRating ratingValue={article.average_rating} /> &nbsp; ({totalratingcount})
+
+                            </div></div>
                         <div className="price-sell">
                             {article.prix_vente !== undefined ? (
                                 <span>{parseFloat(article.prix_vente).toFixed(2)} £ incl. <BsShieldCheck /></span>

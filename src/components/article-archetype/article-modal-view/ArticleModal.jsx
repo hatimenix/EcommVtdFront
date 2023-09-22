@@ -195,7 +195,7 @@ function ArticleModal({ product, article, currency, discountedPrice, finalProduc
 
                             <div className="pro-details-rating-wrap">
                                 <div className="pro-details-rating">
-                                    <Rating ratingValue={2} />
+                                    <Rating ratingValue={article.average_rating} />
                                 </div>
                             </div>
 

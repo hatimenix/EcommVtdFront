@@ -2,17 +2,25 @@ import PropTypes from "prop-types";
 import React, { Fragment } from "react";
 
 const ArticleRating = ({ ratingValue }) => {
-    let rating = [];
+    const maxRating = 5;
+    const filledStars = Math.floor(ratingValue);
+    const hasHalfStar = ratingValue - filledStars >= 0.5;
 
-    for (let i = 0; i < 5; i++) {
-        rating.push(<i className="fa fa-star-o" key={i}></i>);
+    const stars = [];
+    for (let i = 0; i < filledStars; i++) {
+        stars.push(<i className="fa fa-star yellow" key={i}></i>);
     }
-    if (ratingValue && ratingValue > 0) {
-        for (let i = 0; i <= ratingValue - 1; i++) {
-            rating[i] = <i className="fa fa-star-o yellow" key={i}></i>;
-        }
+
+    if (hasHalfStar) {
+        stars.push(<i className="fa fa-star-half-o yellow" key={filledStars}></i>);
     }
-    return <Fragment>{rating}</Fragment>;
+
+    const emptyStarsCount = maxRating - filledStars - (hasHalfStar ? 1 : 0);
+    for (let i = 0; i < emptyStarsCount; i++) {
+        stars.push(<i className="fa fa-star-o" key={filledStars + (hasHalfStar ? 1 : 0) + i}></i>);
+    }
+
+    return <Fragment>{stars}</Fragment>;
 };
 
 ArticleRating.propTypes = {
