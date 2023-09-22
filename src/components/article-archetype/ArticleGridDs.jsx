@@ -203,6 +203,10 @@ const ArticleGridDs = ({ limit }) => {
 
     localStorage.getItem("number")
 
+    const boostedARticles = iArticles.filter((i) => i.Boosting === true)
+    console.log("iartivles", iArticles);
+
+    console.log("boostedARticles", boostedARticles);
 
 
 
@@ -297,6 +301,22 @@ const ArticleGridDs = ({ limit }) => {
                         <div className="row five-column">
                             <ArticleGridDsTwo
                                 articles={iArticles}
+                                categories={iCategories}
+                                csts={csts}
+                                limit={limit}
+                                spaceBottomClass="mb-25 "
+                            />
+                        </div>
+                        <SectionTitle
+                            titleText="Articles Populaires"
+                            // subTitleText="Latest arrivals & offers "
+                            // positionClass="text-center"
+                            spaceClass="mb-50 mt-30"
+                        />
+
+                        <div className="row five-column">
+                            <ArticleGridDsTwo
+                                articles={boostedARticles}
                                 categories={iCategories}
                                 csts={csts}
                                 limit={limit}
