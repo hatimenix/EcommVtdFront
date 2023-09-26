@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setArticles } from '../store/slices/articlesSlice';
 import { setCategories } from '../store/slices/categoriesSlice';
 import { initCart } from '../store/slices/cart-slice';
-import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts, fetchCstAsyn, fetchLot, fetchRatings } from './fetchData';
+import { fetchArticles, fetchArticlesRec, fetchCategories, fetchPanier, fetchFavori, fetchUser, fetchProperties, fetchPackages, fetchCst, fetchCommande, fetchBoosts, fetchCstAsyn, fetchLot, fetchRatings, fetchAdminCommande } from './fetchData';
 import { setArticleRec } from '../store/slices/articlesRecSlice';
 import { setBoosts } from '../store/slices/boostSlice';
 import { initFavoris } from '../store/slices/wishlist-slice';
@@ -15,6 +15,8 @@ import { setCst } from '../store/slices/CstSlice';
 import { initCommande } from '../store/slices/commande-slice';
 import { setLots } from '../store/slices/lotSlice';
 import { setRatings } from '../store/slices/ratingSlice';
+import { initAchat } from '../store/slices/achatLot-slice';
+import { initCommandeAdmin } from '../store/slices/commande-slice-admin';
 // import { fetchArticles, fetchCategories, fetchFavori, fetchPanier } from './fetchData';
 
 const usePersistData = () => {
@@ -93,6 +95,7 @@ const usePersistData = () => {
             try {
                 const lot = await fetchLot();
                 dispatch(setLots(lot));
+                dispatch(initAchat(lot));
                 localStorage.setItem("lots", JSON.stringify(lot))
 
                 // localStorage.setItem("lo", JSON.stringify(cs))
@@ -147,9 +150,14 @@ const usePersistData = () => {
                 const panier = await fetchPanier(recs.id);
                 dispatch(initCart(panier));
 
-                // fetch favoris
+                // fetch commande
                 const commande = await fetchCommande(recs.id);
                 dispatch(initCommande(commande));
+
+                // fetch commandeAdmin
+                const commandeAdmin = await fetchAdminCommande(recs.id);
+                dispatch(initCommandeAdmin(commandeAdmin));
+
 
 
                 fetchCst(recs.id);

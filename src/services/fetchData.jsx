@@ -186,9 +186,20 @@ export const fetchCommande = async (id_user) => {
     const response = await axiosClient.get(`commande/?search=${id_user}`, {
         withCredentials: true,
     });
-    // console.log("la commande: ", response.data);
+    console.log("la commande: ", response.data);
     return response.data;
 };
+
+
+// recuperation des commandes
+export const fetchAdminCommande = async (id_user) => {
+    const response = await axiosClient.get(`commande/getCommandeBySeller/?vendeur=${id_user}`, {
+        withCredentials: true,
+    });
+    console.log("la commande admin: ", response.data);
+    return response.data;
+};
+
 
 
 // get user

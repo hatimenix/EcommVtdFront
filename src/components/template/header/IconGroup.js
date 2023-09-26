@@ -77,7 +77,9 @@ const IconGroup = ({ iconWhiteClass }) => {
 
   commandeList = commandeList.filter(item => item.etat === false);
 
-  const cmdList = commandeList.filter(item => item.vendeur === parseInt(localStorage.getItem('cu')))
+
+  let cmdList = useSelector((state) => state.commandeListAdmin.commandeListAdminItem);
+  // const cmdList = commandeList.filter(item => item.vendeur === parseInt(localStorage.getItem('cu')))
   // console.log('cmnd list: ', cmdList);
 
   // const cmdList = []
