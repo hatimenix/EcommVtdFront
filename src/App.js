@@ -26,6 +26,7 @@ import Commande from "./pages/other/commande";
 import CommandeAdmin from "./pages/other/commandeAdmin";
 import RequireAuth from "./hooks/RequireAuth";
 import EditMail from "./pages/ProfileSettings/Edit_mail/EditMail";
+import AchatLot from "./pages/other/AchatLot";
 
 
 const Cart = lazy(() => import("./pages/other/Cart"));
@@ -58,7 +59,7 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/espace-vendeur"}
-              element={<RequireAuth element={<Dash />}/>}
+              element={<RequireAuth element={<Dash />} />}
 
             />
             <Route
@@ -67,12 +68,12 @@ const App = () => {
             />
             <Route
               path={process.env.PUBLIC_URL + "/gestion-profil"}
-              element={<RequireAuth element={<ProfileSide />}/>}
+              element={<RequireAuth element={<ProfileSide />} />}
 
             />
             <Route
               path={process.env.PUBLIC_URL + "/profil"}
-              element={<RequireAuth element={<Profile />}/>}
+              element={<RequireAuth element={<Profile />} />}
             />
             <Route
               path={process.env.PUBLIC_URL + "/articles/:articleId"}
@@ -93,26 +94,31 @@ const App = () => {
             />
 
             <Route
+              path={process.env.PUBLIC_URL + "/acheter_lot"}
+              element={<AchatLot />}
+            />
+
+            <Route
               path={process.env.PUBLIC_URL + "/art"}
               element={<ArticleGridDs />}
             />
             <Route
               path={process.env.PUBLIC_URL + "/gestion-articles"}
-              element={<RequireAuth element={<ListeArticles />}/>}
+              element={<RequireAuth element={<ListeArticles />} />}
 
             />
             <Route
               path={process.env.PUBLIC_URL + "/nouveau-article"}
-              element={<RequireAuth element={<NewArticle />}/>}
+              element={<RequireAuth element={<NewArticle />} />}
             />
             <Route
               path={process.env.PUBLIC_URL + "/details-article"}
-              element={<RequireAuth element={<DetailsArticle />}/>}
+              element={<RequireAuth element={<DetailsArticle />} />}
 
             />
             <Route
               path={process.env.PUBLIC_URL + "/edit-article"}
-              element={<RequireAuth element={<EditArticle />}/>}
+              element={<RequireAuth element={<EditArticle />} />}
 
             />
 

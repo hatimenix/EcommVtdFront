@@ -2,8 +2,6 @@ import React from "react";
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import App from "./App";
-import { store } from "./store/store";
-import PersistProvider from "./store/providers/persist-provider";
 import 'animate.css';
 import 'swiper/swiper-bundle.min.css';
 import "yet-another-react-lightbox/styles.css";
@@ -20,7 +18,7 @@ import { ContextProvider } from "./context/ContextProvider";
 
 const selectedCategory = JSON.parse(localStorage.getItem('selectedCategory'));
 if (selectedCategory) {
-  store.dispatch(selectCategory(selectedCategory));
+  store__.dispatch(selectCategory(selectedCategory));
 }
 // const container = document.getElementById('root');
 // const root = createRoot(container);
@@ -35,9 +33,9 @@ if (selectedCategory) {
 ReactDOM.render(
   <Provider store={store__}>
     <ContextProvider>
-    <App />
+      <App />
     </ContextProvider>
-    
+
   </Provider>,
   document.getElementById('root')
 );

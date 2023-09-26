@@ -13,7 +13,7 @@ const CommandeAdmin = () => {
     const server = linkImage
 
     const currency = useSelector((state) => state.currency);
-    let commandeList = useSelector((state) => state.commandeList.commandeListItem);
+    let commandeList = useSelector((state) => state.commandeListAdmin.commandeListAdminItem);
     commandeList = commandeList.filter(item => item.vendeur === parseInt(localStorage.getItem('cu')))
     const articles = useSelector((state) => state.article.articles);
     // console.log("commandeList", commandeList);

@@ -18,6 +18,8 @@ import recsMiddleware from './middlewares/recsMiddleware';
 import midReducer from './slices/articlesRecMidSlice';
 import pkgReducer from './slices/pkgSlice__';
 import commandeSliceReducer from './slices/commande-slice';
+import commandeSliceAdminReducer from './slices/commande-slice-admin';
+import achatSliceReducer from './slices/achatLot-slice';
 
 import listPkgReducer from './slices/listPkgSlice';
 import lotReducer from './slices/lotSlice';
@@ -48,6 +50,8 @@ const store = configureStore({
                 lpkg: listPkgReducer,
                 lot: lotReducer,
                 commandeList: commandeSliceReducer,
+                commandeListAdmin: commandeSliceAdminReducer,
+                achatList: achatSliceReducer,
 
 
         },
